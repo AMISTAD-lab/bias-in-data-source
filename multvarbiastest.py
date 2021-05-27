@@ -2,24 +2,11 @@ import math
 
 test_data = 20*[('male', 'white')] + [('female', 'white'), ('male', 'black'), ('female', 'asian')]
 
-def multvarbiastest(data, numvars, alpha):
-    var_dict = {}
+def multvarbiastest(data, numvars, varpossiblevals, alpha):
 
-    for i in range(numvars):
-        var_dict[i] = []
-
-    for i in range(len(data)):
-        for j in range(numvars):
-            if data[i][j] not in var_dict[j]:
-                var_dict[j].append(data[i][j])
-    '''
-    for key in var_dict.keys():
-        print(key, ' : ', var_dict[key])
-    '''
-    
     possible_combos = 1
-    for key in var_dict.keys():
-        possible_combos *= len(var_dict[key])
+    for i in range(numvars):
+        possible_combos *= varpossiblevals[i]
 
     norm_scriptx = possible_combos**len(data)
     u = 1/norm_scriptx
@@ -36,7 +23,7 @@ def multvarbiastest(data, numvars, alpha):
     
     mg = 0
     for i in range(0, len(data)-data.count(assumed_bias)+1):
-        mg += possible_combos * math.comb(len(data), i)
+        mg += possible_combos * math.comb(len(data), i) * (possible_combos-1)**i
     
     nu = norm_scriptx/mg
     kardis = r*u/nu
