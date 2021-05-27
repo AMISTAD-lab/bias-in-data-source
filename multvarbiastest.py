@@ -6,7 +6,13 @@ test_varpossiblevals = [2, 3]
 test_alpha = 0.05
 
 def multvarbiastest(data, numvars, varpossiblevals, alpha):
-
+    """
+    Notes:
+    1. data should be a list of tuples, not lists
+    2. varpossiblevalues is a list of possible values for each variable
+       in the order in which they appear in the tuples of data
+    """
+    
     # Computes all possible combinations for a given data point
     possible_combos = 1
     for i in range(numvars):
