@@ -25,9 +25,8 @@ def binarybiastest(data,alpha):
     else:
         reject = False
         print("Uniform distribution not rejected at alpha = "+ str(alpha) +". Kardis = " + str(kardis)+ ". s >", s_lowerbound)
-    p_lowerbound = (s_lowerbound*u)**(1/len(data))
-    print("The lower bound of probability of selecting", assumed_bias, "here is", p_lowerbound)
-    return (kardis, s_lowerbound, p_lowerbound, reject)
+    
+    return (kardis, s_lowerbound, reject)
     
 def alltypebiastest(data,alpha):
     """takes in a list of values and does bias testing on them.
@@ -69,9 +68,7 @@ def alltypebiastest(data,alpha):
     else:
         reject = False
         print("Uniform distribution not rejected at alpha = "+ str(alpha) +". Kardis = " + str(kardis)+ ". s >", s_lowerbound)
-    p_lowerbound = (s_lowerbound*u)**(1/len(data))
-    print("The lower bound of probability of selecting", assumed_bias_value, "here is", p_lowerbound)
-    return (kardis, s_lowerbound, p_lowerbound, reject)
+    return (kardis, s_lowerbound, reject)
 
 def givennumberbiastest(data, numberofvalues, alpha):
     """takes in a list of values and does bias testing on them.
@@ -114,6 +111,4 @@ def givennumberbiastest(data, numberofvalues, alpha):
     else:
         reject = False
         print("Uniform distribution not rejected at alpha = "+ str(alpha) +". Kardis = " + str(kardis)+ ". s >", s_lowerbound)
-    p_lowerbound = (s_lowerbound*u)**(1/len(data))
-    print("The lower bound of probability of selecting", assumed_bias_value, "here is", p_lowerbound)
-    return (kardis, s_lowerbound, p_lowerbound, reject)
+    return (kardis, s_lowerbound, reject)
