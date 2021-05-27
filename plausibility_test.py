@@ -1,4 +1,6 @@
 import math
+from biastest import *
+
 s_lowerbound = 1764
 data = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
 alpha = 0.05
