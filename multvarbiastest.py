@@ -1,9 +1,13 @@
 import math
 
 test_data = 20*[('male', 'white')] + [('female', 'white'), ('male', 'black'), ('female', 'asian')]
+test_numvars = 2
+test_varpossiblevals = [2, 3]
+test_alpha = 0.05
 
 def multvarbiastest(data, numvars, varpossiblevals, alpha):
 
+    # Computes all possible combinations for a given data point
     possible_combos = 1
     for i in range(numvars):
         possible_combos *= varpossiblevals[i]
@@ -12,6 +16,7 @@ def multvarbiastest(data, numvars, varpossiblevals, alpha):
     u = 1/norm_scriptx
     r = norm_scriptx*(1+math.log(norm_scriptx))
 
+    # Assumed bias is the most common data entry
     freq_dict = {}
     for entry in data:
         if entry in freq_dict:
@@ -19,7 +24,6 @@ def multvarbiastest(data, numvars, varpossiblevals, alpha):
         else:
             freq_dict[entry] = 1
     assumed_bias = max(freq_dict, key=freq_dict.get)
-    #print('Assumed bias: ', assumed_bias)
     
     mg = 0
     for i in range(0, len(data)-data.count(assumed_bias)+1):
