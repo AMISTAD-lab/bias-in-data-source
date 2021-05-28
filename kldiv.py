@@ -61,6 +61,44 @@ def trinarymgcalculator(data, givendist = []):
     mg = trinarybruteforcemg(len(data), min_kl, givendist=givendist)
     return mg
 
+def bruteforcemg(size, min_kl, numvals, givendist=[]):
+    mg = 0 
+    permslist = recursionbuddy(size,numvals)
+    for perm in permslist:
+        fakedata = []
+        for i in range(numvals):
+            fakedata += [i]*perm[i]
+        kl = kldiv(fakedata, numvals=numvals, givendist=givendist)
+        if kl >= min_kl:
+            mg += otherrecursionbuddy(size, perm)
+    return mg
+
+
+def recursionbuddy(size, numvals):
+    if numvals == 1:
+        return [size]
+    else:
+        retlist = []
+        for i in range(size+1):
+            if size>0:
+                newsize=size-i
+            else:
+                newsize=size
+            newlist = [[i, x] if type(x)==int else [i]+x for x in recursionbuddy(newsize,numvals-1)]
+            retlist+=newlist
+        return retlist
+
+def otherrecursionbuddy(size,perm):
+    if len(perm) == 1:
+        return math.comb(size,perm[0])
+    else:
+        return otherrecursionbuddy(size-perm[0],perm[1:])*math.comb(size,perm[0])
+
+def mgcalculator(data,numvals = 0, givendist=[]):
+    min_kl = kldiv(data,numvals=numvals,givendist=givendist)
+    mg = bruteforcemg(len(data),min_kl,numvals=numvals,givendist=givendist)
+    return mg
+
 
             
 
