@@ -61,11 +61,6 @@ def all_perms(value_list, k):
         for j in range(len(perm_list)):
             perm_list[j] = list(perm_list[j])
         val_dict[i] = perm_list
-    """
-    for key, value in val_dict.items():
-        print(key, ' : ', value)
-    return val_dict
-    """
     if k%len(value_list) != 0:
         perm_list = list(product(value_list, repeat=k%len(value_list)))
         for i in range(len(perm_list)):
@@ -74,11 +69,9 @@ def all_perms(value_list, k):
     block_list = []
     for key in val_dict.keys():
         block_list.append(val_dict[key])
-    #print(block_list)
     total_perm_list = list(product(*block_list))
     for i in range(len(total_perm_list)):
         total_perm_list[i] = list(chain.from_iterable(total_perm_list[i]))
-    #print(total_perm_list)
     return total_perm_list
 
 
