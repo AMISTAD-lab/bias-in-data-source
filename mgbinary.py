@@ -22,7 +22,6 @@ def mgbinary(data):
     for i in range(len(data)+1):
         test_obs = (i)*[1] + (len(data)-i)*[0]
         test_dist = [test_obs.count(1)/len(test_obs), test_obs.count(0)/len(test_obs)]
-        print(test_dist)
         if sum(rel_entr(uni_dist, test_dist)) >= min_kl:
             mg += 1
     return mg
