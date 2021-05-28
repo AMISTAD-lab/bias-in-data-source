@@ -39,10 +39,10 @@ def trinarybruteforcemg(size, min_kl, givendist = []):
     mg = 0
     if givendist == []:
         givendist = [1/3]*3 #uniform dist
-    for q in range(size):   
-        for r in range(size-q):
-            for s in range(size-q-r):
-                print(q,r,s)
+    for q in range(size+1):   
+        for r in range(size-q+1):
+            for s in range(size-q-r+1):
+                #print(q,r,s)
                 #plist = [q/size, r/size, s/size]
                 #kl = sum(rel_entr(plist,givendist))
                 fakedata = [0]*q + [1]*r + [2]*s
