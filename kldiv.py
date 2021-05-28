@@ -48,7 +48,7 @@ def trinarybruteforcemg(size, min_kl, givendist = []):
             fakedata = [0]*q + [1]*r + [2]*s
             kl = kldiv(fakedata, numvals=3, givendist=givendist)
             #print(kl)
-            if kl >= min_kl:
+            if min_kl <= kl:
                 #print(q,r,s)
                 combs = math.comb(size,q)*math.comb(size-q,r)*math.comb(size-q-r,s)
                 mg += combs
@@ -69,7 +69,8 @@ def bruteforcemg(size, min_kl, numvals, givendist=[]):
         for i in range(numvals):
             fakedata += [i]*perm[i]
         kl = kldiv(fakedata, numvals=numvals, givendist=givendist)
-        if kl >= min_kl:
+        kl = round(kl,6)
+        if min_kl <= kl:
             mg += otherrecursionbuddy(size, perm)
     return mg
 
@@ -103,8 +104,8 @@ def mgcalculator(data,numvals = 0, givendist=[]):
             else:
                 valuedict[item] +=1
         numvals = len(valuedict.keys())
-        #print(numvals)
     min_kl = kldiv(data,numvals=numvals,givendist=givendist)
+    min_kl = round(min_kl,6)
     mg = bruteforcemg(len(data),min_kl,numvals=numvals,givendist=givendist)
     return mg
 
