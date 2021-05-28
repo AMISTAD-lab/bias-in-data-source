@@ -95,6 +95,15 @@ def otherrecursionbuddy(size,perm):
         return otherrecursionbuddy(size-perm[0],perm[1:])*math.comb(size,perm[0])
 
 def mgcalculator(data,numvals = 0, givendist=[]):
+    if numvals == 0:
+        valuedict = {}
+        for item in data:
+            if item not in valuedict.keys():
+                valuedict[item] = 1
+            else:
+                valuedict[item] +=1
+        numvals = len(valuedict.keys())
+        #print(numvals)
     min_kl = kldiv(data,numvals=numvals,givendist=givendist)
     mg = bruteforcemg(len(data),min_kl,numvals=numvals,givendist=givendist)
     return mg
