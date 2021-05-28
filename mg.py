@@ -25,54 +25,38 @@ def mgbinary(data):
         test_obs = (i)*[1] + (len(data)-i)*[0]
         test_dist = [test_obs.count(1)/len(test_obs), test_obs.count(0)/len(test_obs)]
         if sum(rel_entr(uni_dist, test_dist)) >= min_kl:
-            #print(test_obs)
             mg += math.comb(len(test_obs), test_obs.count(1))
     return mg
 
 def mg(data, value_list):
     freq_dict = {}
-    """
-    for entry in data:
-        if entry in freq_dict:
-            freq_dict[entry] += 1
-        else:
-            freq_dict[entry] = 1
-    """
     for value in value_list:
         freq_dict[value] = data.count(value)
-
     uni_dist = len(freq_dict.keys())*[1/len(freq_dict.keys())]
     obs_dist = [data.count(i)/len(data) for i in freq_dict.keys()]
     min_kl = sum(rel_entr(uni_dist, obs_dist))
     mg = 0
-    for perm in all_perms(value_list, len(data)):
-        #print(perm)
+    perm_list = []
+    for perm in list(product(value_list, repeat=len(data))):
         test_dist = [perm.count(i)/len(data) for i in value_list]
         if sum(rel_entr(uni_dist, test_dist)) >= min_kl:
             mg += 1
-    return mg
+            perm_list.append(perm)
+    return perm_list
+    #return mg
 
-# Helper function for mg
-def all_perms(value_list, k):
-    full_blocks = k//len(value_list)
-    val_dict = {}
-    for i in range(full_blocks):
-        perm_list = list(product(value_list, repeat=len(value_list)))
-        for j in range(len(perm_list)):
-            perm_list[j] = list(perm_list[j])
-        val_dict[i] = perm_list
-    if k%len(value_list) != 0:
-        perm_list = list(product(value_list, repeat=k%len(value_list)))
-        for i in range(len(perm_list)):
-            perm_list[i] = list(perm_list[i])
-        val_dict[full_blocks] = perm_list
-    block_list = []
-    for key in val_dict.keys():
-        block_list.append(val_dict[key])
-    total_perm_list = list(product(*block_list))
-    for i in range(len(total_perm_list)):
-        total_perm_list[i] = list(chain.from_iterable(total_perm_list[i]))
-    return total_perm_list
+def grouper(perm_list):
+    group_dict = {}
+    for i in range(len(perm_list)):
+        count1 = perm_list[i].count(1)
+        count2 = perm_list[i].count(2)
+        count3 = perm_list[i].count(3)
+        if (count1,count2,count3) not in group_dict:
+            group_dict[(count1,count2,count3)] = 1
+        else:
+            group_dict[count1,count2,count3] += 1
+    return group_dict
+
 
 
 
