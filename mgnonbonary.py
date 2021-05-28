@@ -22,5 +22,7 @@ def mgnonbinary(data,prob_dict):
     
     min_kl = sum(rel_entr(uni_dist, obs_dist))
     mg = 0
+
+"""Version is void since it does not take into account the observed distribution"""
 	
 	
