@@ -22,7 +22,7 @@ def kldiv(data, numvals=0, givendist = []):
         raise Exception("given distribution mismatch with values")
     kl = 0
     for index in range(len(proplist)):
-        kl += proplist[index]*math.log2(proplist[index]/uniproplist[index])
+        kl += proplist[index]*math.log2(proplist[index]/givendist[index])
     return kl
 
 def simplekldiv(p,q):
