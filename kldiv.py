@@ -41,21 +41,23 @@ def trinarybruteforcemg(size, min_kl, givendist = []):
         givendist = [1/3]*3 #uniform dist
     for q in range(size+1):   
         for r in range(size-q+1):
-            for s in range(size-q-r+1):
+            s=size-q-r
+            #print(q,r,s)
+            #plist = [q/size, r/size, s/size]
+            #kl = sum(rel_entr(plist,givendist))
+            fakedata = [0]*q + [1]*r + [2]*s
+            kl = kldiv(fakedata, numvals=3, givendist=givendist)
+            #print(kl)
+            if kl >= min_kl:
                 #print(q,r,s)
-                #plist = [q/size, r/size, s/size]
-                #kl = sum(rel_entr(plist,givendist))
-                fakedata = [0]*q + [1]*r + [2]*s
-                kl = kldiv(fakedata, numvals=3, givendist=givendist)
-                if kl >= min_kl:
-                    combs = math.comb(size,q)*math.comb(size-q,r)*math.comb(size-q-r,s)
-                    mg += combs
+                combs = math.comb(size,q)*math.comb(size-q,r)*math.comb(size-q-r,s)
+                mg += combs
     #this is absolutely going to need recursion i am suffering
     return mg
 
-def combotimetrinary(data, givendist = []):
+def trinarymgcalculator(data, givendist = []):
     min_kl = kldiv(data, numvals=3, givendist=givendist)
-    print("minkl",min_kl)
+    #print("minkl",min_kl)
     mg = trinarybruteforcemg(len(data), min_kl, givendist=givendist)
     return mg
 
