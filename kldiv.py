@@ -1,7 +1,8 @@
 import math
 
-def kldiv_fromuniform(data, numvals=0):
-    """calculates the kl of the observed distribution within data to a uniform dist.
+def kldiv(data, numvals=0, givendist = []):
+    """calculates the kl of the observed distribution within data 
+    to a given distribution. (if not given just uses uniform)
     set numvals to number of possible values w/in data if not all are observed"""
     valuedict = {}
     for item in data:
@@ -15,7 +16,10 @@ def kldiv_fromuniform(data, numvals=0):
     #for values not observed in data
     #cannot actually be 0, so we approximate
     proplist += [0.000000001]*(numvals-len(valuedict.keys())) 
-    uniproplist = [1/len(proplist)]*len(proplist)
+    if givendist == []:
+        givendist = [1/len(proplist)]*len(proplist)
+    elif not (len(givendist) == numvals):
+        raise Exception("given distribution mismatch with values")
     kl = 0
     for index in range(len(proplist)):
         kl += proplist[index]*math.log2(proplist[index]/uniproplist[index])
