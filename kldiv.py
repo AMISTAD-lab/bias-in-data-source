@@ -1,4 +1,5 @@
 import math
+from scipy.special import rel_entr
 
 def kldiv(data, numvals=0, givendist = []):
     """calculates the kl of the observed distribution within data 
@@ -22,12 +23,44 @@ def kldiv(data, numvals=0, givendist = []):
         raise Exception("given distribution mismatch with values")
     kl = 0
     for index in range(len(proplist)):
-        kl += proplist[index]*math.log2(proplist[index]/givendist[index])
+        kl += proplist[index]*math.log(proplist[index]/givendist[index])
     return kl
 
 def simplekldiv(p,q):
     """wherein both p and q are distributions"""
     kl = 0
     for index in range(len(p)):
-        kl+= p[index]*math.log2(p[index]/q[index])
+        kl+= p[index]*math.log(p[index]/q[index])
     return kl
+
+def trinarybruteforcemg(size, min_kl, givendist = []):
+    """i want to extend this to arbitrary nb situations but trinary first
+    bc this might need recursion and i don't want recursion"""
+    mg = 0
+    if givendist == []:
+        givendist = [1/3]*3 #uniform dist
+    for q in range(size):   
+        for r in range(size-q):
+            for s in range(size-q-r):
+                print(q,r,s)
+                #plist = [q/size, r/size, s/size]
+                #kl = sum(rel_entr(plist,givendist))
+                fakedata = [0]*q + [1]*r + [2]*s
+                kl = kldiv(fakedata, numvals=3, givendist=givendist)
+                if kl >= min_kl:
+                    combs = math.comb(size,q)*math.comb(size-q,r)*math.comb(size-q-r,s)
+                    mg += combs
+    #this is absolutely going to need recursion i am suffering
+    return mg
+
+def combotimetrinary(data, givendist = []):
+    min_kl = kldiv(data, numvals=3, givendist=givendist)
+    print("minkl",min_kl)
+    mg = trinarybruteforcemg(len(data), min_kl, givendist=givendist)
+    return mg
+
+
+            
+
+
+
