@@ -42,20 +42,7 @@ def mg(data, value_list):
         if sum(rel_entr(uni_dist, test_dist)) >= min_kl:
             mg += 1
             perm_list.append(perm)
-    return perm_list
-    #return mg
-
-def grouper(perm_list):
-    group_dict = {}
-    for i in range(len(perm_list)):
-        count1 = perm_list[i].count(1)
-        count2 = perm_list[i].count(2)
-        count3 = perm_list[i].count(3)
-        if (count1,count2,count3) not in group_dict:
-            group_dict[(count1,count2,count3)] = 1
-        else:
-            group_dict[count1,count2,count3] += 1
-    return group_dict
+    return mg
 
 
 
