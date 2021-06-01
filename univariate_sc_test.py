@@ -1,6 +1,19 @@
 import math
 from itertools import *
 from scipy.special import rel_entr
+from sympy.solvers import solve
+from sympy import Symbol
+
+def closest_plausible_explanation(observation, value_list, hypothesis, alpha, assumed_bias):
+    sc_test = univariate_sc_test(observation, value_list, hypothesis, alpha)
+    su_lowerbound = sc_test[1]
+    reject = sc_test[2]
+    q = Symbol('q', real=True, positive=True)
+    assumed_bias_count = observation.count(assumed_bias)
+    not_assumed_bias_count = len(observation) - assumed_bias_count
+    solutions = solve((q**assumed_bias_count) * ((1-q)**not_assumed_bias_count) - su_lowerbound, q)
+    if reject:
+        return solutions
 
 def univariate_sc_test(observation, value_list, hypothesis, alpha):
     """
