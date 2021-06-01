@@ -1,9 +1,11 @@
 import math
 from itertools import *
 from scipy.special import rel_entr
-from sympy.solvers import solve
-from sympy import Symbol
+from sympy import Symbol, solvers, S
 from statistics import *
+import numpy as np
+from sympy.core.symbol import Symbol
+from sympy.solvers.solveset import solveset
 
 def univariate_sc_test(observation, value_list, hypothesis, alpha):
     """
@@ -64,13 +66,14 @@ def closest_plausible_explanation(observation, value_list, p_lowerbound):
     assumed_bias = mode(observation)
     assumed_bias_count = observation.count(assumed_bias)
     not_assumed_bias_count = len(observation) - assumed_bias_count
-    x = Symbol('x', real=True, positive=True)
-    q = solve((x**assumed_bias_count) * ((1-x)**not_assumed_bias_count) - p_lowerbound, x)[0]
+    x = Symbol('x')
+    q_list = list(solveset((x**assumed_bias_count) * ((1-x)**not_assumed_bias_count) - p_lowerbound, x, S.Reals))
+    q = min([i for i in q_list if i > 0])
     not_q = 1-q
     closest_plausible_dist = []
     for value in value_list:
         if value != assumed_bias:
-            closest_plausible_dist.append(not_q)
+            closest_plausible_dist.append(not_q/(len(value_list)-1))
         else:
             closest_plausible_dist.append(q)
     return closest_plausible_dist
@@ -87,12 +90,16 @@ def mg(observation, value_list):
         freq_dict[value] = observation.count(value)
     uni_dist = len(freq_dict.keys())*[1/len(freq_dict.keys())]
     obs_dist = [observation.count(i)/len(observation) for i in freq_dict.keys()]
-    min_kl = sum(rel_entr(uni_dist, obs_dist))
+    min_kl = sum(rel_entr(obs_dist, uni_dist))
+    #min_kl = kldiv(obs_dist, len(value_list))
     mg = 0
     scriptx = scriptx_generator_helper(scriptx_generator(len(value_list), len(observation)), len(value_list))
     for event in scriptx:
         test_dist = [event[i]/len(observation) for i in range(len(value_list))]
-        if sum(rel_entr(uni_dist, test_dist)) >= min_kl:
+        test_kl = sum(rel_entr(test_dist, uni_dist))
+        #test_kl = kldiv(test_dist, len(value_list))
+        if test_kl >= min_kl:
+            #print(test_dist)
             mg += math.factorial(len(observation)) // math.prod(list(map(lambda x: math.factorial(x), event)))
     return mg
 
@@ -126,7 +133,7 @@ def scriptx_generator(num_vals, observation_length, current_vals=[]):
     else:
         scriptx = []
         for i in range(observation_length+1):
-            scriptx += current_vals + scriptx_generator(num_vals-1, observation_length-i, current_vals=[i])
+            scriptx += scriptx_generator(num_vals-1, observation_length-i, current_vals + [i])
         return scriptx
 
 def scriptx_generator_helper(ungrouped_perm_list, num_vals):
@@ -143,3 +150,51 @@ def scriptx_generator_helper(ungrouped_perm_list, num_vals):
     for i in range(0, len(ungrouped_perm_list), num_vals):
         grouped_perm_list.append(ungrouped_perm_list[i:i+num_vals])
     return grouped_perm_list
+
+def compare_kl(kl_list_1, kl_list_2):
+    """
+    print(inf_counter(kl_list_1))
+    print(inf_counter(kl_list_2))
+    print(np.ma.masked_invalid(kl_list_1).sum())
+    print(np.ma.masked_invalid(kl_list_2).sum())
+    """
+    if inf_counter(kl_list_1) > inf_counter(kl_list_2):
+        return True
+    elif inf_counter(kl_list_1) < inf_counter(kl_list_2):
+        return False
+    else:
+        return np.ma.masked_invalid(kl_list_1).sum() >= np.ma.masked_invalid(kl_list_2).sum()
+
+def inf_counter(np_array):
+    count = 0
+    for i in range(len(np_array)):
+        if np.isinf(np_array[i]):
+            count += 1
+    return count
+
+def kldiv(data, numvals=0, givendist = []):
+    """calculates the kl of the observed distribution within data 
+    to a given distribution. (if not given just uses uniform)
+    set numvals to number of possible values w/in data if not all are observed"""
+    valuedict = {}
+    for item in data:
+        if item not in valuedict.keys():
+            valuedict[item] = 1
+        else:
+            valuedict[item] +=1
+    if numvals == 0:
+        numvals = len(valuedict.keys())
+    proplist = [valuedict[x]/len(data) for x in valuedict.keys()]
+    #for values not observed in data
+    #cannot actually be 0, so we approximate
+    proplist += [0.000000001]*(numvals-len(valuedict.keys())) 
+    if givendist == []:
+        givendist = [1/len(proplist)]*len(proplist)
+    elif not (len(givendist) == numvals):
+        raise Exception("given distribution mismatch with values")
+    kl = 0
+    #print(proplist)
+    #print(givendist)
+    for index in range(len(proplist)):
+        kl += proplist[index]*math.log(proplist[index]/givendist[index])
+    return kl
