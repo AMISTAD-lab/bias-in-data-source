@@ -1,9 +1,9 @@
 # Bias-in-Data
 Repo for the Bias in Data summer project
 
-##What's here so far:
+What's here so far:
 
-##univariate_sc_test.py
+## univariate_sc_test.py
 This file contains several functions to help you run a two-distribution specified complexity (s.c.) hypothesis test.
 The main function that allows you to do this is univariate_sc_test(observation, value_list, hypothesis, alpha).
   observation - a list representing a sequence of events observed (see example below)
