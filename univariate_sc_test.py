@@ -5,11 +5,6 @@ from sympy.solvers import solve
 from sympy import Symbol
 from statistics import *
 
-def closest_plausible_explanation(p_lowerbound, assumed_bias_count, not_assumed_bias_count):
-    q = Symbol('q', real=True, positive=True)
-    solutions = solve((q**assumed_bias_count) * ((1-q)**not_assumed_bias_count) - p_lowerbound, q)
-    return solutions
-
 def univariate_sc_test(observation, value_list, hypothesis, alpha):
     """
     Conducts a specified complexity hypothesis test 
@@ -74,6 +69,11 @@ def uniform_dist_sc_test(observation, value_list, alpha):
         reject = False
         print("Uniform distribution not rejected at alpha = "+ str(alpha) +". Kardis = " + str(kardis)+ ". s >", s_lowerbound)
     return (kardis, s_lowerbound, reject)
+
+def closest_plausible_explanation(p_lowerbound, assumed_bias_count, not_assumed_bias_count):
+    q = Symbol('q', real=True, positive=True)
+    solutions = solve((q**assumed_bias_count) * ((1-q)**not_assumed_bias_count) - p_lowerbound, q)
+    return solutions
 
 def mg(observation, value_list):
     """
