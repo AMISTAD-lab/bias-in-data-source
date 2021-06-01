@@ -30,17 +30,7 @@ def univariate_sc_test(observation, value_list, hypothesis, alpha):
     if p < p_lowerbound:
         reject = True
         print("Proposed distribution rejected at alpha = " + str(alpha) + ". p(x) = " + str(p) + ". s*u(x) = " + str(p_lowerbound) + ".")
-        assumed_bias = mode(observation)
-        assumed_bias_count = observation.count(assumed_bias)
-        not_assumed_bias_count = len(observation) - assumed_bias_count
-        q = closest_plausible_explanation(p_lowerbound, assumed_bias_count, not_assumed_bias_count)[0]
-        not_q = (1-q)/(len(value_list)-1)
-        closest_plausible_dist = []
-        for value in value_list:
-            if value != assumed_bias:
-                closest_plausible_dist.append(not_q)
-            else:
-                closest_plausible_dist.append(q)
+        closest_plausible_dist = closest_plausible_explanation(observation, value_list, p_lowerbound)
         print("Closest plausible distribution: " + str(closest_plausible_dist))
     else:
         reject = False
@@ -70,10 +60,20 @@ def uniform_dist_sc_test(observation, value_list, alpha):
         print("Uniform distribution not rejected at alpha = "+ str(alpha) +". Kardis = " + str(kardis)+ ". s >", s_lowerbound)
     return (kardis, s_lowerbound, reject)
 
-def closest_plausible_explanation(p_lowerbound, assumed_bias_count, not_assumed_bias_count):
-    q = Symbol('q', real=True, positive=True)
-    solutions = solve((q**assumed_bias_count) * ((1-q)**not_assumed_bias_count) - p_lowerbound, q)
-    return solutions
+def closest_plausible_explanation(observation, value_list, p_lowerbound):
+    assumed_bias = mode(observation)
+    assumed_bias_count = observation.count(assumed_bias)
+    not_assumed_bias_count = len(observation) - assumed_bias_count
+    x = Symbol('x', real=True, positive=True)
+    q = solve((x**assumed_bias_count) * ((1-x)**not_assumed_bias_count) - p_lowerbound, x)[0]
+    not_q = 1-q
+    closest_plausible_dist = []
+    for value in value_list:
+        if value != assumed_bias:
+            closest_plausible_dist.append(not_q)
+        else:
+            closest_plausible_dist.append(q)
+    return closest_plausible_dist
 
 def mg(observation, value_list):
     """
