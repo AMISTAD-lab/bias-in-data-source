@@ -1,11 +1,9 @@
 import math
 from itertools import *
 from scipy.special import rel_entr
-from sympy import Symbol, solvers, S
+from sympy import Symbol, solveset, S
 from statistics import *
 import numpy as np
-from sympy.core.symbol import Symbol
-from sympy.solvers.solveset import solveset
 
 def univariate_sc_test(observation, value_list, hypothesis, alpha):
     """
