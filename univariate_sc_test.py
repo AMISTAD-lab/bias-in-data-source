@@ -3,17 +3,12 @@ from itertools import *
 from scipy.special import rel_entr
 from sympy.solvers import solve
 from sympy import Symbol
+from statistics import *
 
-def closest_plausible_explanation(observation, value_list, hypothesis, alpha, assumed_bias):
-    sc_test = univariate_sc_test(observation, value_list, hypothesis, alpha)
-    su_lowerbound = sc_test[1]
-    reject = sc_test[2]
+def closest_plausible_explanation(p_lowerbound, assumed_bias_count, not_assumed_bias_count):
     q = Symbol('q', real=True, positive=True)
-    assumed_bias_count = observation.count(assumed_bias)
-    not_assumed_bias_count = len(observation) - assumed_bias_count
-    solutions = solve((q**assumed_bias_count) * ((1-q)**not_assumed_bias_count) - su_lowerbound, q)
-    if reject:
-        return solutions
+    solutions = solve((q**assumed_bias_count) * ((1-q)**not_assumed_bias_count) - p_lowerbound, q)
+    return solutions
 
 def univariate_sc_test(observation, value_list, hypothesis, alpha):
     """
@@ -40,6 +35,18 @@ def univariate_sc_test(observation, value_list, hypothesis, alpha):
     if p < p_lowerbound:
         reject = True
         print("Proposed distribution rejected at alpha = " + str(alpha) + ". p(x) = " + str(p) + ". s*u(x) = " + str(p_lowerbound) + ".")
+        assumed_bias = mode(observation)
+        assumed_bias_count = observation.count(assumed_bias)
+        not_assumed_bias_count = len(observation) - assumed_bias_count
+        q = closest_plausible_explanation(p_lowerbound, assumed_bias_count, not_assumed_bias_count)[0]
+        not_q = (1-q)/(len(value_list)-1)
+        closest_plausible_dist = []
+        for value in value_list:
+            if value != assumed_bias:
+                closest_plausible_dist.append(not_q)
+            else:
+                closest_plausible_dist.append(q)
+        print("Closest plausible distribution: " + str(closest_plausible_dist))
     else:
         reject = False
         print("Proposed distribution failed to reject at alpha = " + str(alpha) + ". p(x) = " + str(p) + ". s*u(x) = " + str(p_lowerbound) + ".")
