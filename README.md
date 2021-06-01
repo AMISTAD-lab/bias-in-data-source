@@ -23,3 +23,5 @@ and running the function would look like
 ```
 univariate_sc_test(20*['H'], ['H', 'T'], [0.5, 0.5], 0.05]
 ```
+The function returns a tuple contain p(x), s\*u(x), and boolean representing whether the hypothesis was rejected or not. 
+If the hypothesis (proposed distribution) is rejected by the s.c. test, the function will also print 
