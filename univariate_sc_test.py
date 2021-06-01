@@ -61,6 +61,14 @@ def uniform_dist_sc_test(observation, value_list, alpha):
     return (kardis, s_lowerbound, reject)
 
 def closest_plausible_explanation(observation, value_list, p_lowerbound):
+    """
+    If a distribution is rejected as a plausible
+    explanation by univariate_sc_test, then this
+    function returns a distribution that is the
+    closest distribution to the tested hypothesis
+    that is also not rejected as a plausible
+    explanation.
+    """
     assumed_bias = mode(observation)
     assumed_bias_count = observation.count(assumed_bias)
     not_assumed_bias_count = len(observation) - assumed_bias_count
@@ -89,15 +97,12 @@ def mg(observation, value_list):
     uni_dist = len(freq_dict.keys())*[1/len(freq_dict.keys())]
     obs_dist = [observation.count(i)/len(observation) for i in freq_dict.keys()]
     min_kl = sum(rel_entr(obs_dist, uni_dist))
-    #min_kl = kldiv(obs_dist, len(value_list))
     mg = 0
     scriptx = scriptx_generator_helper(scriptx_generator(len(value_list), len(observation)), len(value_list))
     for event in scriptx:
         test_dist = [event[i]/len(observation) for i in range(len(value_list))]
         test_kl = sum(rel_entr(test_dist, uni_dist))
-        #test_kl = kldiv(test_dist, len(value_list))
         if test_kl >= min_kl:
-            #print(test_dist)
             mg += math.factorial(len(observation)) // math.prod(list(map(lambda x: math.factorial(x), event)))
     return mg
 
@@ -134,7 +139,7 @@ def scriptx_generator(num_vals, observation_length, current_vals=[]):
             scriptx += scriptx_generator(num_vals-1, observation_length-i, current_vals + [i])
         return scriptx
 
-def scriptx_generator_helper(ungrouped_perm_list, num_vals):
+def scriptx_generator_helper(ungrouped_scriptx_list, num_vals):
     """
     Helper function for scriptx_generator
     Notes:
@@ -145,6 +150,6 @@ def scriptx_generator_helper(ungrouped_perm_list, num_vals):
         This function does this grouping.
     """
     grouped_perm_list = []
-    for i in range(0, len(ungrouped_perm_list), num_vals):
-        grouped_perm_list.append(ungrouped_perm_list[i:i+num_vals])
+    for i in range(0, len(ungrouped_scriptx_list), num_vals):
+        grouped_perm_list.append(ungrouped_scriptx_list[i:i+num_vals])
     return grouped_perm_list
