@@ -1,7 +1,6 @@
 import math
 from itertools import *
 from scipy.special import rel_entr
-from sympy.utilities.iterables import multiset_permutations
 
 def univariate_sc_test(observation, value_list, hypothesis, alpha):
     """
