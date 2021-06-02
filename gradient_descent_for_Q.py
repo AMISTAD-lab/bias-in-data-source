@@ -1,3 +1,5 @@
+"""DOES NOT WORK!!! Must add constraints to gradient descent"""
+
 import itertools
 from sklearn.linear_model import LogisticRegression
 import numpy as np
@@ -76,3 +78,6 @@ def gradient_descent_for_Q(data,outcomes,variables):
         count = count + 1
     
     return varprob
+   
+   
+   
