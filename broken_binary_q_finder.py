@@ -7,6 +7,10 @@ HOW TO USE:
     1. Run this file
     2. Type into terminal print(res.x)
 
+See more detailed instructions at the section of this page 
+titled "Unconstrained minimization of multivariate scalar functions"
+https://docs.scipy.org/doc/scipy/reference/tutorial/optimize.html#sequential-least-squares-programming-slsqp-algorithm-method-slsqp
+
 This is for the example of flipping a coin and getting the sequence
 20*[1]+5*[0] where 1 is heads and 0 is tails.
 
