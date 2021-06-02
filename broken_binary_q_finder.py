@@ -39,7 +39,7 @@ def f_hess(q):
     return np.array([[2,0], [0,2]])
 # Bounds for q[0] and q[1]
 bounds = Bounds([0.01, 0.99], [0.01, 0.99]) 
-# Since we must have q[0] + q[1]
+# Since we must have q[0] + q[1] = 1
 linear_constraint = LinearConstraint([1, 1], [0.99], [1.01])
 def cons_f(q):
     """
