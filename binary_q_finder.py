@@ -62,7 +62,7 @@ def binary_q_finder(observation, hypothesis, p_lowerbound):
         x0 = np.array([i, 1-i])
         try:
             res = minimize(f, x0, method='trust-constr', jac=f_der, hess=f_hess, 
-                   constraints=[linear_constraint, nonlinear_constraint], bounds=bounds)
+                   constraints=[linear_constraint, nonlinear_constraint], options={'verbose': 0}, bounds=bounds)
             return res.x
         except:
             pass
