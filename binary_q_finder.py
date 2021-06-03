@@ -5,6 +5,8 @@ from scipy.optimize import *
 def binary_q_finder(observation, hypothesis, p_lowerbound):
     h = np.array([hypothesis[0], hypothesis[1]])
     # q0 is heads, q1 is tails, sorry for the confusion
+    # for some reason, the program doesn't work if you
+    # flip them :(
     q0_count = observation.count(1)
     q1_count = observation.count(0)
     def f(q):
