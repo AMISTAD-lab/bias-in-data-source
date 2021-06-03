@@ -24,9 +24,9 @@ my nonlinear constraint of q[0]^25 * q[1]^5 >= 6.575914760628984e-09
 def f(q):
     """
     Loss function (using sum of residuals squared)
-    We wan to minimize this. 
+    which we want to minimize this. 
     """
-    return ((q[0]-0.5)**2) + ((q[1]-0.5)**2)
+    return (q[0]-0.5)**2 + (q[1]-0.5)**2
 def f_der(q):
     """
     Jacobian of f
@@ -61,7 +61,7 @@ def cons_H(q, v):
 # Constructs NonLinearConstraint object
 nonlinear_constraint = NonlinearConstraint(cons_f, lb=6.575914760628984e-09, ub=np.inf, jac=cons_J, hess=cons_H, keep_feasible=True)
 # Starting point for the optimization
-x0 = np.array([0.6,0.4])
+x0 = np.array([0.9,0.1])
 # This is supposed to minimize f subject to the constraints
 res = minimize(f, x0, method='trust-constr', jac=f_der, hess=f_hess, 
             constraints=[linear_constraint, nonlinear_constraint], options={'verbose': 1}, bounds=bounds)
