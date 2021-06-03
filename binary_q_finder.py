@@ -47,15 +47,19 @@ def binary_q_finder(observation, hypothesis, p_lowerbound):
         """
         Hessian of the constraint function
         """
-        return v[0]*np.array([[(q0_count*(q0_count-1))*(q[0]**(q0_count-2))*(q[1]**q1_count), (q0_count*q1_count)*(q[0]**(q0_count-1))*(q[1]**(q1_count-1))],
-                              [(q0_count*q1_count)*(q[0]**(q0_count-1))*(q[1]**(q1_count-1)), (q1_count*(q1_count-1))*(q[0]**q0_count)*(q[1]**(q1_count-2))]])
+        if q0_count == 0:
+            return v[0]*np.array([[0,0], [0, q1_count*(q1_count-1)*(q[1]**(q1_count-2))]])
+        elif q1_count == 0:
+            return v[0]*np.array([[q0_count*(q0_count-1)*(q[0]**(q0_count-2)),0], [0,0]])
+        else:
+            return v[0]*np.array([[(q0_count*(q0_count-1))*(q[0]**(q0_count-2))*(q[1]**q1_count), (q0_count*q1_count)*(q[0]**(q0_count-1))*(q[1]**(q1_count-1))],
+                                  [(q0_count*q1_count)*(q[0]**(q0_count-1))*(q[1]**(q1_count-1)), (q1_count*(q1_count-1))*(q[0]**q0_count)*(q[1]**(q1_count-2))]])
     # Constructs NonLinearConstraint object
     nonlinear_constraint = NonlinearConstraint(cons_f, lb=p_lowerbound, ub=np.inf, jac=cons_J, hess=cons_H, keep_feasible=True)
     
     # This is supposed to minimize f subject to the constraints
     for i in np.linspace(0.1, 1, 10):
         x0 = np.array([i, 1-i])
-        print(x0)
         try:
             res = minimize(f, x0, method='trust-constr', jac=f_der, hess=f_hess, 
                    constraints=[linear_constraint, nonlinear_constraint], bounds=bounds)
