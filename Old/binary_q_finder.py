@@ -147,7 +147,7 @@ def binary_q_finder_kl(observation, hypothesis, p_lowerbound):
             pass
     return "Minimization failed"
 
-def basin_q_finder(observation, hypothesis, p_lowerbound):
+def test_q_finder(observation, hypothesis, p_lowerbound):
     h = np.array([hypothesis[0], hypothesis[1]])
     # q0 is heads, q1 is tails, sorry for the confusion
     # for some reason, the program doesn't work if you
@@ -160,45 +160,22 @@ def basin_q_finder(observation, hypothesis, p_lowerbound):
         which we want to minimize
         """
         return (q[0]-h[0])**2 + (q[1]-h[1])**2
+    def f_der(q):
+        """
+        Jacobian of f
+        """
+        return [2*(q[0]-h[0]), 2*(q[1]-h[1])]
     # Bounds for q[0] and q[1]
     bounds = Bounds([0, 1], [0, 1], keep_feasible=False) 
-    # Since we must have q[0] + q[1] = 1
-    linear_constraint = LinearConstraint([1, 1], [0.99], [1.01], keep_feasible=False)
-    def cons_f(q):
-        """
-        Constraint function: 
-        q[0]^x[0] * q[1]^x[1] >= p_lowerbound
-        """
-        return (q[0]**q0_count) * (q[1]**q1_count)
-    def cons_J(q):
-        """
-        Jacobian of the constraint function
-        """
-        if q0_count == 0:
-            return [0, q1_count*(q[1]**(q1_count-1))]
-        elif q1_count == 0:
-            return [q0_count*(q[0]**(q0_count-1)), 0]
-        else:
-            return [q0_count*(q[0]**(q0_count-1))*(q[1]**q1_count), q1_count*(q[0]**q0_count)*(q[1]**(q1_count-1))]
-    def cons_H(q, v):
-        """
-        Hessian of the constraint function
-        """
-        if q0_count == 0:
-            return v[0]*np.array([[0,0], [0, q1_count*(q1_count-1)*(q[1]**(q1_count-2))]])
-        elif q1_count == 0:
-            return v[0]*np.array([[q0_count*(q0_count-1)*(q[0]**(q0_count-2)),0], [0,0]])
-        else:
-            return v[0]*np.array([[(q0_count*(q0_count-1))*(q[0]**(q0_count-2))*(q[1]**q1_count), (q0_count*q1_count)*(q[0]**(q0_count-1))*(q[1]**(q1_count-1))],
-                                  [(q0_count*q1_count)*(q[0]**(q0_count-1))*(q[1]**(q1_count-1)), (q1_count*(q1_count-1))*(q[0]**q0_count)*(q[1]**(q1_count-2))]])
+    eq_cons = {'type': 'eq',
+               'fun': lambda x: np.array([x[0]+x[1]-1]),
+               'jac': lambda x: np.array([1.0,1.0])}
+    ineq_cons = {'type': 'ineq',
+                 'fun': lambda x: np.array([x[0]**q0_count * x[1]**q1_count - p_lowerbound]),
+                 'jac': lambda x: np.array([q0_count*(x[0]**(q0_count-1))*(x[1]**q1_count), q1_count*(x[0]**q0_count)*(x[1]**(q1_count-1))])}
     # Constructs NonLinearConstraint object
-    nonlinear_constraint = NonlinearConstraint(cons_f, lb=p_lowerbound, ub=np.inf, jac=cons_J, hess=cons_H, keep_feasible=False)
-    minimizer_kwargs = {"method": "trust-constr", "constraints": {linear_constraint, nonlinear_constraint}, "bounds": bounds}
+    # nonlinear_constraint = NonlinearConstraint(cons_f, lb=p_lowerbound, ub=np.inf, jac=cons_J, hess=cons_H, keep_feasible=False)
+    # minimizer_kwargs = {"method": "trust-constr", "bounds": bounds}
     x0 = np.array([0.5,0.5])
-    res = basinhopping(f, x0, stepsize=0.0001, minimizer_kwargs=minimizer_kwargs)
+    res = minimize(f, x0, method='trust-constr', jac=f_der, constraints=[eq_cons,ineq_cons], options={'disp': True}, bounds=bounds)
     return res.x
-
-def google_q_finder():
-    model = cp_model.CpModel()
-    q0 = model.NewIntVar(0, 1, 'q0')
-    q1 = model.NewIntVar(0, 1, 'q1')

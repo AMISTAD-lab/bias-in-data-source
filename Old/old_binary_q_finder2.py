@@ -61,7 +61,7 @@ def cons_H(q, v):
     return v[0]*np.array([[20*(q[0]**3)*(q[1]**25), 125*(q[0]**4)*(q[1]**24)],
                             [125*(q[0]**4)*(q[1]**24), 600*(q[0]**5)*(q[1]**23)]])
 # Constructs NonLinearConstraint object
-nonlinear_constraint = NonlinearConstraint(cons_f, lb=6.575914760628984e-09, ub=np.inf, jac=cons_J, hess=cons_H, keep_feasible=True)
+nonlinear_constraint = NonlinearConstraint(cons_f, lb=6.575914760628984e-09, ub=np.inf, jac=cons_J, hess=cons_H, keep_feasible=False)
 # Starting point for the optimization
 x0 = np.array([0.4,0.6])
 
