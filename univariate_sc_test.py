@@ -1,9 +1,11 @@
 import math
 from itertools import *
-from scipy.special import rel_entr
-from sympy import Symbol, solveset, S
-from statistics import *
 import numpy as np
+from q_finder_slsqp import *
+from scipy.optimize import *
+from scipy.special import rel_entr
+from statistics import *
+from sympy import Symbol, solveset, S
 
 def univariate_sc_test(observation, value_list, hypothesis, alpha):
     """
@@ -30,8 +32,8 @@ def univariate_sc_test(observation, value_list, hypothesis, alpha):
     if p < p_lowerbound:
         reject = True
         print("Proposed distribution rejected at alpha = " + str(alpha) + ". p(x) = " + str(p) + ". s*u(x) = " + str(p_lowerbound) + ".")
-        closest_plausible_dist = closest_plausible_explanation(observation, value_list, p_lowerbound)
-        print("Closest plausible distribution: " + str(closest_plausible_dist))
+        Q = list(q_finder_slsqp(observation, value_list, hypothesis, p_lowerbound))
+        print("Closest plausible distribution: " + str(Q))
     else:
         reject = False
         print("Proposed distribution failed to reject at alpha = " + str(alpha) + ". p(x) = " + str(p) + ". s*u(x) = " + str(p_lowerbound) + ".")
@@ -59,30 +61,6 @@ def uniform_dist_sc_test(observation, value_list, alpha):
         reject = False
         print("Uniform distribution not rejected at alpha = "+ str(alpha) +". Kardis = " + str(kardis)+ ". s >", s_lowerbound)
     return (kardis, s_lowerbound, reject)
-
-def closest_plausible_explanation(observation, value_list, p_lowerbound):
-    """
-    If a distribution is rejected as a plausible
-    explanation by univariate_sc_test, then this
-    function returns a distribution that is the
-    closest distribution to the tested hypothesis
-    that is also not rejected as a plausible
-    explanation.
-    """
-    assumed_bias = mode(observation)
-    assumed_bias_count = observation.count(assumed_bias)
-    not_assumed_bias_count = len(observation) - assumed_bias_count
-    x = Symbol('x')
-    q_list = list(solveset((x**assumed_bias_count) * ((1-x)**not_assumed_bias_count) - p_lowerbound, x, S.Reals))
-    q = min([i for i in q_list if i > 0])
-    not_q = 1-q
-    closest_plausible_dist = []
-    for value in value_list:
-        if value != assumed_bias:
-            closest_plausible_dist.append(not_q/(len(value_list)-1))
-        else:
-            closest_plausible_dist.append(q)
-    return closest_plausible_dist
 
 def mg(observation, value_list):
     """
