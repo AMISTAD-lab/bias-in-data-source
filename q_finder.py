@@ -1,5 +1,6 @@
 import math
 import numpy as np
+import decimal
 from scipy.optimize import *
 
 def q_finder_slsqp(observation, value_list, hypothesis, p_lowerbound):
@@ -37,6 +38,36 @@ def q_finder_slsqp(observation, value_list, hypothesis, p_lowerbound):
     res = minimize(objective, x0, method='SLSQP', constraints=[cons1, cons2], bounds=bounds, 
                    options={'maxiter': 1000000, 'ftol': 1e-1000, 'eps': 1.5e-7, 'disp': False})
     return res.x
+
+
+def q_finder_projection(data,value_list,hypothesis,sux,step_size = 100000000):
+    """uses gradient ascent and projection to find q"""
+    counts = [decimal.Decimal(data.count(val)) for val in value_list]
+    hyp = [decimal.Decimal(hypval) for hypval in hypothesis]
+    step_size=decimal.Decimal(step_size)
+    while nb_probability_func(hyp,counts) < sux:
+        gradient = nb_probability_grad(hyp,counts)
+        temphyp = [hyp[i]+gradient[i] for i in range(len(hyp))]
+        norm_vector_scalar = (1-sum(temphyp))/len(temphyp)
+        hyp = [temphyp[i] + norm_vector_scalar for i in range(len(temphyp))]
+    return hyp
+
+def nb_probability_func(hyp,counts):
+    """helper for projection"""
+    func = 1
+    for i in range(len(hyp)):
+        func = func*(hyp[i]**counts[i])
+    return func
+
+def nb_probability_grad(hyp,counts):
+    """helper for projection"""
+    grad = []
+    for i in range(len(hyp)):
+        hypslice = hyp[:i]+hyp[i+1:]
+        countsslice = counts[:i]+counts[i+1:]
+        grad += [counts[i]*(hyp[i]**(counts[i]-1))*nb_probability_func(hypslice,countsslice)]
+    return grad
+
 
 def q_finder_make_binary(observation, value_list, p_lowerbound):
     """
