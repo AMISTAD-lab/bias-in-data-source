@@ -64,7 +64,7 @@ def binary_q_finder(observation, hypothesis, p_lowerbound):
     # We need to loop through different x0 values because the minimize
     # function requires an x0 that meets the constraints
     for i in np.linspace(0.1, 1, 10):
-        x0 = np.array([i, 1-i])
+        x0 = np.array([1-i, i])
         # print(x0)
         try:
             res = minimize(f, x0, method='trust-constr', jac=f_der, hess=f_hess, 
