@@ -18,7 +18,8 @@ def binary_grad_ascent(data, hypothesis, sux, step_size = 100000000):
         temphyp = [hyp[0]+gradient[0], hyp[1]+gradient[1]]
         hypval = (temphyp[0]-temphyp[1]+1)/2
         hyp = [hypval,1-hypval]
-        print(hyp)
+        #print(hyp)
+        #^for debugging purposes
     return hyp
 
 
