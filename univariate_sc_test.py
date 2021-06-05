@@ -1,7 +1,7 @@
 import math
 from mg import *
 import numpy as np
-from q_finder_slsqp import *
+from q_finder import *
 from scipy.optimize import *
 from scipy.special import rel_entr
 from statistics import *
