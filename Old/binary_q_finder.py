@@ -10,8 +10,8 @@ def binary_q_finder(observation, hypothesis, p_lowerbound):
     # q0 is heads, q1 is tails, sorry for the confusion
     # for some reason, the program doesn't work if you
     # flip them :(
-    q0_count = observation.count(1)
-    q1_count = observation.count(0)
+    q0_count = observation.count(0)
+    q1_count = observation.count(1)
     def f(q):
         """
         Loss function (using sum of residuals squared)
@@ -29,9 +29,9 @@ def binary_q_finder(observation, hypothesis, p_lowerbound):
         """
         return np.array([[2,0], [0,2]])
     # Bounds for q[0] and q[1]
-    bounds = Bounds([0, 1], [0, 1]) 
+    bounds = Bounds([0, 0], [1, 1]) 
     # Since we must have q[0] + q[1] = 1
-    linear_constraint = LinearConstraint([1, 1], [0.99], [1.01], keep_feasible=True)
+    linear_constraint = LinearConstraint([1, 1], [1], [1], keep_feasible=False)
     def cons_f(q):
         """
         Constraint function: 
@@ -60,21 +60,27 @@ def binary_q_finder(observation, hypothesis, p_lowerbound):
             return v[0]*np.array([[(q0_count*(q0_count-1))*(q[0]**(q0_count-2))*(q[1]**q1_count), (q0_count*q1_count)*(q[0]**(q0_count-1))*(q[1]**(q1_count-1))],
                                   [(q0_count*q1_count)*(q[0]**(q0_count-1))*(q[1]**(q1_count-1)), (q1_count*(q1_count-1))*(q[0]**q0_count)*(q[1]**(q1_count-2))]])
     # Constructs NonLinearConstraint object
-    nonlinear_constraint = NonlinearConstraint(cons_f, lb=p_lowerbound, ub=np.inf, jac=cons_J, hess=cons_H, keep_feasible=True)
+    nonlinear_constraint = NonlinearConstraint(cons_f, lb=p_lowerbound, ub=np.inf, keep_feasible=False)
     
     # This is supposed to minimize f subject to the constraints
     # We need to loop through different x0 values because the minimize
     # function requires an x0 that meets the constraints
+    """
     for i in np.linspace(0.1, 1, 10):
         x0 = np.array([1-i, i])
         # print(x0)
         try:
             res = minimize(f, x0, method='trust-constr', jac=f_der, hess=f_hess, 
-                   constraints=[linear_constraint, nonlinear_constraint], options={'verbose': 2}, bounds=bounds)
+                   constraints=[linear_constraint, nonlinear_constraint], options={'gtol': 1e-20, 'xtol': 1e-20, 'verbose': 0}, bounds=bounds)
             return res.x
         except:
             pass
     return "Minimization failed"
+    """
+    x0 = np.array([1,1])
+    res = minimize(f, x0, method='trust-constr', 
+                   constraints=[linear_constraint, nonlinear_constraint], options={'gtol': 1e-20, 'xtol': 1e-20, 'verbose': 2}, bounds=bounds)
+    return res.x
 
 def binary_q_finder_kl(observation, hypothesis, p_lowerbound):
     h = np.array([hypothesis[0], hypothesis[1]])

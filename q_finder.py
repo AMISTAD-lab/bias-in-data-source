@@ -39,7 +39,25 @@ def q_finder_slsqp(observation, value_list, hypothesis, p_lowerbound):
                    options={'maxiter': 1000000, 'ftol': 1e-1000, 'eps': 1.5e-7, 'disp': False})
     return res.x
 
-
+def q_finder_trust_constr(observation, value_list, hypothesis, p_lowerbound):
+    p = np.array(hypothesis)
+    value_count = {}
+    for value in value_list:
+        value_count[value] = observation.count(value)
+    def objective(q):
+        residuals_squared_list = [(q[i]-p[i])**2 for i in range(len(value_list))]
+        return sum(residuals_squared_list)
+    linear_constraint = LinearConstraint(len(value_list)*[1], [1], [1], keep_feasible=False)
+    def nonlin_cons(q):
+        q_to_count_list = [q[i]**value_count[value_list[i]] for i in range(len(value_list))]
+        return math.prod(q_to_count_list)
+    nonlinear_constraint = NonlinearConstraint(nonlin_cons, lb=p_lowerbound, ub=np.inf, keep_feasible=True)
+    bounds = Bounds(len(value_list)*[0], len(value_list)*[1], keep_feasible=True)
+    x0 = np.array(len(value_list)*[1])
+    res = minimize(objective, x0, method='trust-constr', constraints=[linear_constraint, nonlinear_constraint], 
+                   options={'gtol': 1e-100, 'xtol': 1e-100, 'maxiter': 1000000, 'verbose': 1}, bounds=bounds)
+    return res.x
+    
 def q_finder_projection(data,value_list,hypothesis,sux,step_size = 100000000):
     """uses gradient ascent and projection to find q"""
     counts = [decimal.Decimal(data.count(val)) for val in value_list]
