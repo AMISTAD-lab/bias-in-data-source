@@ -2,6 +2,7 @@ import math
 import numpy as np
 import decimal
 from scipy.optimize import *
+from scipy.special import rel_entr
 import warnings
 
 # Used to suppress useless Scipy warnings
@@ -17,10 +18,9 @@ def q_finder_slsqp(observation, value_list, hypothesis, p_lowerbound):
     def objective(q):
         """
         Objective function which we want to minimize
-        Defined by sum of square residuals between q and p
+        Defined by KL divergence of q from p
         """
-        residuals_squared_list = [(q[i]-p[i])**2 for i in range(len(value_list))]
-        return sum(residuals_squared_list)
+        return sum(rel_entr(q, p))
     def lin_cons(q):
         """
         Constraint that the conditional probabilities
@@ -50,8 +50,7 @@ def q_finder_trust_constr(observation, value_list, hypothesis, p_lowerbound):
     for value in value_list:
         value_count[value] = observation.count(value)
     def objective(q):
-        residuals_squared_list = [(q[i]-p[i])**2 for i in range(len(value_list))]
-        return sum(residuals_squared_list)
+        return sum(rel_entr(q, p))
     linear_constraint = LinearConstraint(len(value_list)*[1], [1], [1], keep_feasible=False)
     def nonlin_cons(q):
         q_to_count_list = [q[i]**value_count[value_list[i]] for i in range(len(value_list))]
@@ -73,7 +72,7 @@ def q_finder_grad_ascent(observation, value_list, hypothesis, p_lowerbound):
         q_to_count_list = [q[i]**value_count[value_list[i]] for i in range(len(value_list))]
         q_x = math.prod(q_to_count_list)
         #print(q)
-        print(q_x)
+        #print(q_x)
         if q_x >= p_lowerbound:
             return q_x
         return -math.log(q_x, 2)
@@ -93,7 +92,7 @@ def q_finder_grad_ascent2(observation, value_list, hypothesis, p_lowerbound):
         q_to_count_list = [q[i]**value_count[value_list[i]] for i in range(len(value_list))]
         q_x = math.prod(q_to_count_list)
         #print(q)
-        print(q_x)
+        #print(q_x)
         if q_x >= p_lowerbound:
             return q_x
         return -math.log(q_x, 2)
