@@ -63,22 +63,47 @@ def q_finder_trust_constr(observation, value_list, hypothesis, p_lowerbound):
                    options={'gtol': 1e-100, 'xtol': 1e-100, 'maxiter': 1000000, 'verbose': 0}, bounds=bounds)
     return res.x
 
-# This function is super broken please never use
+# This function overshoots because I don't think
+# trust-constr allows for different step sizes
 def q_finder_grad_ascent(observation, value_list, hypothesis, p_lowerbound):
     value_count = {}
     for value in value_list:
         value_count[value] = observation.count(value)
     def objective(q):
         q_to_count_list = [q[i]**value_count[value_list[i]] for i in range(len(value_list))]
-        q_x = -(math.prod(q_to_count_list))
+        q_x = math.prod(q_to_count_list)
+        #print(q)
+        print(q_x)
         if q_x >= p_lowerbound:
             return q_x
-        return q_x
+        return -math.log(q_x, 2)
     linear_constraint = LinearConstraint(len(value_list)*[1], [1], [1], keep_feasible=False)
     bounds = Bounds(len(value_list)*[0], len(value_list)*[1], keep_feasible=True)
     x0 = np.array(hypothesis)
     res = minimize(objective, x0, method='trust-constr', constraints=[linear_constraint], 
-                   options={'verbose': 2}, bounds=bounds)
+                   options={'maxiter': 10000, 'verbose': 0}, bounds=bounds)
+    return res.x
+
+# This function also overshoots unfortunately
+def q_finder_grad_ascent2(observation, value_list, hypothesis, p_lowerbound):
+    value_count = {}
+    for value in value_list:
+        value_count[value] = observation.count(value)
+    def objective(q):
+        q_to_count_list = [q[i]**value_count[value_list[i]] for i in range(len(value_list))]
+        q_x = math.prod(q_to_count_list)
+        #print(q)
+        print(q_x)
+        if q_x >= p_lowerbound:
+            return q_x
+        return -math.log(q_x, 2)
+    def lin_cons(q):
+        return sum(q)-1
+    cons1 = ({'type': 'eq', 'fun': lin_cons})
+    bounds = Bounds(len(value_list)*[0.0001], len(value_list)*[1], keep_feasible=True)
+    x0 = np.array(hypothesis)
+    res = minimize(objective, x0, method='SLSQP', constraints=[cons1], bounds=bounds, 
+                   options={'eps': 1.5e-50, 'finite_diff_rel_step': 1e-10, 'disp': True})
     return res.x
     
 def q_finder_projection(data,value_list,hypothesis,sux,step_size = 100000000):
