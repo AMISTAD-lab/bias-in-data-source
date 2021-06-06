@@ -2,6 +2,11 @@ import math
 import numpy as np
 import decimal
 from scipy.optimize import *
+import warnings
+
+# Used to suppress useless Scipy warnings
+# Disable if you're rigorously testing
+warnings.filterwarnings("ignore")
 
 def q_finder_slsqp(observation, value_list, hypothesis, p_lowerbound):
     # Proposed distribution, p

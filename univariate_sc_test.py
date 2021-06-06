@@ -33,7 +33,7 @@ def univariate_sc_test(observation, value_list, hypothesis, alpha):
     if p < p_lowerbound:
         reject = True
         print("Proposed distribution rejected at alpha = " + str(alpha) + ". p(x) = " + str(p) + ". s*u(x) = " + str(p_lowerbound) + ".")
-        Q = list(q_finder_slsqp(observation, value_list, hypothesis, p_lowerbound))
+        Q = list(q_finder_trust_constr(observation, value_list, hypothesis, p_lowerbound))
         print("Closest plausible distribution: " + str(Q))
     else:
         reject = False
