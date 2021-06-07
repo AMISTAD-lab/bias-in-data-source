@@ -1,14 +1,17 @@
 import math
 from scipy.special import rel_entr
 
-def mg_calculator(observation, value_list, hypothesis):
+def mg_calculator(observation, value_list, hypothesis=[]):
     """
     Calculates Mg(x) for a given observation and list of 
     possible values for a given discrete random variable
     utilizing KL Divergence as a difference measure between
     two distributions
     """
-    hyp_dist = hypothesis
+    if hypothesis == []:
+        hyp_dist = len(value_list)*[len(observation)/len(value_list)]
+    else:
+        hyp_dist = hypothesis
     obs_dist = [observation.count(i)/len(observation) for i in value_list]
     min_kl = sum(rel_entr(obs_dist, hyp_dist))
     mg = 0
