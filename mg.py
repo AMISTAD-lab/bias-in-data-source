@@ -21,8 +21,8 @@ def mg_calculator(observation, value_list, hypothesis):
         test_kl = sum(rel_entr(test_dist, hyp_dist))
         if test_kl >= min_kl:
             #uni_event = len(value_list)*[len(observation)/len(value_list)]
-            distance = list(map(lambda x: x-(len(observation)/len(value_list)), event))
-            print('Event: ' + str(event) + ' Distance: ' + str(distance))
+            # distance = list(map(lambda x: x-(len(observation)/len(value_list)), event))
+            # print('Event: ' + str(event) + ' Distance: ' + str(distance))
             mg += math.factorial(len(observation)) // math.prod(list(map(lambda x: math.factorial(x), event)))
     return mg
 
