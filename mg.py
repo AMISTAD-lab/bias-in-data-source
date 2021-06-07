@@ -11,10 +11,26 @@ def mg_calculator(observation, value_list, hypothesis):
     obs_dist = [observation.count(i)/len(observation) for i in value_list]
     min_kl = sum(rel_entr(obs_dist, hypothesis))
     mg = 0
+    scriptx = scriptx_generator_helper(scriptx_generator(len(value_list), len(observation)), len(value_list))
+    for event in scriptx:
+        test_dist = [event[i]/len(observation) for i in range(len(value_list))]
+        test_kl = sum(rel_entr(test_dist, hypothesis))
+        if test_kl >= min_kl:
+            mg += math.factorial(len(observation)) // math.prod(list(map(lambda x: math.factorial(x), event)))
+    return mg
+
+def mg_tester(observation, value_list, hypothesis):
+    """
+    Temporary function for testing Mg(x)
+    """
+    obs_dist = [observation.count(i)/len(observation) for i in value_list]
+    min_kl = sum(rel_entr(obs_dist, hypothesis))
+    mg = 0
     hyp_bin = list(map(lambda x: x*len(observation), hypothesis))
-    hyp_dist = list(map(lambda x,y: x-y, obs_dist, hyp_bin))
-    max_hyp_dist = max(hyp_dist)
-    print(hyp_dist)
+    obs_bin = list(map(lambda x: x*len(observation), obs_dist))
+    orig_distance = list(map(lambda x,y: x-y, obs_bin, hyp_bin))
+    max_orig_dist = max(orig_distance)
+    print(orig_distance)
     scriptx = scriptx_generator_helper(scriptx_generator(len(value_list), len(observation)), len(value_list))
     for event in scriptx:
         test_dist = [event[i]/len(observation) for i in range(len(value_list))]
@@ -22,12 +38,14 @@ def mg_calculator(observation, value_list, hypothesis):
         distance = list(map(lambda x,y: x-y, event, hyp_bin))
         abs_dist = [abs(i) for i in distance]
         if test_kl >= min_kl:
-            #print('Event: ' + str(event) + ' Distance: ' + str(distance))
+            # print('Event: ' + str(event) + ' Distance: ' + str(distance))
+            if max(abs_dist) < max_orig_dist:
+                print(str(event) + ' : ' + str(abs_dist))
             mg += math.factorial(len(observation)) // math.prod(list(map(lambda x: math.factorial(x), event)))
         """
         else:
-            if max(abs_dist) >= max_hyp_dist:
-                print(str(event))
+            if max(abs_dist) > max_orig_dist:
+                print(str(event) + ' : ' + str(abs_dist))
         """
     return mg
 
