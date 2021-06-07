@@ -1,7 +1,7 @@
 import math
 from scipy.special import rel_entr
 
-def mg_calculator(observation, value_list):
+def mg_calculator(observation, value_list, hypothesis):
     """
     Calculates Mg(x) for a given observation and list of 
     possible values for a given discrete random variable
@@ -11,15 +11,18 @@ def mg_calculator(observation, value_list):
     freq_dict = {}
     for value in value_list:
         freq_dict[value] = observation.count(value)
-    uni_dist = len(freq_dict.keys())*[1/len(freq_dict.keys())]
+    hyp_dist = hypothesis
     obs_dist = [observation.count(i)/len(observation) for i in freq_dict.keys()]
-    min_kl = sum(rel_entr(obs_dist, uni_dist))
+    min_kl = sum(rel_entr(obs_dist, hyp_dist))
     mg = 0
     scriptx = scriptx_generator_helper(scriptx_generator(len(value_list), len(observation)), len(value_list))
     for event in scriptx:
         test_dist = [event[i]/len(observation) for i in range(len(value_list))]
-        test_kl = sum(rel_entr(test_dist, uni_dist))
+        test_kl = sum(rel_entr(test_dist, hyp_dist))
         if test_kl >= min_kl:
+            #uni_event = len(value_list)*[len(observation)/len(value_list)]
+            distance = list(map(lambda x: x-(len(observation)/len(value_list)), event))
+            print('Event: ' + str(event) + ' Distance: ' + str(distance))
             mg += math.factorial(len(observation)) // math.prod(list(map(lambda x: math.factorial(x), event)))
     return mg
 
