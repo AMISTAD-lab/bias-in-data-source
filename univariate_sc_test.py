@@ -23,7 +23,7 @@ def univariate_sc_test(observation, value_list, alpha, hypothesis=[]):
         alpha = 0.01
     """
     if hypothesis == []:
-        hyp = len(value_list)*[len(observation)/len(value_list)]
+        hyp = len(value_list)*[1/len(value_list)]
     else:
         hyp = hypothesis
     norm_scriptx = len(value_list)**len(observation)
@@ -33,11 +33,11 @@ def univariate_sc_test(observation, value_list, alpha, hypothesis=[]):
     r = norm_scriptx*(1+math.log(norm_scriptx))
     s_lowerbound = alpha*nu/(r*u)
     p_lowerbound = s_lowerbound*u
-    p = math.prod([hypothesis[value_list.index(i)] for i in observation])
+    p = math.prod([hyp[value_list.index(i)] for i in observation])
     if p < p_lowerbound:
         reject = True
         print("Proposed distribution rejected at alpha = " + str(alpha) + ". p(x) = " + str(p) + ". s*u(x) = " + str(p_lowerbound) + ".")
-        Q = list(q_finder_slsqp(observation, value_list, hypothesis, p_lowerbound))
+        Q = list(q_finder_slsqp(observation, value_list, hyp, p_lowerbound))
         print("Closest plausible distribution: " + str(Q))
     else:
         reject = False
@@ -54,7 +54,7 @@ def uniform_dist_sc_test(observation, value_list, alpha):
         value_list = ['H', 'T']
         alpha = 0.05
     """
-    hypothesis = len(value_list)*[len(observation)/len(value_list)]
+    hypothesis = len(value_list)*[1/len(value_list)]
     norm_scriptx = len(value_list)**len(observation)
     u = 1/norm_scriptx
     mg = mg_calculator(observation, value_list, hypothesis)

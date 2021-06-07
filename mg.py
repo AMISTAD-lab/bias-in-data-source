@@ -11,14 +11,24 @@ def mg_calculator(observation, value_list, hypothesis):
     obs_dist = [observation.count(i)/len(observation) for i in value_list]
     min_kl = sum(rel_entr(obs_dist, hypothesis))
     mg = 0
+    hyp_bin = list(map(lambda x: x*len(observation), hypothesis))
+    hyp_dist = list(map(lambda x,y: x-y, obs_dist, hyp_bin))
+    max_hyp_dist = max(hyp_dist)
+    print(hyp_dist)
     scriptx = scriptx_generator_helper(scriptx_generator(len(value_list), len(observation)), len(value_list))
     for event in scriptx:
         test_dist = [event[i]/len(observation) for i in range(len(value_list))]
         test_kl = sum(rel_entr(test_dist, hypothesis))
+        distance = list(map(lambda x,y: x-y, event, hyp_bin))
+        abs_dist = [abs(i) for i in distance]
         if test_kl >= min_kl:
-            #distance = list(map(lambda x: x-(len(observation)/len(value_list)), event))
             #print('Event: ' + str(event) + ' Distance: ' + str(distance))
             mg += math.factorial(len(observation)) // math.prod(list(map(lambda x: math.factorial(x), event)))
+        """
+        else:
+            if max(abs_dist) >= max_hyp_dist:
+                print(str(event))
+        """
     return mg
 
 def scriptx_generator(num_vals, observation_length, current_vals=[]):
