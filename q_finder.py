@@ -1,8 +1,10 @@
+import decimal
 import math
 import numpy as np
-import decimal
-from scipy.optimize import *
+from scipy.optimize import minimize, LinearConstraint, NonlinearConstraint, Bounds
 from scipy.special import rel_entr
+from statistics import *
+from sympy import Symbol, solveset
 import warnings
 
 # Used to suppress useless Scipy warnings
