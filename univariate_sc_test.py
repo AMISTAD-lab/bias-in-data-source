@@ -49,6 +49,7 @@ def uniform_dist_sc_test(observation, value_list, alpha):
         value_list = ['H', 'T']
         alpha = 0.05
     """
+    hypothesis = len(value_list)*[len(observation)/len(value_list)]
     norm_scriptx = len(value_list)**len(observation)
     u = 1/norm_scriptx
     mg = mg_calculator(observation, value_list, hypothesis)
