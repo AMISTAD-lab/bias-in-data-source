@@ -4,7 +4,7 @@ import numpy as np
 from scipy.optimize import minimize, LinearConstraint, NonlinearConstraint, Bounds
 from scipy.special import rel_entr
 from statistics import *
-from sympy import Symbol, solveset
+from sympy import Symbol, solveset, S
 import warnings
 
 # Used to suppress useless Scipy warnings
