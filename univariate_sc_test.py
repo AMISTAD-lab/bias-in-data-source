@@ -7,7 +7,7 @@ from scipy.special import rel_entr
 from statistics import *
 from sympy import Symbol, solveset, S
 
-def univariate_sc_test(observation, value_list, hypothesis, alpha):
+def univariate_sc_test(observation, value_list, alpha, hypothesis=[]):
     """
     Conducts a specified complexity hypothesis test 
     for a proposed discrete univariate distribution
@@ -22,9 +22,13 @@ def univariate_sc_test(observation, value_list, hypothesis, alpha):
         hypothesis = [0.5, 0.5]
         alpha = 0.01
     """
+    if hypothesis == []:
+        hyp = len(value_list)*[len(observation)/len(value_list)]
+    else:
+        hyp = hypothesis
     norm_scriptx = len(value_list)**len(observation)
     u = 1/norm_scriptx
-    mg = mg_calculator(observation, value_list, hypothesis)
+    mg = mg_calculator(observation, value_list, hyp)
     nu = norm_scriptx/mg
     r = norm_scriptx*(1+math.log(norm_scriptx))
     s_lowerbound = alpha*nu/(r*u)
@@ -40,6 +44,7 @@ def univariate_sc_test(observation, value_list, hypothesis, alpha):
         print("Proposed distribution failed to reject at alpha = " + str(alpha) + ". p(x) = " + str(p) + ". s*u(x) = " + str(p_lowerbound) + ".")
     return (p, s_lowerbound*u, reject)
 
+# I believe this method is obsolete because of the above method
 def uniform_dist_sc_test(observation, value_list, alpha):
     """
     Conducts a specified complexity hypothesis test 
@@ -49,9 +54,10 @@ def uniform_dist_sc_test(observation, value_list, alpha):
         value_list = ['H', 'T']
         alpha = 0.05
     """
+    hypothesis = len(value_list)*[len(observation)/len(value_list)]
     norm_scriptx = len(value_list)**len(observation)
     u = 1/norm_scriptx
-    mg = mg_calculator(observation, value_list)
+    mg = mg_calculator(observation, value_list, hypothesis)
     nu = norm_scriptx/mg
     r = norm_scriptx*(1+math.log(norm_scriptx))
     kardis = r*u/nu

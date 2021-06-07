@@ -1,27 +1,23 @@
 import math
 from scipy.special import rel_entr
 
-def mg_calculator(observation, value_list, hypothesis=[]):
+def mg_calculator(observation, value_list, hypothesis):
     """
     Calculates Mg(x) for a given observation and list of 
     possible values for a given discrete random variable
     utilizing KL Divergence as a difference measure between
     two distributions
     """
-    if hypothesis == []:
-        hyp_dist = len(value_list)*[len(observation)/len(value_list)]
-    else:
-        hyp_dist = hypothesis
     obs_dist = [observation.count(i)/len(observation) for i in value_list]
-    min_kl = sum(rel_entr(obs_dist, hyp_dist))
+    min_kl = sum(rel_entr(obs_dist, hypothesis))
     mg = 0
     scriptx = scriptx_generator_helper(scriptx_generator(len(value_list), len(observation)), len(value_list))
     for event in scriptx:
         test_dist = [event[i]/len(observation) for i in range(len(value_list))]
-        test_kl = sum(rel_entr(test_dist, hyp_dist))
+        test_kl = sum(rel_entr(test_dist, hypothesis))
         if test_kl >= min_kl:
-            # distance = list(map(lambda x: x-(len(observation)/len(value_list)), event))
-            # print('Event: ' + str(event) + ' Distance: ' + str(distance))
+            #distance = list(map(lambda x: x-(len(observation)/len(value_list)), event))
+            #print('Event: ' + str(event) + ' Distance: ' + str(distance))
             mg += math.factorial(len(observation)) // math.prod(list(map(lambda x: math.factorial(x), event)))
     return mg
 
