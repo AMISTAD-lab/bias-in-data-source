@@ -8,11 +8,8 @@ def mg_calculator(observation, value_list, hypothesis):
     utilizing KL Divergence as a difference measure between
     two distributions
     """
-    freq_dict = {}
-    for value in value_list:
-        freq_dict[value] = observation.count(value)
     hyp_dist = hypothesis
-    obs_dist = [observation.count(i)/len(observation) for i in freq_dict.keys()]
+    obs_dist = [observation.count(i)/len(observation) for i in value_list]
     min_kl = sum(rel_entr(obs_dist, hyp_dist))
     mg = 0
     scriptx = scriptx_generator_helper(scriptx_generator(len(value_list), len(observation)), len(value_list))
