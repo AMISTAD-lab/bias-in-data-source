@@ -9,13 +9,14 @@ def mg_calculator(observation, value_list, hypothesis):
     two distributions
     """
     obs_dist = [observation.count(i)/len(observation) for i in value_list]
-    min_kl = sum(rel_entr(obs_dist, hypothesis))
+    min_kl = math.fsum(rel_entr(obs_dist, hypothesis))
     mg = 0
     scriptx = scriptx_generator_helper(scriptx_generator(len(value_list), len(observation)), len(value_list))
     for event in scriptx:
         test_dist = [event[i]/len(observation) for i in range(len(value_list))]
-        test_kl = sum(rel_entr(test_dist, hypothesis))
+        test_kl = math.fsum(rel_entr(test_dist, hypothesis))
         if test_kl >= min_kl:
+            print(event)
             mg += math.factorial(len(observation)) // math.prod(list(map(lambda x: math.factorial(x), event)))
     return mg
 
@@ -24,7 +25,7 @@ def mg_tester(observation, value_list, hypothesis):
     Temporary function for testing Mg(x)
     """
     obs_dist = [observation.count(i)/len(observation) for i in value_list]
-    min_kl = sum(rel_entr(obs_dist, hypothesis))
+    min_kl = math.fsum(rel_entr(obs_dist, hypothesis))
     mg = 0
     hyp_bin = list(map(lambda x: x*len(observation), hypothesis))
     obs_bin = list(map(lambda x: x*len(observation), obs_dist))
@@ -34,11 +35,10 @@ def mg_tester(observation, value_list, hypothesis):
     scriptx = scriptx_generator_helper(scriptx_generator(len(value_list), len(observation)), len(value_list))
     for event in scriptx:
         test_dist = [event[i]/len(observation) for i in range(len(value_list))]
-        test_kl = sum(rel_entr(test_dist, hypothesis))
+        test_kl = math.fsum(rel_entr(test_dist, hypothesis))
         distance = list(map(lambda x,y: x-y, event, hyp_bin))
         abs_dist = [abs(i) for i in distance]
         if test_kl >= min_kl:
-            # print('Event: ' + str(event) + ' Distance: ' + str(distance))
             if max(abs_dist) < max_orig_dist:
                 print(str(event) + ' : ' + str(abs_dist))
             mg += math.factorial(len(observation)) // math.prod(list(map(lambda x: math.factorial(x), event)))
