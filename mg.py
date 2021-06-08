@@ -16,7 +16,6 @@ def mg_calculator(observation, value_list, hypothesis):
         test_dist = [event[i]/len(observation) for i in range(len(value_list))]
         test_kl = math.fsum(rel_entr(test_dist, hypothesis))
         if test_kl >= min_kl:
-            print(event)
             mg += math.factorial(len(observation)) // math.prod(list(map(lambda x: math.factorial(x), event)))
     return mg
 
