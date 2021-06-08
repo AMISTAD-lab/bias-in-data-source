@@ -1,23 +1,39 @@
 import math
 from scipy.special import rel_entr
 
-def mg_calculator(observation, value_list, hypothesis):
+def mg_tester(observation, value_list, hypothesis):
     """
-    Calculates Mg(x) for a given observation and list of 
-    possible values for a given discrete random variable
-    utilizing KL Divergence as a difference measure between
-    two distributions
+    Temporary function for testing Mg(x)
     """
     obs_dist = [observation.count(i)/len(observation) for i in value_list]
     min_kl = math.fsum(rel_entr(obs_dist, hypothesis))
     mg = 0
+    hyp_bin = list(map(lambda x: x*len(observation), hypothesis))
+    obs_bin = list(map(lambda x: x*len(observation), obs_dist))
+    orig_distance = list(map(lambda x,y: x-y, obs_bin, hyp_bin))
+    orig_sum_of_squares = math.fsum([i**2 for i in orig_distance])
+    max_orig_dist = max(orig_distance)
+    print(str(orig_distance) + " : " + str(orig_sum_of_squares))
     scriptx = scriptx_generator_helper(scriptx_generator(len(value_list), len(observation)), len(value_list))
     for event in scriptx:
         test_dist = [event[i]/len(observation) for i in range(len(value_list))]
         test_kl = math.fsum(rel_entr(test_dist, hypothesis))
+        distance = list(map(lambda x,y: x-y, event, hyp_bin))
+        abs_dist = [abs(i) for i in distance]
+        test_sum_of_squares = math.fsum([i**2 for i in distance])
         if test_kl >= min_kl:
-            print(event)
+            """
+            if max(abs_dist) < max_orig_dist:
+                print(str(event) + ' : ' + str(abs_dist))
+            """
+            """
+            if test_sum_of_squares < orig_sum_of_squares:
+                print(str(event) + ' : ' + str(distance) + ' : ' + str(test_sum_of_squares))
             mg += math.factorial(len(observation)) // math.prod(list(map(lambda x: math.factorial(x), event)))
+            """
+        else:
+            if 0 in event:
+                print(str(event) + ' : ' + str(abs_dist))
     return mg
 
 def scriptx_generator(num_vals, observation_length, current_vals=[]):
