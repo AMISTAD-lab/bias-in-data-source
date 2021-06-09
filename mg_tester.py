@@ -23,10 +23,6 @@ def mg_tester(observation, value_list, hypothesis):
         test_sum_of_squares = math.fsum([i**2 for i in distance])
         if test_kl >= min_kl:
             """
-            if max(abs_dist) < max_orig_dist:
-                print(str(event) + ' : ' + str(abs_dist))
-            """
-            """
             if test_sum_of_squares < orig_sum_of_squares:
                 print(str(event) + ' : ' + str(distance) + ' : ' + str(test_sum_of_squares))
             mg += math.factorial(len(observation)) // math.prod(list(map(lambda x: math.factorial(x), event)))
