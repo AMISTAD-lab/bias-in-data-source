@@ -6,7 +6,7 @@ The sized_partitions function is from
 https://stackoverflow.com/questions/10035752/elegant-python-code-for-integer-partitioning
 """
 
-def mg_calculator(observation, value_list, hypothesis):
+def fast_mg_calculator(observation, value_list, hypothesis):
     """
     Calculates Mg(x) for a given observation and list of 
     possible values for a given discrete random variable

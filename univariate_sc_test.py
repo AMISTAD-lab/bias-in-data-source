@@ -1,5 +1,6 @@
 import math
 from mg import *
+from mg_fast import *
 import numpy as np
 from q_finder import *
 from scipy.optimize import *
@@ -28,7 +29,7 @@ def univariate_sc_test(observation, value_list, alpha, hypothesis=[]):
         hyp = hypothesis
     norm_scriptx = len(value_list)**len(observation)
     u = 1/norm_scriptx
-    mg = mg_calculator(observation, value_list, hyp)
+    mg = fast_mg_calculator(observation, value_list, hyp)
     nu = norm_scriptx/mg
     r = norm_scriptx*(1+math.log(norm_scriptx))
     s_lowerbound = alpha*nu/(r*u)
@@ -57,7 +58,7 @@ def uniform_dist_sc_test(observation, value_list, alpha):
     hypothesis = len(value_list)*[1/len(value_list)]
     norm_scriptx = len(value_list)**len(observation)
     u = 1/norm_scriptx
-    mg = mg_calculator(observation, value_list, hypothesis)
+    mg = fast_mg_calculator(observation, value_list, hypothesis)
     nu = norm_scriptx/mg
     r = norm_scriptx*(1+math.log(norm_scriptx))
     kardis = r*u/nu
