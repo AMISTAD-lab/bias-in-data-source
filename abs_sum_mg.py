@@ -2,7 +2,8 @@ import math
 
 def abs_sum_mg(obs_bin,hypothesis):
     """takes in both observation and hypothesis in bin form to simplify inputs. 
-    For instance a uniform hypothesis would be something like [3,3,3,3]"""
+    For instance a uniform hypothesis would be something like [3,3,3,3].
+    Interestingly, (binA, binB) =/= (binB, binA)"""
     obs_distance = [obs_bin[i]-hypothesis[i] for i in range(len(obs_bin))]
     obs_abs_sum = sum([abs(val) for val in obs_distance])
     total = sum(obs_bin)
