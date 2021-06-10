@@ -2,8 +2,7 @@ import math
 from itertools import *
 
 """
-The sized_partitions function is a modified version of
-a function from
+The sized_partitions function is from
 https://stackoverflow.com/questions/10035752/elegant-python-code-for-integer-partitioning
 """
 
