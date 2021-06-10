@@ -47,5 +47,4 @@ def permute_events(l):
     all = []
     for i in range(len(l)):
         all += list(set(list(permutations(l[i]))))
-        #all += [copy.copy(x) for x in unique_permutations(l[i])]
     return all
