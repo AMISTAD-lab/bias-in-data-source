@@ -10,19 +10,21 @@ def fast_mg_calculator(observation, value_list, hypothesis):
     """
     Calculates Mg(x) for a given observation and list of 
     possible values for a given discrete random variable
-    utilizing KL Divergence as a difference measure between
-    two distributions
+    utilizing sum of absolute distances as a difference 
+    measure between two distributions
     """
     obs_bin = [observation.count(i) for i in value_list]
     mean_bin = list(map(lambda x: x*len(observation), hypothesis))
     min_distance = math.fsum(list(map(lambda x,y: abs(x-y), obs_bin, mean_bin)))
     mg = 0
     scriptx = scriptx_generator(len(value_list), len(observation))
+    event_list = []
     for event in scriptx:
         test_distance = math.fsum(list(map(lambda x,y: abs(x-y), event, mean_bin)))
         if test_distance >= min_distance:
             mg += math.factorial(len(observation)) // math.prod(list(map(lambda x: math.factorial(x), event)))
-    return mg
+            event_list.append(event)
+    return mg, event_list
 
 def scriptx_generator(num_vals, observation_length):
     return permute_events(subtract_1_from_all(list(sized_partitions(observation_length+num_vals, num_vals))))
