@@ -1,5 +1,4 @@
 import math
-from mg import *
 from mg_fast import *
 import numpy as np
 from q_finder import *
