@@ -1,4 +1,5 @@
 from scipy import stats
+from data_binarizer import *
 
 """
 Examples tested:
