@@ -12,7 +12,6 @@ def mg_calculator_event_based(observed_freq, hypothesis):
     length must be a whole number.
     """
     mean_freq = [int(sum(observed_freq)*i) for i in hypothesis]
-    #indexed_mean_freq = [(i, mean_freq[i]) for i in range(len(mean_freq))]
     min_distance = sum(list(map(lambda x,y: abs(x-y), observed_freq, mean_freq)))
     max_distance_freq = [0 if i != mean_freq.index(min(mean_freq)) else sum(observed_freq) for i in range(len(observed_freq))]
     max_distance = sum(list(map(lambda x,y: abs(x-y), max_distance_freq, mean_freq)))
