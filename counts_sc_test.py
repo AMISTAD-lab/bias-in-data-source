@@ -35,7 +35,7 @@ def univariate_sc_test(observation, value_list, alpha, hypothesis=[]):
     p_lowerbound = s_lowerbound*u
     #this should be the PMF, if i've calculated it correctly
     p = (math.factorial(len(observation))/math.prod([math.factorial(x) for x in obs_counts]))\
-    * math.prod([hyp[x]**obs_counts[x] for x in range(num_bins)]) 
+    * math.prod([hyp[x]**obs_counts[x] for x in range(num_bins)])
     if p < p_lowerbound:
         reject = True
         print("Proposed distribution rejected at alpha = " + str(alpha) + ". p(x) = " + str(p) + ". s*u(x) = " + str(p_lowerbound) + ".")
