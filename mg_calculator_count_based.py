@@ -12,22 +12,22 @@ def mg_calculator_event_based(observed_freq, hypothesis):
     length must be a whole number.
     """
     mean_freq = [int(sum(observed_freq)*i) for i in hypothesis]
-    indexed_mean_freq = [(i, mean_freq[i]) for i in range(len(mean_freq))]
+    #indexed_mean_freq = [(i, mean_freq[i]) for i in range(len(mean_freq))]
     min_distance = sum(list(map(lambda x,y: abs(x-y), observed_freq, mean_freq)))
     max_distance_freq = [0 if i != mean_freq.index(min(mean_freq)) else sum(observed_freq) for i in range(len(observed_freq))]
     max_distance = sum(list(map(lambda x,y: abs(x-y), max_distance_freq, mean_freq)))
-    num_bins = len(observed_freq)
+    num_bins = len(mean_freq)
     event_count = 0
     for i in range(min_distance, max_distance+1, 2):
         half_distance = i // 2
         min_neg_bins = min_bins_required(mean_freq, half_distance)
         max_neg_bins = num_bins - 1
         for num_neg_bins in range(min_neg_bins, max_neg_bins+1):
-            neg_bin_choices = feasible_bin_choices(indexed_mean_freq, num_neg_bins, half_distance)
+            neg_bin_choices = feasible_bin_choices(mean_freq, num_neg_bins, half_distance)
             for neg_bins in neg_bin_choices:
-                limit_list = [i[1] for i in neg_bins]
-                neg_placement_choices = num_partitions_multiple_limits(len(neg_bins), half_distance, limit_list)
-                num_pos_bins = len(indexed_mean_freq) - len(neg_bins)
+                limit_list = neg_bins
+                neg_placement_choices = num_partitions_multiple_limits(num_neg_bins, half_distance, limit_list)
+                num_pos_bins = num_bins - num_neg_bins
                 pos_placement_choices = num_partitions_unconstrained(num_pos_bins, half_distance)
                 event_count += neg_placement_choices * pos_placement_choices
     return event_count
@@ -92,8 +92,8 @@ def num_partitions_multiple_limits(partition_size, total, limit_list):
     partition_count = 0
     for i in powerset_list:
         m = N-1-sum([r[j-1] for j in i])
-        k = n-1
         if m >= 0:
+            k = n-1
             partition_count += (-1)**len(i) * math.comb(m, k)
     return partition_count
 
@@ -120,10 +120,10 @@ def min_bins_required(bin_list, lower_limit):
         temp_bin_list.remove(max_val)
         return 1 + min_bins_required(temp_bin_list, lower_limit-max_val)
     
-def feasible_bin_choices(indexed_bin_list, num_bins, lower_limit):
+def feasible_bin_choices(bin_list, num_bins, lower_limit):
     """
     Returns a list of all feasible combinations of num_bin
     bins that can hold lower_limit balls
     """
-    all_bin_choices = list(combinations(indexed_bin_list, num_bins))
-    return list(filter(lambda x: sum([i[1] for i in x]) >= lower_limit, all_bin_choices))
+    all_bin_choices = list(combinations(bin_list, num_bins))
+    return list(filter(lambda x: sum([i for i in x]) >= lower_limit, all_bin_choices))
