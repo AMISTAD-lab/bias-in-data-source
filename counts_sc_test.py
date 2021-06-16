@@ -27,7 +27,10 @@ def univariate_sc_test(observation, value_list, alpha, hypothesis=[]):
     num_bins = len(value_list) #should == len(hyp) == len(obs_counts)
     #now |x| == num of counts 
     norm_scriptx = math.comb(len(observation)+num_bins-1, num_bins-1)
-    u = 1/norm_scriptx #probably
+    #u updated to be PMFed, hopefully
+    u_hyp = [1/num_bins]*num_bins
+    u = mpf(math.factorial(len(observation))) / math.prod([mpf(math.factorial(x)) for x in obs_counts])\
+    * math.prod([mpf(u_hyp[x])**mpf(obs_counts[x]) for x in range(num_bins)])
     #don't forget the whole-number limitations on this calculator
     mg = mg_calculator_event_based(obs_counts, hyp)
     nu = norm_scriptx/mg
