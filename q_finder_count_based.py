@@ -14,12 +14,11 @@ def q_finder_slsqp(observation, value_list, hypothesis, p_lowerbound):
     p = np.array(hypothesis)
     count_vector = [observation.count(value) for value in value_list]
     # These are for calculating the multinomial PMF
-    n_fac = math.factorial(len(observation))
-    #print(n_fac)
+    n_fac = mpf(math.factorial(len(observation)))
     prod_x_fac = math.prod([math.factorial(x) for x in count_vector])
     # Defines loss function to be the KL divergence of Q from P
     def objective(q):
-        print(q)
+        #print(q)
         #print(sum(rel_entr(q, p)))
         return sum(rel_entr(q, p))
     # The sum of all probabilities in Q must be 1
@@ -29,11 +28,9 @@ def q_finder_slsqp(observation, value_list, hypothesis, p_lowerbound):
     def nonlin_cons(q):
         # This is q0^x0 * q1^x1 * ... * qn^xn
         prod_q = math.prod([q[i]**count_vector[i] for i in range(len(count_vector))])
-        #big = n_fac*prod_q/prod_x_fac
-        big = log(n_fac) + log(prod_q) - log(prod_x_fac)
-        #print(log(prod_q))
-        #print(big - log(p_lowerbound))
-        return big - log(p_lowerbound)
+        print(log(prod_q))
+        return log(n_fac*prod_q/prod_x_fac) - log(p_lowerbound)
+        #return log(n_fac)+log(prod_q)-log(prod_x_fac) - log(p_lowerbound)
     cons1 = ({'type': 'eq', 'fun': lin_cons})
     cons2 = ({'type': 'ineq', 'fun': nonlin_cons})
     # Each probability in Q must be between 0 and 1 inclusive
