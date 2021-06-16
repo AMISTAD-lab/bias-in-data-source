@@ -17,10 +17,10 @@ def uniform_dist_kardis_test(observation, value_list, alpha):
     kardis = r*u/nu
     if kardis < alpha:
         reject = True
-        print("Uniform distribution rejected at alpha = "+ str(alpha) + ". p(x) = " + str(p) + ". Kardis = " + str(kardis))
+        print("Uniform distribution rejected at alpha = "+ str(alpha) + ". p(x) = " + str(u) + ". Kardis = " + str(kardis))
     else:
         reject = False
-        print("Uniform distribution not rejected at alpha = "+ str(alpha)  + ". p(x) = " + str(p) +". Kardis = " + str(kardis))
+        print("Uniform distribution not rejected at alpha = "+ str(alpha)  + ". p(x) = " + str(u) +". Kardis = " + str(kardis))
     return (kardis, reject)
 
 def univariate_kardis_test(observation, value_list, alpha, hypothesis=[]):
