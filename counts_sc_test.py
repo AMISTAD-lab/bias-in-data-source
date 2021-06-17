@@ -3,7 +3,7 @@ from mg_calculator_count_based import *
 from mpmath import *
 from q_finder_count_based import *
 
-def univariate_sc_test(observation, value_list, alpha, hypothesis=[]):
+def sc_test(observation, value_list, alpha, hypothesis=[]):
     """
     Conducts a specified complexity hypothesis test 
     for a proposed discrete univariate distribution, using counts.
@@ -32,7 +32,7 @@ def univariate_sc_test(observation, value_list, alpha, hypothesis=[]):
     u = mpf(math.factorial(len(observation))) / math.prod([mpf(math.factorial(x)) for x in obs_counts])\
     * math.prod([mpf(u_hyp[x])**mpf(obs_counts[x]) for x in range(num_bins)])
     #don't forget the whole-number limitations on this calculator
-    mg = mg_calculator_count_based(obs_counts, hyp)
+    mg = mg_calculator(obs_counts, hyp)
     nu = norm_scriptx/mg
     r = norm_scriptx*(1+math.log(norm_scriptx))
     s_lowerbound = alpha*nu/(r*u)

@@ -1,7 +1,7 @@
 import math
 from itertools import *
 
-def mg_calculator_count_based(observed_freq, hypothesis):
+def mg_calculator(observed_freq, hypothesis):
     """
     Calculates the number of count-based-vectors (events)
     that are more surprising than the observed event for
@@ -31,7 +31,7 @@ def mg_calculator_count_based(observed_freq, hypothesis):
                 mg += neg_placement_choices * pos_placement_choices
     return mg
                 
-def mg_calculator_count_based_uniform_hyp(observed_bin, mean):
+def mg_calculator_uniform_hyp(observed_bin, mean):
     """
     Calculates the number of count-based-vectors (events)
     that are more surprising than the observed event for
