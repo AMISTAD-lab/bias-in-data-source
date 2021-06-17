@@ -1,7 +1,7 @@
 import math
 from itertools import *
 
-def mg_calculator_event_based(observed_freq, hypothesis):
+def mg_calculator_count_based(observed_freq, hypothesis):
     """
     Calculates the number of count-based-vectors (events)
     that are more surprising than the observed event for
@@ -16,7 +16,7 @@ def mg_calculator_event_based(observed_freq, hypothesis):
     max_distance_freq = [0 if i != mean_freq.index(min(mean_freq)) else sum(observed_freq) for i in range(len(observed_freq))]
     max_distance = sum(list(map(lambda x,y: abs(x-y), max_distance_freq, mean_freq)))
     num_bins = len(mean_freq)
-    event_count = 0
+    mg = 0
     for i in range(min_distance, max_distance+1, 2):
         half_distance = i // 2
         min_neg_bins = min_bins_required(mean_freq, half_distance)
@@ -25,13 +25,13 @@ def mg_calculator_event_based(observed_freq, hypothesis):
             neg_bin_choices = feasible_bin_choices(mean_freq, num_neg_bins, half_distance)
             for neg_bins in neg_bin_choices:
                 limit_list = neg_bins
-                neg_placement_choices = num_partitions_multiple_limits(num_neg_bins, half_distance, limit_list)
+                neg_placement_choices = num_sized_integer_compositions_multiple_limits(num_neg_bins, half_distance, limit_list)
                 num_pos_bins = num_bins - num_neg_bins
-                pos_placement_choices = num_partitions_unconstrained(num_pos_bins, half_distance)
-                event_count += neg_placement_choices * pos_placement_choices
-    return event_count
+                pos_placement_choices = num_weak_compositions(num_pos_bins, half_distance)
+                mg += neg_placement_choices * pos_placement_choices
+    return mg
                 
-def mg_calculator_event_based_uniform_hyp(observed_bin, mean):
+def mg_calculator_count_based_uniform_hyp(observed_bin, mean):
     """
     Calculates the number of count-based-vectors (events)
     that are more surprising than the observed event for
@@ -42,30 +42,30 @@ def mg_calculator_event_based_uniform_hyp(observed_bin, mean):
     min_distance = sum(list(map(lambda x: abs(x-mean), observed_bin)))
     max_distance = sum(observed_bin) - mean + (len(observed_bin)-1)*mean
     num_bins = len(observed_bin)
-    event_count = 0
+    mg = 0
     for i in range(min_distance, max_distance + 1, 2):
         half_distance = i // 2
         min_neg_bins = math.ceil(half_distance/mean)
         max_neg_bins = num_bins - 1
         for num_neg_bins in range(min_neg_bins, max_neg_bins + 1):
             neg_bin_choices = math.comb(num_bins, num_neg_bins)
-            neg_placement_choices = num_partitions_uniform_limit(num_neg_bins, half_distance, mean)
+            neg_placement_choices = num_sized_integer_compositions_uniform_limit(num_neg_bins, half_distance, mean)
             num_pos_bins = num_bins - num_neg_bins
-            pos_placement_choices = num_partitions_unconstrained(num_pos_bins, half_distance)
-            event_count += neg_bin_choices * neg_placement_choices * pos_placement_choices
-    return event_count
+            pos_placement_choices = num_weak_compositions(num_pos_bins, half_distance)
+            mg += neg_bin_choices * neg_placement_choices * pos_placement_choices
+    return mg
 
-def num_partitions_unconstrained(partition_size, total):
+def num_weak_compositions(length, total):
     """
     Calculates how many ways there are to distribute n
     balls into k bins (allowing for empty bins)
     
     See: https://en.wikipedia.org/wiki/Stars_and_bars_(combinatorics)
     """
-    k, n = partition_size, total
-    return math.comb(n+k-1, k-1)
+    k, N = length, total
+    return math.comb(N+k-1, k-1)
     
-def num_partitions_uniform_limit(partition_size, total, limit):
+def num_sized_integer_compositions_uniform_limit(length, total, limit):
     """
     Calculates how many ways there are to distribute N
     balls into n bins (not allowing for empty bins)
@@ -73,11 +73,11 @@ def num_partitions_uniform_limit(partition_size, total, limit):
     
     See: https://math.stackexchange.com/questions/553960/extended-stars-and-bars-problemwhere-the-upper-limit-of-the-variable-is-bounded
     """
-    n, N, r = partition_size, total, limit
-    end = min(partition_size, total//(limit+1))
-    return sum([((-1)**q)*(math.comb(n, q))*(math.comb(N-q*(r)-1, n-1)) for q in range(end+1)])
+    n, N, r = length, total, limit
+    end = min(length, total//(limit+1))
+    return sum([((-1)**k)*(math.comb(n, k))*(math.comb(N-k*(r)-1, n-1)) for k in range(end+1)])
 
-def num_partitions_multiple_limits(partition_size, total, limit_list):
+def num_sized_integer_compositions_multiple_limits(length, total, limit_list):
     """
     Calculates how many ways there are to distribute N
     balls into n bins (not allowing for empty bins)
@@ -86,25 +86,16 @@ def num_partitions_multiple_limits(partition_size, total, limit_list):
 
     See: https://math.stackexchange.com/questions/553960/extended-stars-and-bars-problemwhere-the-upper-limit-of-the-variable-is-bounded
     """
-    n, N, r = partition_size, total, limit_list
-    powerset_list = powerset(list(range(1, n+1)))
-    partition_count = 0
-    for i in powerset_list:
-        m = N-1-sum([r[j-1] for j in i])
-        if m >= 0:
-            k = n-1
-            partition_count += (-1)**len(i) * math.comb(m, k)
-    return partition_count
-
-def powerset(original_set):
-    """
-    Generates the powerset of original_set,
-    which is to be provided as a list
-    """
-    powerset_list = []
-    for i in range(len(original_set)+1):
-        powerset_list += list(combinations(original_set, i))
-    return powerset_list
+    n, N, r = length, total, limit_list
+    S = list(range(1, n+1))
+    composition_count = 0
+    for k in range(n+1):
+        sized_subsets = list(combinations(S, k))
+        for subset in sized_subsets:
+            m = N-1-sum([r[i-1] for i in subset])
+            if m >= 0:
+                composition_count += (-1)**k * math.comb(m, n-1)
+    return composition_count
 
 def min_bins_required(bin_list, lower_limit):
     """

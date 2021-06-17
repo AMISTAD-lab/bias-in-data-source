@@ -19,7 +19,6 @@ def q_finder_slsqp(observation, value_list, hypothesis, p_lowerbound):
     # Defines loss function to be the KL divergence of Q from P
     def objective(q):
         #print(q)
-        #print(sum(rel_entr(q, p)))
         return sum(rel_entr(q, p))
     # The sum of all probabilities in Q must be 1
     def lin_cons(q):
@@ -27,10 +26,18 @@ def q_finder_slsqp(observation, value_list, hypothesis, p_lowerbound):
     # Q(x) >= p_lowerbound = s_lowerbound*u(x)
     def nonlin_cons(q):
         # This is q0^x0 * q1^x1 * ... * qn^xn
-        prod_q = math.prod([q[i]**count_vector[i] for i in range(len(count_vector))])
-        print(log(prod_q))
-        return log(n_fac*prod_q/prod_x_fac) - log(p_lowerbound)
-        #return log(n_fac)+log(prod_q)-log(prod_x_fac) - log(p_lowerbound)
+        prod_q = math.prod([mpf(q[i])**mpf(count_vector[i]) for i in range(len(count_vector))])
+        try:
+            log_prod_q = math.log(prod_q)
+        except:
+            log_prod_q = -10000
+        if math.log(n_fac) == inf:
+            log_n_fac = 10000
+        else:
+            log_n_fac = math.log(n_fac)
+        #print(str(log_n_fac)+ ' ' +str(log_prod_q)+ ' ' +str(math.log(prod_x_fac)) + ' ' + str(math.log(p_lowerbound)))
+        #return log_n_fac+log_prod_q-math.log(prod_x_fac) - math.log(p_lowerbound)
+        return n_fac*prod_q/prod_x_fac - p_lowerbound
     cons1 = ({'type': 'eq', 'fun': lin_cons})
     cons2 = ({'type': 'ineq', 'fun': nonlin_cons})
     # Each probability in Q must be between 0 and 1 inclusive
@@ -38,14 +45,14 @@ def q_finder_slsqp(observation, value_list, hypothesis, p_lowerbound):
     # Bogus initial guess for the algorithm to start with
     x0 = np.array(len(value_list)*[1])
     res = minimize(objective, x0, method='SLSQP', constraints=[cons1, cons2], bounds=bounds, 
-                   options={'maxiter': 1000000, 'ftol': 1e-100000, 'eps': 1.5e-7, 'disp': True})
+                   options={'disp': True})
     return res.x
 
 def q_finder_trust_constr(observation, value_list, hypothesis, p_lowerbound):
     # Uses original hypothesis as proposed distribution P
     p = np.array(hypothesis)
     count_vector = [observation.count(value) for value in value_list]
-    n_fac = mpf(math.factorial(len(observation)))
+    n_fac = math.factorial(len(observation))
     prod_x_fac = math.prod([math.factorial(x) for x in count_vector])
     # Defines loss function to be the KL divergence of Q from P
     def objective(q):
@@ -54,13 +61,25 @@ def q_finder_trust_constr(observation, value_list, hypothesis, p_lowerbound):
     linear_constraint = LinearConstraint(len(value_list)*[1], [1], [1], keep_feasible=False)
     # Q(x) >= p_lowerbound = s_lowerbound*u(x)
     def nonlin_cons(q):
-        prod_q = math.prod([q[i]**count_vector[i] for i in range(len(count_vector))])
-        return n_fac*prod_q/prod_x_fac
-    nonlinear_constraint = NonlinearConstraint(nonlin_cons, lb=p_lowerbound, ub=np.inf, keep_feasible=True)
+        prod_q = math.prod([mpf(q[i])**mpf(count_vector[i]) for i in range(len(count_vector))])
+        #print(prod_q)
+        """
+        if prod_q == 0:
+            log_prod_q = -math.inf
+        else:
+            log_prod_q = math.log(prod_q)
+        """
+        try:
+            log_prod_q = math.log(prod_q)
+        except:
+            log_prod_q = -math.inf
+        #return n_fac*prod_q/prod_x_fac
+        return math.log(n_fac)+log_prod_q-math.log(prod_x_fac)
+    nonlinear_constraint = NonlinearConstraint(nonlin_cons, lb=math.log(p_lowerbound), ub=np.inf, keep_feasible=True)
     # Each probability in Q must be between 0 and 1 inclusive
     bounds = Bounds(len(value_list)*[0], len(value_list)*[1], keep_feasible=True)
     # Bogus initial guess for the algorithm to start with
     x0 = np.array(len(value_list)*[1])
     res = minimize(objective, x0, method='trust-constr', constraints=[linear_constraint, nonlinear_constraint], 
-                   options={'gtol': 1e-100, 'xtol': 1e-100, 'maxiter': 1000000, 'verbose': 0}, bounds=bounds)
+                   options={'maxiter': 100000, 'verbose': 1}, bounds=bounds)
     return res.x
