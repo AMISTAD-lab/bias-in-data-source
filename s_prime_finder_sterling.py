@@ -17,6 +17,7 @@ def s_prime_finder(data, hypothesis, value_list, bias_value, alpha, sigfigs):
     n = len(data)
     i = bcounts[0]
     def stirl_approx(k):
+        """Stirling Approximation of nCk"""
         return (mpf(n/math.e)**n)/(sqrt(2*math.pi*k*(n-k)) * mpf(k/math.e)**k * mpf((n-k)/math.e)**(n-k))
     prob_more_extreme = sum([stirl_approx(k)*(mpf(bhyp[0])**k)*(mpf(bhyp[1])**(n-k)) for k in range(i,n)])
     #print("prob gotten")
