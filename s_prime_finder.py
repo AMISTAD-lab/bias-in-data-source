@@ -27,7 +27,7 @@ def s_prime_finder(data, hypothesis, value_list, bias_value, alpha, sigfigs):
         while cur_pow10 > starter_pow10-sigfigs:
             cur_val = buddy(cur_pow10,cur_val,n,i,bhyp[0],target)
             cur_pow10 -= 1
-        print(cur_val)
+        #print(cur_val)
         return round(cur_val,abs(int(cur_pow10)))
 
 
