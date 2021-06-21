@@ -1,7 +1,7 @@
 from scipy import stats
 import math
 from data_binarizer import *
-#can add in decimal if this doesn't handle large things
+from mpmath import *
 
 def s_prime_finder(data, hypothesis, value_list, bias_value, alpha, sigfigs):
     """ Returns the lower bound on the scalar that your original hypothesis value 
@@ -15,32 +15,33 @@ def s_prime_finder(data, hypothesis, value_list, bias_value, alpha, sigfigs):
     assert bhyp[0] + bhyp[1] == 1
     n = len(data)
     i = bcounts[0]
-    prob_more_extreme = sum([math.comb(n,k)*(bhyp[0]**k)*(bhyp[1]**(n-k)) for k in range(i,n+1)])
+    prob_more_extreme = sum([math.comb(n,k)*(mpf(bhyp[0])**k)*(mpf(bhyp[1])**(n-k)) for k in range(i,n+1)])
     if prob_more_extreme >= alpha:
         return 1 #your explanation is fine.
     else:
         s_lowerbound = alpha/prob_more_extreme
-        target = s_lowerbound* (bhyp[0]**i * bhyp[1]**(n-i))
-        cur_val = s_lowerbound**(1/bcounts[0])
+        target = s_lowerbound* (mpf(bhyp[0])**i * mpf(bhyp[1])**(n-i))
+        cur_val = s_lowerbound**(1/mpf(bcounts[0]))
         starter_pow10 = math.log10(cur_val)//1
         cur_pow10 = starter_pow10
         while cur_pow10 > starter_pow10-sigfigs:
             cur_val = buddy(cur_pow10,cur_val,n,i,bhyp[0],target)
             cur_pow10 -= 1
+        print(cur_val)
         return round(cur_val,abs(int(cur_pow10)))
 
 
 def buddy(cur_pow10,cur_val,n,i,pb,target):
     """recursively optimizes cur_val for a single power of 10"""
-    cur_prob = (cur_val*pb)**i * (1-cur_val*pb)**(n-i)
+    cur_prob = (cur_val*mpf(pb))**i * (1-cur_val*mpf(pb))**(n-i)
     diff = abs(target - cur_prob)
-    lo = cur_val - 10**cur_pow10
-    lo_prob = (lo*pb)**i * (1-lo*pb)**(n-i)
+    lo = cur_val - mpf(10**cur_pow10)
+    lo_prob = (lo*mpf(pb))**i * (1-lo*mpf(pb))**(n-i)
     if abs(target-lo_prob) < diff:
         return buddy(cur_pow10,lo,n,i,pb,target)
     else:
         hi = cur_val + 10**cur_pow10
-        hi_prob = (hi*pb)**i * (1-hi*pb)**(n-i)
+        hi_prob = (hi*mpf(pb))**i * (1-hi*mpf(pb))**(n-i)
         if abs(target-hi_prob) < diff:
             return buddy(cur_pow10,hi,n,i,pb,target)
         else:
