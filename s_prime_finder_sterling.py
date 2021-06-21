@@ -38,7 +38,6 @@ def s_prime_finder(data, hypothesis, value_list, bias_value, alpha, sigfigs):
         #print(cur_val)
         return round(cur_val,abs(int(cur_pow10)))
 
-
 def buddy(cur_pow10,cur_val,n,i,pb,target):
     """recursively optimizes cur_val for a single power of 10"""
     cur_prob = (cur_val*mpf(pb))**i * (1-cur_val*mpf(pb))**(n-i)
