@@ -1,10 +1,16 @@
 """
 Based off code from https://codereview.stackexchange.com/questions/202518/count-occurrences-of-a-specific-sequence-in-a-list-of-many-numbers
 
-This function returns the count vector for the observed sequence
+This function returns the count vector(list of counts) for the observed sequence
 
-value_list should be in the format of a list of list i.e for a 6-sided
-die the value_list will be  [[1],[2],[3],[4],[5],[6]]
+The observation and value_list should be in the format of a list of list
+i.e for a 6-sided die:  
+observation = 45*[[1]]+5*[[2]]+4*[[3]]+3*[[4]]+2*[[5]]+[[6]] 
+value_list = [[1],[2],[3],[4],[5],[6]]
+
+Output: [45, 5, 4, 3, 2, 1]
+
+This formating rule also applies to multivariate observations and value_lists.
 """
 
 
