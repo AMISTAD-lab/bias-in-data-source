@@ -3,7 +3,7 @@ Repo for the Bias in Data summer project
 
 What's here so far:
 
-## univariate_sc_test.py
+## counts_sc_test.py
 This file contains several functions to help you run a two-distribution specified complexity (s.c.) hypothesis test for a discrete univariate distribution. The main function that allows you to do this is univariate_sc_test(observation, value_list, hypothesis, alpha).
 - observation: a list representing a sequence of events observed (see example below)
 - value_list: a list of all possible values the discrete variable in question can take on
