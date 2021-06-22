@@ -2,6 +2,7 @@ import math
 from mg_calculator_count_based import *
 from mpmath import *
 from q_finder_count_based import *
+from observation_count import *
 
 def sc_test(observation, value_list, alpha, hypothesis=[]):
     """
@@ -23,7 +24,7 @@ def sc_test(observation, value_list, alpha, hypothesis=[]):
         hyp = len(value_list)*[1/len(value_list)]
     else:
         hyp = hypothesis
-    obs_counts = [observation.count(x) for x in value_list]
+    obs_counts = observation_count(observation,value_list)
     num_bins = len(value_list) #should == len(hyp) == len(obs_counts)
     #now |x| == num of counts 
     norm_scriptx = math.comb(len(observation)+num_bins-1, num_bins-1)
