@@ -1,5 +1,5 @@
 """
-Based of code from https://codereview.stackexchange.com/questions/202518/count-occurrences-of-a-specific-sequence-in-a-list-of-many-numbers
+Based off code from https://codereview.stackexchange.com/questions/202518/count-occurrences-of-a-specific-sequence-in-a-list-of-many-numbers
 
 This function returns the count vector for the observed sequence
 """
