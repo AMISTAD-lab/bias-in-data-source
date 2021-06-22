@@ -13,6 +13,7 @@ def q_finder_trust_constr(observation, value_list, hypothesis, p_lowerbound):
     # Uses original hypothesis as proposed distribution P
     p = np.array(hypothesis)
     count_vector = [observation.count(value) for value in value_list]
+    # Log scales certain parts of the constant parts of the pmf
     log_n_fac = math.log(math.factorial(len(observation)))
     log_prod_x_fac = math.log(math.prod([math.factorial(x) for x in count_vector]))
     constraint_constant = math.log(p_lowerbound) - log_n_fac + log_prod_x_fac
@@ -21,13 +22,12 @@ def q_finder_trust_constr(observation, value_list, hypothesis, p_lowerbound):
         return sum(rel_entr(q, p))
     # The sum of all probabilities in Q must be 1
     linear_constraint = LinearConstraint(len(value_list)*[1], [1], [1], keep_feasible=False)
-    # Q(x) >= p_lowerbound = s_lowerbound*u(x)
+    # log(Q(x)) - constraint_constant >= 0
     def nonlin_cons(q):
         log_prod_q = sum([count_vector[i]*math.log(q[i]) for i in range(len(count_vector))])
-        #prod_q = math.prod([mpf(q[i])**mpf(count_vector[i]) for i in range(len(count_vector))])
-        pmf = log_prod_q - constraint_constant
-        return pmf
-    nonlinear_constraint = NonlinearConstraint(nonlin_cons, lb=math.log(p_lowerbound), ub=np.inf, keep_feasible=True)
+        constraint = log_prod_q - constraint_constant
+        return constraint
+    nonlinear_constraint = NonlinearConstraint(nonlin_cons, lb=0, ub=np.inf, keep_feasible=True)
     # Each probability in Q must be between 0 and 1 inclusive
     bounds = Bounds(len(value_list)*[0], len(value_list)*[1], keep_feasible=True)
     # Bogus initial guess for the algorithm to start with
