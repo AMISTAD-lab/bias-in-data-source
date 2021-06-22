@@ -3,6 +3,7 @@ from mpmath import *
 import numpy as np
 from scipy.optimize import minimize, LinearConstraint, NonlinearConstraint, Bounds
 from scipy.special import rel_entr
+from observation_count import *
 import warnings
 
 # Used to suppress useless Scipy warnings
@@ -12,7 +13,7 @@ warnings.filterwarnings("ignore")
 def q_finder_trust_constr(observation, value_list, hypothesis, p_lowerbound):
     # Uses original hypothesis as proposed distribution P
     p = np.array(hypothesis)
-    count_vector = [observation.count(value) for value in value_list]
+    count_vector = observation_count(observation,value_list)
     # Log scales certain parts of the constant parts of the pmf
     log_n_fac = math.log(math.factorial(len(observation)))
     log_prod_x_fac = math.log(math.prod([math.factorial(x) for x in count_vector]))
@@ -40,7 +41,7 @@ def q_finder_trust_constr(observation, value_list, hypothesis, p_lowerbound):
 def q_finder_slsqp(observation, value_list, hypothesis, p_lowerbound):
     # Proposed distribution, p
     p = np.array(hypothesis)
-    count_vector = [observation.count(value) for value in value_list]
+    count_vector = observation_count(observation,value_list)
     # These are for calculating the multinomial PMF
     n_fac = mpf(math.factorial(len(observation)))
     prod_x_fac = math.prod([math.factorial(x) for x in count_vector])
