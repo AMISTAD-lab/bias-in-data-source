@@ -23,4 +23,15 @@ def data_binarizer_multival(nbdata, nbhypothesis, nbvaluelist, selectedvaluelist
     bhypothesis = [math.fsum([nbhypothesis[nbvaluelist.index(x)] for x in selectedvaluelist])]
     bhypothesis += [1-bhypothesis[0]]
     return (bdata,bcounts,bhypothesis,bvaluelist)
+
+def binarizer_sans_hyp(nbdata, selectedvaluelist):
+    biasval_name = '('+ str(selectedvaluelist[0])
+    for val in selectedvaluelist[1:]:
+        biasval_name += ", " + str(val)
+    biasval_name+=')'
+    bvaluelist = [biasval_name, 'not-'+biasval_name]
+    num_biasval = sum([nbdata.count(x) for x in selectedvaluelist])
+    bcounts = [num_biasval, len(nbdata)-num_biasval]
+    bdata = [biasval_name]*num_biasval + ['not-'+biasval_name]*(len(nbdata)-num_biasval)
+    return (bdata,bcounts,bvaluelist)
     

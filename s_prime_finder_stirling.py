@@ -3,7 +3,7 @@ import math
 from data_binarizer import *
 from mpmath import *
 
-def s_prime_finder(data, hypothesis, value_list, bias_value, alpha, sigfigs):
+def s_prime_finder(data, hypothesis, value_list, bias_value_list, alpha, sigfigs):
     """ Returns the lower bound on the scalar that your original hypothesis value 
         for bias_value must be multiplied by in order to return a plausible explanation 
         at your given alpha. for instance, 
@@ -11,8 +11,7 @@ def s_prime_finder(data, hypothesis, value_list, bias_value, alpha, sigfigs):
         tells you that 0.2 is too low, and must be multiplied by 2.1957 in order
         to be a reasonable probability for the value 0.
     """
-    bdata, bcounts, bhyp, bvaluelist = data_binarizer(data,hypothesis,value_list,bias_value)
-    #print('binarized')
+    bdata, bcounts, bhyp, bvaluelist = data_binarizer_multival(data,hypothesis,value_list,bias_value_list)
     assert bhyp[0] + bhyp[1] == 1
     n = len(data)
     i = bcounts[0]
@@ -37,6 +36,35 @@ def s_prime_finder(data, hypothesis, value_list, bias_value, alpha, sigfigs):
             cur_pow10 -= 1
         #print(cur_val)
         return round(cur_val,abs(int(cur_pow10)))
+
+
+def s_prime_finder2(nbdata, bhyp, nbvalue_list, bias_value_list, alpha, sigfigs):
+    """for giving a binary hypothesis instead of an nb one."""
+    bdata,bcounts,bvaluelist = binarizer_sans_hyp(nbdata, bias_value_list)
+    n = len(nbdata)
+    i = bcounts[0]
+    def stirl_approx(k):
+        return (mpf(n/math.e)**n)/(sqrt(2*math.pi*k*(n-k)) * mpf(k/math.e)**k * mpf((n-k)/math.e)**(n-k))
+    prob_more_extreme = sum([stirl_approx(k)*(mpf(bhyp[0])**k)*(mpf(bhyp[1])**(n-k)) for k in range(i,n)])
+    prob_more_extreme += mpf(bhyp[0])**n
+    #print("prob gotten")
+    if prob_more_extreme >= alpha:
+        return 1 #your explanation is fine.
+    else:
+        s_lowerbound = alpha/prob_more_extreme
+        target = s_lowerbound* (mpf(bhyp[0])**i * mpf(bhyp[1])**(n-i))
+        cur_val = mpf(s_lowerbound)**(1/mpf(bcounts[0]))
+        #print(cur_val)
+        starter_pow10 = math.log10(cur_val)//1
+        cur_pow10 = starter_pow10
+        #print("time for recursion")
+        while cur_pow10 > starter_pow10-sigfigs:
+            #print(cur_pow10)
+            cur_val = buddy(cur_pow10,cur_val,n,i,bhyp[0],target)
+            cur_pow10 -= 1
+        #print(cur_val)
+        return round(cur_val,abs(int(cur_pow10)))
+    return
 
 def buddy(cur_pow10,cur_val,n,i,pb,target):
     """recursively optimizes cur_val for a single power of 10"""
