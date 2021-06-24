@@ -1,4 +1,3 @@
-from Users.alessiaserafini.Desktop.amistadworkspace.data_binarizer import data_binarizer_main
 from scipy import stats
 import math
 from data_binarizer import *
