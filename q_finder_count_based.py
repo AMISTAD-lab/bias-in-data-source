@@ -19,12 +19,12 @@ def q_finder_trust_constr(observation, value_list, hypothesis, p_lowerbound):
     constraint_constant = math.log(p_lowerbound) - log_n_fac + log_prod_x_fac
     # Defines loss function to be the KL divergence of Q from P
     def objective(q):
-        return sum(rel_entr(q, p))
+        return math.fsum(rel_entr(q, p))
     # The sum of all probabilities in Q must be 1
     linear_constraint = LinearConstraint(len(value_list)*[1], [1], [1], keep_feasible=False)
     # log(Q(x)) - constraint_constant >= 0
     def nonlin_cons(q):
-        log_prod_q = sum([count_vector[i]*math.log(q[i]) for i in range(len(count_vector))])
+        log_prod_q = math.fsum([count_vector[i]*math.log(q[i]) for i in range(len(count_vector))])
         constraint = log_prod_q - constraint_constant
         return constraint
     nonlinear_constraint = NonlinearConstraint(nonlin_cons, lb=0, ub=np.inf, keep_feasible=True)
@@ -43,12 +43,12 @@ def q_finder_main(count_vector, hypothesis, p_lowerbound):
     constraint_constant = math.log(p_lowerbound) - log_n_fac + log_prod_x_fac
     # Defines loss function to be the KL divergence of Q from P
     def objective(q):
-        return sum(rel_entr(q, p))
+        return math.fsum(rel_entr(q, p))
     # The sum of all probabilities in Q must be 1
     linear_constraint = LinearConstraint(len(count_vector)*[1], [1], [1], keep_feasible=False)
     # log(Q(x)) - constraint_constant >= 0
     def nonlin_cons(q):
-        log_prod_q = sum([count_vector[i]*math.log(q[i]) for i in range(len(count_vector))])
+        log_prod_q = math.fsum([count_vector[i]*math.log(q[i]) for i in range(len(count_vector))])
         constraint = log_prod_q - constraint_constant
         return constraint
     nonlinear_constraint = NonlinearConstraint(nonlin_cons, lb=0, ub=np.inf, keep_feasible=True)
