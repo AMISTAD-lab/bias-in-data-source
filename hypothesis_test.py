@@ -23,7 +23,7 @@ def hypothesis_test(data, value_list, alpha, hypothesis = []):
         print("Proposed distribution not rejected at alpha = " + str(alpha)  + ". Kardis = " + str(kardis) + ".")
         return (kardis, reject)
 
-def binarizer_test(data, value_list, selected_value_list, alpha, binary_hypothesis, sigfigs):
+def binarizer_test(data, value_list, selected_value_list, alpha, binary_hypothesis, sigfigs=4):
     count_vector = [data.count(x) for x in value_list]
     s_prime = s_prime_finder_main(count_vector, value_list, selected_value_list, alpha, binary_hypothesis, sigfigs)
     #the below print statements may need to be reworked
