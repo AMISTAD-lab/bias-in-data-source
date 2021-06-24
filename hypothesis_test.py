@@ -1,4 +1,4 @@
-from Users.alessiaserafini.Desktop.amistadworkspace.q_finder_count_based import q_finder_main
+from q_finder_count_based import *
 from counts_kardis_test import *
 from s_prime_finder_stirling import *
 
