@@ -37,8 +37,7 @@ def binarizer_sans_hyp(nbdata, selectedvaluelist):
 
 def data_binarizer_main(nbcounts, nbvalue_list, selected_value_list):
     #only really needs to return bcounts
-    #takes in list-of-lists nbvalue_list 
-    #and list-of-lists selected_value_list to match
+    #takes in nbcounts and nbvalue_list as normal lists
     num_biasval = sum([nbcounts[nbvalue_list.index(x)] for x in selected_value_list])
     bcounts = [num_biasval, sum(nbcounts)-num_biasval]
     return bcounts

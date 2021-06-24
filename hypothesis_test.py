@@ -1,22 +1,14 @@
 from Users.alessiaserafini.Desktop.amistadworkspace.q_finder_count_based import q_finder_main
 from counts_kardis_test import *
-from observation_count import *
 from s_prime_finder_stirling import *
 
-"""
-The observation and value_list should be in the format of a list of list
-i.e for a 6-sided die:  
-observation = 45*[[1]]+5*[[2]]+4*[[3]]+3*[[4]]+2*[[5]]+[[6]] 
-value_list = [[1],[2],[3],[4],[5],[6]]
-Output: [45, 5, 4, 3, 2, 1]
-"""
 
 def hypothesis_test(data, value_list, alpha, hypothesis = []):
     if hypothesis == []:
         hyp = len(value_list)*[1/len(value_list)]
     else:
         hyp = hypothesis
-    count_vector = observation_count(data, value_list)
+    count_vector = [data.count(x) for x in value_list]
     kardis, reject, r, nu, h = kardis_test_main(count_vector, alpha, hypothesis)
     if reject:
         print("Proposed distribution rejected at alpha = " + str(alpha)  + ". Kardis = " + str(kardis) + ".")
@@ -32,8 +24,9 @@ def hypothesis_test(data, value_list, alpha, hypothesis = []):
         return (kardis, reject)
 
 def binarizer_test(data, value_list, selected_value_list, alpha, binary_hypothesis, sigfigs):
-    count_vector = observation_count(data, value_list)
+    count_vector = [data.count(x) for x in value_list]
     s_prime = s_prime_finder_main(count_vector, value_list, selected_value_list, alpha, binary_hypothesis, sigfigs)
+    #the below print statements may need to be reworked
     if s_prime == 1:
         print("Proposed distribution not rejected at alpha = " + str(alpha) + ".")
     else:
