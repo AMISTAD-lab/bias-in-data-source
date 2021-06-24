@@ -36,7 +36,6 @@ def q_finder_trust_constr(observation, value_list, hypothesis, p_lowerbound):
                    options={'gtol': 1e-100, 'xtol': 1e-100, 'maxiter': 1000000, 'verbose': 0}, bounds=bounds)
     return res.x
 
-
 def q_finder_main(count_vector, hypothesis, p_lowerbound):
     p = np.array(hypothesis)
     log_n_fac = math.log(math.factorial(sum(count_vector)))

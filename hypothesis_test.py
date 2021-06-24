@@ -2,7 +2,6 @@ from q_finder_count_based import *
 from counts_kardis_test import *
 from s_prime_finder_stirling import *
 
-
 def hypothesis_test(data, value_list, alpha, hypothesis = []):
     if hypothesis == []:
         hyp = len(value_list)*[1/len(value_list)]
@@ -33,4 +32,3 @@ def binarizer_test(data, value_list, selected_value_list, alpha, binary_hypothes
         print("Proposed probability of selected values must be multiplied by "\
             +str(s_prime)+" to become a valid explanation.")
     return s_prime
-    

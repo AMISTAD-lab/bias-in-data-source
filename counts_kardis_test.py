@@ -62,4 +62,3 @@ def kardis_test_main(counts, alpha, hypothesis):
     else:
         reject = False
     return (kardis, reject, r, nu, h)
-

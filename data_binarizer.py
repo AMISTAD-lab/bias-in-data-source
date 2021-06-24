@@ -9,7 +9,6 @@ def data_binarizer(nbdata, nbhypothesis, nbvaluelist, selectedvalue):
     bcounts = [nbdata.count(selectedvalue), len(nbdata)-nbdata.count(selectedvalue)]
     return (bdata, bcounts, bhypothesis, bvaluelist)
 
-
 def data_binarizer_multival(nbdata, nbhypothesis, nbvaluelist, selectedvaluelist):
     #probably a better way to get the name but. it's not coming to me rn
     biasval_name = '('+ str(selectedvaluelist[0])
@@ -41,6 +40,3 @@ def data_binarizer_main(nbcounts, nbvalue_list, selected_value_list):
     num_biasval = sum([nbcounts[nbvalue_list.index(x)] for x in selected_value_list])
     bcounts = [num_biasval, sum(nbcounts)-num_biasval]
     return bcounts
-
-
-    

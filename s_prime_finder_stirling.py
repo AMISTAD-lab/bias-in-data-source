@@ -37,7 +37,6 @@ def s_prime_finder(data, hypothesis, value_list, bias_value_list, alpha, sigfigs
         #print(cur_val)
         return round(cur_val,abs(int(cur_pow10)))
 
-
 def s_prime_finder2(nbdata, bhyp, nbvalue_list, bias_value_list, alpha, sigfigs):
     """for giving a binary hypothesis instead of an nb one."""
     bdata,bcounts,bvaluelist = binarizer_sans_hyp(nbdata, bias_value_list)
@@ -88,7 +87,6 @@ def s_prime_finder_main(count_vector, value_list, selected_value_list, alpha, bi
             cur_pow10 -= 1
         #print(cur_val)
         return round(cur_val,abs(int(cur_pow10)))
-
 
 def buddy(cur_pow10,cur_val,n,i,pb,target):
     """recursively optimizes cur_val for a single power of 10"""
