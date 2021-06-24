@@ -1,3 +1,4 @@
+from Users.alessiaserafini.Desktop.amistadworkspace.data_binarizer import data_binarizer_main
 from scipy import stats
 import math
 from data_binarizer import *
@@ -64,7 +65,31 @@ def s_prime_finder2(nbdata, bhyp, nbvalue_list, bias_value_list, alpha, sigfigs)
             cur_pow10 -= 1
         #print(cur_val)
         return round(cur_val,abs(int(cur_pow10)))
-    return
+
+def s_prime_finder_main(count_vector, value_list, selected_value_list, alpha, binary_hypothesis, sigfigs):
+    bcounts = data_binarizer_main(count_vector, value_list, selected_value_list)
+    n = sum(count_vector)
+    i = bcounts[0]
+    def stirl_approx(k):
+        return (mpf(n/math.e)**n)/(sqrt(2*math.pi*k*(n-k)) * mpf(k/math.e)**k * mpf((n-k)/math.e)**(n-k))
+    prob_more_extreme = sum([stirl_approx(k)*(mpf(binary_hypothesis[0])**k) \
+        *(mpf(binary_hypothesis[1])**(n-k)) for k in range(i,n)])
+    prob_more_extreme += mpf(binary_hypothesis[0])**n
+    if prob_more_extreme >= alpha:
+        return 1 #your explanation is fine.
+    else:
+        s_lowerbound = alpha/prob_more_extreme
+        target = s_lowerbound* (mpf(binary_hypothesis[0])**i * mpf(binary_hypothesis[1])**(n-i))
+        cur_val = mpf(s_lowerbound)**(1/mpf(bcounts[0]))
+        starter_pow10 = math.log10(cur_val)//1
+        cur_pow10 = starter_pow10
+        while cur_pow10 > starter_pow10-sigfigs:
+            #print(cur_pow10)
+            cur_val = buddy(cur_pow10,cur_val,n,i,binary_hypothesis[0],target)
+            cur_pow10 -= 1
+        #print(cur_val)
+        return round(cur_val,abs(int(cur_pow10)))
+
 
 def buddy(cur_pow10,cur_val,n,i,pb,target):
     """recursively optimizes cur_val for a single power of 10"""

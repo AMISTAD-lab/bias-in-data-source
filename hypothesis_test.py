@@ -1,6 +1,7 @@
 from Users.alessiaserafini.Desktop.amistadworkspace.q_finder_count_based import q_finder_main
 from counts_kardis_test import *
 from observation_count import *
+from s_prime_finder_stirling import *
 
 """
 The observation and value_list should be in the format of a list of list
@@ -29,4 +30,14 @@ def hypothesis_test(data, value_list, alpha, hypothesis = []):
     else:
         print("Proposed distribution not rejected at alpha = " + str(alpha)  + ". Kardis = " + str(kardis) + ".")
         return (kardis, reject)
+
+def binarizer_test(data, value_list, selected_value_list, alpha, binary_hypothesis, sigfigs):
+    count_vector = observation_count(data, value_list)
+    s_prime = s_prime_finder_main(count_vector, value_list, selected_value_list, alpha, binary_hypothesis, sigfigs)
+    if s_prime == 1:
+        print("Proposed distribution not rejected at alpha = " + str(alpha) + ".")
+    else:
+        print("Proposed probability of selected values must be multiplied by "\
+            +str(s_prime)+" to become a valid explanation.")
+    return s_prime
     
