@@ -2,7 +2,6 @@ import math
 from mg_calculator_count_based import *
 from mpmath import *
 from q_finder_count_based import *
-from observation_count import *
 
 def sc_test(observation, value_list, alpha, hypothesis=[]):
     """
