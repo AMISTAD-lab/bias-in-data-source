@@ -1,7 +1,6 @@
 import math
 from mg_calculator_count_based import *
 from mpmath import *
-from q_finder_count_based import *
 
 def uniform_dist_kardis_test(observation, value_list, alpha):
     obs_counts = [observation.count(x) for x in value_list]
@@ -24,7 +23,6 @@ def uniform_dist_kardis_test(observation, value_list, alpha):
     return (kardis, reject)
 
 def univariate_kardis_test(observation, value_list, alpha, hypothesis=[]):
-    #resort to this test if uniform dist is not rejected?
     if hypothesis == []:
         hyp = len(value_list)*[1/len(value_list)]
     else:
@@ -48,3 +46,20 @@ def univariate_kardis_test(observation, value_list, alpha, hypothesis=[]):
         reject = False
         print("Proposed distribution not rejected at alpha = "+ str(alpha)  + ". p(x) = " + str(p) +". Kardis = " + str(kardis))
     return (kardis, reject)
+
+def kardis_test_main(counts, alpha, hypothesis):
+    num_bins = len(counts)
+    n = sum(counts)
+    norm_scriptx = math.comb(n+num_bins-1, num_bins-1)
+    mg = mg_calculator(counts, hypothesis)
+    nu = norm_scriptx/mg
+    r = norm_scriptx*(1+math.log(norm_scriptx))
+    h = mpf(math.factorial(n)) / math.prod([mpf(math.factorial(x)) for x in counts])\
+    * math.prod([mpf(hypothesis[x])**mpf(counts[x]) for x in range(num_bins)])
+    kardis = r*h/nu
+    if kardis < alpha:
+        reject = True
+    else:
+        reject = False
+    return (kardis, reject, r, nu, h)
+
