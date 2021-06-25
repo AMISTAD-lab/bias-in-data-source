@@ -92,7 +92,7 @@ def num_sized_integer_compositions_multiple_limits(length, total, limit_list, bi
         sized_r_subsets = list(combinations(r, k))
         for subset in sized_r_subsets:
             m = N-1-bin_dict[subset]
-            if m >= 0:
+            if m > 0:
                 composition_count += (-1)**k * math.comb(m, n-1)
     return composition_count
 
