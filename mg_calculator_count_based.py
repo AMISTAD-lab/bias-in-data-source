@@ -87,12 +87,11 @@ def num_sized_integer_compositions_multiple_limits(length, total, limit_list):
     See: https://math.stackexchange.com/questions/553960/extended-stars-and-bars-problemwhere-the-upper-limit-of-the-variable-is-bounded
     """
     n, N, r = length, total, limit_list
-    S = list(range(1, n+1))
     composition_count = 0
     for k in range(n+1):
-        sized_subsets = list(combinations(S, k))
-        for subset in sized_subsets:
-            m = N-1-sum([r[i-1] for i in subset])
+        sized_r_subsets = list(combinations(r, k))
+        for subset in sized_r_subsets:
+            m = N-1-sum(subset)
             if m >= 0:
                 composition_count += (-1)**k * math.comb(m, n-1)
     return composition_count
