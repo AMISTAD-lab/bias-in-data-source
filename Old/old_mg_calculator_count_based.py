@@ -16,19 +16,19 @@ def mg_calculator(observed_freq, hypothesis):
     max_distance_freq = [0 if i != mean_freq.index(min(mean_freq)) else sum(observed_freq) for i in range(len(observed_freq))]
     max_distance = sum(list(map(lambda x,y: abs(x-y), max_distance_freq, mean_freq)))
     num_bins = len(mean_freq)
-    bin_dict, bin_list = bin_information(mean_freq)
-    bin_list.sort(key=lambda x: x[2])
-    mg = 0         
+    mg = 0
     for i in range(min_distance, max_distance+1, 2):
         half_distance = i // 2
-        valid_bins = list(filter(lambda x: x[2] >= half_distance, bin_list))
-        for i in valid_bins:
-            limit_list = i[0]
-            num_neg_bins = i[1]
-            neg_placement_choices = num_sized_integer_compositions_multiple_limits(num_neg_bins, half_distance, limit_list, bin_dict)        
-            num_pos_bins = num_bins - num_neg_bins
-            pos_placement_choices = num_weak_compositions(num_pos_bins, half_distance)
-            mg += neg_placement_choices * pos_placement_choices
+        min_neg_bins = min_bins_required(mean_freq, half_distance)
+        max_neg_bins = num_bins - 1
+        for num_neg_bins in range(min_neg_bins, max_neg_bins+1):
+            neg_bin_choices = feasible_bin_choices(mean_freq, num_neg_bins, half_distance)
+            for neg_bins in neg_bin_choices:
+                limit_list = neg_bins
+                neg_placement_choices = num_sized_integer_compositions_multiple_limits(num_neg_bins, half_distance, limit_list)
+                num_pos_bins = num_bins - num_neg_bins
+                pos_placement_choices = num_weak_compositions(num_pos_bins, half_distance)
+                mg += neg_placement_choices * pos_placement_choices
     return mg
                 
 def mg_calculator_uniform_hyp(observed_bin, mean):
@@ -77,7 +77,7 @@ def num_sized_integer_compositions_uniform_limit(length, total, limit):
     end = min(length, total//(limit+1))
     return sum([((-1)**k)*(math.comb(n, k))*(math.comb(N-k*(r)-1, n-1)) for k in range(end+1)])
 
-def num_sized_integer_compositions_multiple_limits(length, total, limit_list, bin_dict):
+def num_sized_integer_compositions_multiple_limits(length, total, limit_list):
     """
     Calculates how many ways there are to distribute N
     balls into n bins (not allowing for empty bins)
@@ -91,7 +91,7 @@ def num_sized_integer_compositions_multiple_limits(length, total, limit_list, bi
     for k in range(n+1):
         sized_r_subsets = list(combinations(r, k))
         for subset in sized_r_subsets:
-            m = N-1-bin_dict[subset]
+            m = N-1-sum(subset)
             if m >= 0:
                 composition_count += (-1)**k * math.comb(m, n-1)
     return composition_count
@@ -116,13 +116,3 @@ def feasible_bin_choices(bin_list, num_bins, lower_limit):
     """
     all_bin_choices = list(combinations(bin_list, num_bins))
     return list(filter(lambda x: sum([i for i in x]) >= lower_limit, all_bin_choices))
-
-def bin_information(bin_list):
-    all_possible_bin_combos = []
-    for i in range(len(bin_list)):
-        all_possible_bin_combos += list(combinations(bin_list, i))
-    bin_dict = {}
-    for i in all_possible_bin_combos:
-        bin_dict[i] = sum(i)
-    bin_list = [(i, len(i), sum(i)) for i in all_possible_bin_combos]
-    return bin_dict, bin_list
