@@ -12,7 +12,7 @@ def s_prime_finder_main(count_vector, value_list, selected_value_list, alpha, bi
     p_b = binary_hypothesis[0]
 
     def stirl_approx(k):
-            return sqrt(n)*mpf(n/math.e)**mpf(n)/(sqrt(2*math.pi*k*(n-k))*mpf(k/math.e)**k*mpf((n-k)/math.e)**(n-k))
+            return sqrt(n)*mpf(n)**mpf(n)/(sqrt(2*math.pi*k*(n-k))*mpf(k)**k*mpf(n-k)**(n-k))
     def binom(p):
         if p in binom_dict.keys():
             return binom_dict[p]
