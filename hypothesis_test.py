@@ -28,7 +28,10 @@ def binarizer_test(data, value_list, selected_value_list, alpha, binary_hypothes
     #the below print statements may need to be reworked
     if s_prime == 1:
         print("Proposed distribution not rejected at alpha = " + str(alpha) + ".")
+    elif flipped:
+        print("Binomial tail exceeds 1 - "+ str(alpha)+". Proposed probability of non-selected values must be multiplied by "\
+            +str(s_prime)+" to become a valid explanation")
     else:
         print("Proposed probability of selected values must be multiplied by "\
             +str(s_prime)+" to become a valid explanation.")
-    return s_prime
+    return s_prime, flipped
