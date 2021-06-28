@@ -1,8 +1,8 @@
 from q_finder_count_based import *
 from counts_kardis_test import *
-from s_prime_finder_stirling import *
+from s_prime import *
 
-def hypothesis_test(data, value_list, alpha, hypothesis = []):
+def hypothesis_test(data, value_list, alpha = 0.05, hypothesis = []):
     if hypothesis == []:
         hyp = len(value_list)*[1/len(value_list)]
     else:
@@ -22,7 +22,7 @@ def hypothesis_test(data, value_list, alpha, hypothesis = []):
         print("Proposed distribution not rejected at alpha = " + str(alpha)  + ". Kardis = " + str(kardis) + ".")
         return (kardis, reject)
 
-def binarizer_test(data, value_list, selected_value_list, alpha, binary_hypothesis, sigfigs=4):
+def binarizer_test(data, value_list, selected_value_list, alpha, binary_hypothesis, sigfigs = 4):
     count_vector = [data.count(x) for x in value_list]
     s_prime = s_prime_finder_main(count_vector, value_list, selected_value_list, alpha, binary_hypothesis, sigfigs)
     #the below print statements may need to be reworked
