@@ -18,6 +18,9 @@ def mg_calculator(observed_freq, hypothesis):
     num_bins = len(mean_freq)
     bin_dict, bin_list = bin_information(mean_freq)
     bin_list.sort(key=lambda x: x[2])
+    powerset_dict = {}
+    for i in bin_list:
+        powerset_dict[i[0]] = powerset_with_sums(i[0])
     mg = 0         
     for i in range(min_distance, max_distance+1, 2):
         half_distance = i // 2
@@ -25,7 +28,7 @@ def mg_calculator(observed_freq, hypothesis):
         for i in valid_bins:
             limit_list = i[0]
             num_neg_bins = i[1]
-            neg_placement_choices = num_sized_integer_compositions_multiple_limits(num_neg_bins, half_distance, limit_list, bin_dict)        
+            neg_placement_choices = num_sized_integer_compositions_multiple_limits(num_neg_bins, half_distance, limit_list, powerset_dict[i[0]])        
             num_pos_bins = num_bins - num_neg_bins
             pos_placement_choices = num_weak_compositions(num_pos_bins, half_distance)
             mg += neg_placement_choices * pos_placement_choices
@@ -77,7 +80,7 @@ def num_sized_integer_compositions_uniform_limit(length, total, limit):
     end = min(length, total//(limit+1))
     return sum([((-1)**k)*(math.comb(n, k))*(math.comb(N-k*(r)-1, n-1)) for k in range(end+1)])
 
-def num_sized_integer_compositions_multiple_limits(length, total, limit_list, bin_dict):
+def num_sized_integer_compositions_multiple_limits(length, total, limit_list, powerset_list):
     """
     Calculates how many ways there are to distribute N
     balls into n bins (not allowing for empty bins)
@@ -88,34 +91,11 @@ def num_sized_integer_compositions_multiple_limits(length, total, limit_list, bi
     """
     n, N, r = length, total, limit_list
     composition_count = 0
-    for k in range(n+1):
-        sized_r_subsets = list(combinations(r, k))
-        for subset in sized_r_subsets:
-            m = N-1-bin_dict[subset]
-            if m > 0:
-                composition_count += (-1)**k * math.comb(m, n-1)
+    for i in powerset_list:
+        m = N-1-i[2]
+        if m > 0:
+            composition_count += (-1)**i[1] * math.comb(m, n-1)
     return composition_count
-
-def min_bins_required(bin_list, lower_limit):
-    """
-    Returns the minimum number of bins from a list 
-    that are required to hold lower_limit balls
-    """
-    if max(bin_list) >= lower_limit:
-        return 1
-    else:
-        max_val = max(bin_list)
-        temp_bin_list = bin_list[:]
-        temp_bin_list.remove(max_val)
-        return 1 + min_bins_required(temp_bin_list, lower_limit-max_val)
-    
-def feasible_bin_choices(bin_list, num_bins, lower_limit):
-    """
-    Returns a list of all feasible combinations of num_bin
-    bins that can hold lower_limit balls
-    """
-    all_bin_choices = list(combinations(bin_list, num_bins))
-    return list(filter(lambda x: sum([i for i in x]) >= lower_limit, all_bin_choices))
 
 def bin_information(bin_list):
     all_possible_bin_combos = []
@@ -126,3 +106,10 @@ def bin_information(bin_list):
         bin_dict[i] = sum(i)
     bin_list = [(i, len(i), sum(i)) for i in all_possible_bin_combos]
     return bin_dict, bin_list
+
+def powerset_with_sums(orig_set):
+    powerset = []
+    for i in range(len(orig_set)+1):
+        powerset += list(combinations(orig_set, i))
+    powerset_with_sums = [(i, len(i), sum(i)) for i in powerset]
+    return powerset_with_sums
