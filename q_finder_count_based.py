@@ -37,7 +37,7 @@ def binary_q_finder_main(binary_count_vector, hypothesis, alpha):
     p = np.array(hypothesis)
     n = sum(binary_count_vector)
     k = binary_count_vector[0]
-    constraint_constant = math.log(alpha * (n+1)**(-1) * math.comb(n, k)**(-1))
+    constraint_constant = math.log(alpha * mpf(n+1)**(-1) * mpf(math.comb(n, k))**(-1))
     def objective(q):
         return sum(rel_entr(q, p))
     linear_constraint = LinearConstraint([1,1], [1], [1], keep_feasible=False)
