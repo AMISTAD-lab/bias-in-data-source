@@ -1,5 +1,4 @@
 import math
-from mpmath import *
 import numpy as np
 from scipy.optimize import minimize, LinearConstraint, NonlinearConstraint, Bounds
 from scipy.special import rel_entr
