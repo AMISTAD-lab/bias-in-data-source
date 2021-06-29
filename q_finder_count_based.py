@@ -28,7 +28,7 @@ def q_finder_main(count_vector, hypothesis, p_lowerbound):
     # Each probability in Q must be between 0 and 1 inclusive
     bounds = Bounds(len(count_vector)*[0], len(count_vector)*[1], keep_feasible=True)
     # Bogus initial guess for the algorithm to start with
-    x0 = np.array(len(count_vector)*[0.99])
+    x0 = np.array(len(count_vector)*[0.9])
     res = minimize(objective, x0, method='trust-constr', constraints=[linear_constraint, nonlinear_constraint], 
                    options={'gtol': 1e-100, 'xtol': 1e-100, 'maxiter': 1000000, 'verbose': 0}, bounds=bounds)
     return res.x
