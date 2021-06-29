@@ -1,6 +1,7 @@
 from q_finder_count_based import *
 from counts_kardis_test import *
 from data_binarizer import *
+from mpmath import *
 
 def hypothesis_test(data, value_list, alpha = 0.05, hypothesis = []):
     if hypothesis == []:
@@ -30,7 +31,7 @@ def binary_hypothesis_test(data, value_list, selected_value_list, alpha=0.05, bi
     kardis, reject, r, nu, h = kardis_test_main(binary_count_vector, alpha, binary_hypothesis)
     if reject:
         print("Proposed distribution rejected at alpha = " + str(alpha)  + ". Kardis = " + str(kardis) + ".")
-        s_lowerbound = alpha * ((n+1) * math.comb(n,k) * binary_hypothesis[0]**k * binary_hypothesis[1]**(n-k))**(-1)
+        s_lowerbound = alpha * ((n+1) * math.comb(n,k)* mpf(binary_hypothesis[0])**k * mpf(binary_hypothesis[1])**(n-k))**(-1)
         p_lowerbound = s_lowerbound*h
         print("Any plausible distribution must boost probability over the given distribution by " \
             + str(s_lowerbound) + ", and will therefore have a minimum probability of " + str(p_lowerbound) + ".")
