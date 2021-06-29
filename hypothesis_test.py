@@ -1,6 +1,7 @@
 from q_finder_count_based import *
 from counts_kardis_test import *
 from data_binarizer import *
+from s_prime import *
 from mpmath import *
 
 def hypothesis_test(data, value_list, alpha = 0.05, hypothesis = []):
