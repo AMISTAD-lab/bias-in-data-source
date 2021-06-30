@@ -18,6 +18,19 @@ def kardis_test_main(counts, alpha, hypothesis):
         reject = False
     return (kardis, reject, r, nu, h)
 
+def binary_kardis_test_main(counts, alpha, hypothesis):
+    n = sum(counts)
+    k = counts[0]
+    r = n+1
+    p = mpf(hypothesis[0])**counts[0] * mpf(hypothesis[1])**counts[1]
+    nu = mpf(math.comb(n, k))**(-1)
+    kardis = r*p/nu
+    if kardis < alpha:
+        reject = True
+    else:
+        reject = False
+    return (kardis, reject, r, nu, p)
+
 def uniform_dist_kardis_test(observation, value_list, alpha):
     obs_counts = [observation.count(x) for x in value_list]
     num_bins = len(value_list) #should == len(hyp) == len(obs_counts)

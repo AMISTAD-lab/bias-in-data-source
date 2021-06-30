@@ -29,7 +29,7 @@ def binary_hypothesis_test(data, value_list, selected_value_list, alpha=0.05, bi
     binary_count_vector = data_binarizer_main(count_vector, value_list, selected_value_list)
     n = sum(binary_count_vector)
     k = binary_count_vector[0]
-    kardis, reject, r, nu, h = kardis_test_main(binary_count_vector, alpha, binary_hypothesis)
+    kardis, reject, r, nu, h = binary_kardis_test_main(binary_count_vector, alpha, binary_hypothesis)
     if reject:
         print("Proposed distribution rejected at alpha = " + str(alpha)  + ". Kardis = " + str(kardis) + ".")
         s_lowerbound = alpha * ((n+1) * math.comb(n,k)* mpf(binary_hypothesis[0])**k * mpf(binary_hypothesis[1])**(n-k))**(-1)
