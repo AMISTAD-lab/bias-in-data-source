@@ -1,13 +1,22 @@
 import math
 
 def data_binarizer_main(nbcounts, nbvalue_list, selected_value_list):
-    #only really needs to return bcounts
-    #takes in nbcounts and nbvalue_list as normal lists
+    """
+    Binarizes the provided non-binary count vector 'nbcounts'.
+    'nbvalue_list' is the list of values found in the data, 
+    where nbcounts[i] contains the number of times nbvalue_list[i]
+    occurs in a dataset. Returns the binary count vector containing
+    the quantity of values found in 'selected_value_list' 
+    and the quantity of not-selected values.
+    """
     num_biasval = sum([nbcounts[nbvalue_list.index(x)] for x in selected_value_list])
     bcounts = [num_biasval, sum(nbcounts)-num_biasval]
     return bcounts
     
 def data_binarizer(nbdata, nbhypothesis, nbvaluelist, selectedvalue):
+    """
+    A deprecated data binarization function.
+    """
     s_index = nbvaluelist.index(selectedvalue)
     bvaluelist = [str(selectedvalue), 'not-'+str(selectedvalue)]
     bhypothesis = [nbhypothesis[s_index], math.fsum(nbhypothesis[:s_index]+nbhypothesis[s_index+1:])]
@@ -17,7 +26,9 @@ def data_binarizer(nbdata, nbhypothesis, nbvaluelist, selectedvalue):
     return (bdata, bcounts, bhypothesis, bvaluelist)
 
 def data_binarizer_multival(nbdata, nbhypothesis, nbvaluelist, selectedvaluelist):
-    #probably a better way to get the name but. it's not coming to me rn
+    """
+    A deprecated data binarization function. 
+    """
     biasval_name = '('+ str(selectedvaluelist[0])
     for val in selectedvaluelist[1:]:
         biasval_name += ", " + str(val)
@@ -31,6 +42,9 @@ def data_binarizer_multival(nbdata, nbhypothesis, nbvaluelist, selectedvaluelist
     return (bdata,bcounts,bhypothesis,bvaluelist)
 
 def binarizer_sans_hyp(nbdata, selectedvaluelist):
+    """
+    A deprecated data binarization function. 
+    """
     biasval_name = '('+ str(selectedvaluelist[0])
     for val in selectedvaluelist[1:]:
         biasval_name += ", " + str(val)
