@@ -1,10 +1,10 @@
-"""Similar to data_dinarizer,except the selected values are not combined to 1 variable
-ex. nbvaluelsit = [1,2,3,4]
-	selectedvaluelist = [1,2]
-	nvaluelist = [[1],[2],["not-([1,2])"]]"""
-
 def data_bin_slicer_multival(nbdata, nbhypothesis, nbvaluelist, selectedvaluelist):
-    
+    """
+    	Similar to data_binarizer,except the selected values are not combined to 1 variable
+	ex. nbvaluelist = [1,2,3,4]
+	selectedvaluelist = [1,2]
+	nvaluelist = [[1],[2],["not-([1,2])"]]
+	"""
     nvaluelist = []
    
     nhypothesis = []
