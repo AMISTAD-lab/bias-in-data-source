@@ -4,7 +4,7 @@ Repo for the Bias in Data summer project
 What's here so far:
 
 ## hypothesis_test.py
-This file contains several functions to help you run a two-distribution specified complexity (s.c.) hypothesis test for a discrete univariate distribution.
+This file contains several functions to help you run a two-distribution specified complexity (s.c.) hypothesis test for a discrete univariate distribution. This is the user-facing file, and we recommend using it instead of the other files in this directory.
 
 ### hypothesis_test
 Performs a multinomial SC test.
