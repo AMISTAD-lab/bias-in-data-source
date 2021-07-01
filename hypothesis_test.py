@@ -42,7 +42,7 @@ def binary_hypothesis_test(data, value_list, selected_value_list, alpha=0.05, bi
     'binary_hypothesis' contains the probability of producing a selected value,
     and the probability of producing a not-selected value.
     'value_list' and 'alpha' are the same as in 'hypothesis_test'.
-    
+    Returns the same values as 'hypothesis_test'. 
     """
     count_vector = [data.count(x) for x in value_list]
     binary_count_vector = data_binarizer_main(count_vector, value_list, selected_value_list)
@@ -63,6 +63,16 @@ def binary_hypothesis_test(data, value_list, selected_value_list, alpha=0.05, bi
         return (kardis, reject)
   
 def exact_binomial_test(data, value_list, selected_value_list, alpha = 0.05, binary_hypothesis = [0.5,0.5], sigfigs = 4):
+    """
+    Performs an exact binomial test (with tighter bounds than 'binary_hypothesis_test')
+    upon the non-binary dataset 'data'. 'sigfigs' is the number of significant figures
+    requested by the user, and all other inputs are the same as in 'binary_hypothesis_test'.
+    Returns the coefficient necessary upon the the selected value probability to produce 
+    a plausible explanation. If the hypothesis is already valid, this value is 1. 
+    Additionally returns a boolean that is True in the case that the binomial tail probability
+    is >= 1 - alpha: that is, that the data is actually biased against the selected values.
+    The coefficient returned in this case is for the probability of the not-selected values.
+    """
     count_vector = [data.count(x) for x in value_list]
     s_prime, flipped = s_prime_finder_main(count_vector, value_list, selected_value_list, alpha, binary_hypothesis, sigfigs)
     #the below print statements may need to be reworked
