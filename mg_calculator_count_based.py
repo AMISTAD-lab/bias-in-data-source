@@ -16,22 +16,23 @@ def mg_calculator(observed_freq, hypothesis):
     max_distance_freq = [0 if i != mean_freq.index(min(mean_freq)) else sum(observed_freq) for i in range(len(observed_freq))]
     max_distance = sum(list(map(lambda x,y: abs(x-y), max_distance_freq, mean_freq)))
     num_bins = len(mean_freq)
-    bin_dict, bin_list = bin_information(mean_freq)
-    bin_list.sort(key=lambda x: x[2])
+    bin_list = bin_information(mean_freq)
     powerset_dict = {}
     for i in bin_list:
         powerset_dict[i[0]] = powerset_with_sums(i[0])
     mg = 0         
     for i in range(min_distance, max_distance+1, 2):
-        half_distance = i // 2
-        valid_bins = list(filter(lambda x: x[2] >= half_distance, bin_list))
-        for i in valid_bins:
-            limit_list = i[0]
-            num_neg_bins = i[1]
-            neg_placement_choices = num_sized_integer_compositions_multiple_limits(num_neg_bins, half_distance, limit_list, powerset_dict[i[0]])        
-            num_pos_bins = num_bins - num_neg_bins
-            pos_placement_choices = num_weak_compositions(num_pos_bins, half_distance)
-            mg += neg_placement_choices * pos_placement_choices
+        if i == 0:
+            mg += 1
+        else:
+            half_distance = i // 2
+            valid_bins = list(filter(lambda x: x[2] >= half_distance, bin_list))
+            for i in valid_bins:
+                num_neg_bins = i[1]
+                neg_placement_choices = num_sized_integer_compositions_multiple_limits(num_neg_bins, half_distance, powerset_dict[i[0]])        
+                num_pos_bins = num_bins - num_neg_bins
+                pos_placement_choices = num_weak_compositions(num_pos_bins, half_distance)
+                mg += neg_placement_choices * pos_placement_choices
     return mg
                 
 def mg_calculator_uniform_hyp(observed_bin, mean):
@@ -80,7 +81,7 @@ def num_sized_integer_compositions_uniform_limit(length, total, limit):
     end = min(length, total//(limit+1))
     return sum([((-1)**k)*(math.comb(n, k))*(math.comb(N-k*(r)-1, n-1)) for k in range(end+1)])
 
-def num_sized_integer_compositions_multiple_limits(length, total, limit_list, powerset_list):
+def num_sized_integer_compositions_multiple_limits(length, total, powerset_list):
     """
     Calculates how many ways there are to distribute N
     balls into n bins (not allowing for empty bins)
@@ -89,7 +90,7 @@ def num_sized_integer_compositions_multiple_limits(length, total, limit_list, po
 
     See: https://math.stackexchange.com/questions/553960/extended-stars-and-bars-problemwhere-the-upper-limit-of-the-variable-is-bounded
     """
-    n, N, r = length, total, limit_list
+    n, N = length, total
     composition_count = 0
     for i in powerset_list:
         m = N-1-i[2]
@@ -101,11 +102,8 @@ def bin_information(bin_list):
     all_possible_bin_combos = []
     for i in range(len(bin_list)):
         all_possible_bin_combos += list(combinations(bin_list, i))
-    bin_dict = {}
-    for i in all_possible_bin_combos:
-        bin_dict[i] = sum(i)
     bin_list = [(i, len(i), sum(i)) for i in all_possible_bin_combos]
-    return bin_dict, bin_list
+    return bin_list
 
 def powerset_with_sums(orig_set):
     powerset = []
