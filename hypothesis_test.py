@@ -12,7 +12,7 @@ def hypothesis_test(data, value_list, alpha = 0.05, hypothesis = []):
     in the range (0,1] where hypothesis[i] corresponds to the probability of observing
     the value in value_list[i]. Returns the SC kardis, a boolean value for rejection, 
     as well as the lower plausibility bounds on s and p and the closest plausible distribution q
-    only if the given hypothesis is rejected.
+    if the given hypothesis is rejected.
     """
     if hypothesis == []:
         hyp = len(value_list)*[1/len(value_list)]
@@ -34,6 +34,16 @@ def hypothesis_test(data, value_list, alpha = 0.05, hypothesis = []):
         return (kardis, reject)
 
 def binary_hypothesis_test(data, value_list, selected_value_list, alpha=0.05, binary_hypothesis=[0.5,0.5]):
+    """
+    Performs a binomial SC test upon the non-binary dataset 'data'. 
+    'selected_value_list' is a list of the values the user believes the data is biased towards. 
+    The data is transformed into a binary dataset by use of that list, 
+    as a collection of selected values and not-selected values. 
+    'binary_hypothesis' contains the probability of producing a selected value,
+    and the probability of producing a not-selected value.
+    'value_list' and 'alpha' are the same as in 'hypothesis_test'.
+    
+    """
     count_vector = [data.count(x) for x in value_list]
     binary_count_vector = data_binarizer_main(count_vector, value_list, selected_value_list)
     n = sum(binary_count_vector)
