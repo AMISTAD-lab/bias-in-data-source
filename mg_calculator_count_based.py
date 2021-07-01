@@ -93,7 +93,7 @@ def num_sized_integer_compositions_multiple_limits(length, total, limit_list, po
     composition_count = 0
     for i in powerset_list:
         m = N-1-i[2]
-        if m > 0:
+        if m >= 0:
             composition_count += (-1)**i[1] * math.comb(m, n-1)
     return composition_count
 
