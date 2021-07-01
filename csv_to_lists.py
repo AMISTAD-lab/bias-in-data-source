@@ -1,7 +1,9 @@
 import csv
 
+"""Example code for converting a CSV file into lists in python."""
+
 file = open("WA_Fn-UseC_-HR-Employee-Attrition.csv", mode='r', encoding='utf-8-sig')
-#encoding removes the \uefeff characters :)
+#encoding removes the \uefeff characters
 
 csvreader = csv.reader(file)
 
