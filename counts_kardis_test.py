@@ -3,6 +3,14 @@ from mg_calculator_count_based import *
 from mpmath import *
 
 def kardis_test_main(counts, alpha, hypothesis):
+    """
+    Performs a multinomial kardis test upon the provided count vector 'counts'.
+    'alpha' is the chosen alpha-level, and 'hypothesis' is a list of 
+    proposed probabilities for each value, 
+    where counts[i] corresponds to hypothesis[i].
+    Returns the kardis, a boolean corresponding to rejection, 
+    as well as three values purely for use in the main function that calls this.
+    """
     num_bins = len(counts)
     n = sum(counts)
     norm_scriptx = math.comb(n+num_bins-1, num_bins-1)
@@ -19,6 +27,11 @@ def kardis_test_main(counts, alpha, hypothesis):
     return (kardis, reject, r, nu, h)
 
 def binary_kardis_test_main(counts, alpha, hypothesis):
+    """
+    Performs a binomial kardis test with tighter bounds than 'kardis_test_main'.
+    All inputs are identical as in 'kardis_test_main', though 
+    'counts' and 'hypothesis' may only have a length of 2.
+    """
     n = sum(counts)
     k = counts[0]
     r = n+1
@@ -32,6 +45,13 @@ def binary_kardis_test_main(counts, alpha, hypothesis):
     return (kardis, reject, r, nu, p)
 
 def uniform_dist_kardis_test(observation, value_list, alpha):
+    """
+    Performs a multinomial kardis test using the uniform distribution.
+    'observation' is the list of data points, 'value_list' is a list of the values
+    a data point may take, and 'alpha' is the chosen alpha-level. 
+    Returns the kardis value and a boolean representing rejection.
+    This function is largely deprecated.
+    """
     obs_counts = [observation.count(x) for x in value_list]
     num_bins = len(value_list) #should == len(hyp) == len(obs_counts)
     #now |x| == num of counts 
@@ -52,6 +72,14 @@ def uniform_dist_kardis_test(observation, value_list, alpha):
     return (kardis, reject)
 
 def univariate_kardis_test(observation, value_list, alpha, hypothesis=[]):
+    """
+    Performs a multinomial kardis test using a proposed distribution 'hypothesis'.
+    If hypothesis is not entered, it will default to the uniform distribution. 
+    'observation' is the list of data points, 'value_list' is a list of the values
+    a data point may take, and 'alpha' is the chosen alpha-level. 
+    Returns the kardis value and a boolean representing rejection.
+    This function is largely deprecated.
+    """
     if hypothesis == []:
         hyp = len(value_list)*[1/len(value_list)]
     else:
