@@ -5,7 +5,9 @@ def mg_calculator(observed_freq, hypothesis):
     """
     Calculates the number of count-based-vectors (events)
     that are more surprising than the observed event for
-    any hypothesis
+    any hypothesis. 'observed_freq' is the count vector 
+    for the observation, and 'hypothesis' is the user-provided
+    list of probabilities for each value. 
     
     Notes: The mean frequency of each value must be a whole number.
     That is, the each element of hypothesis multiplied by the observation
