@@ -9,6 +9,13 @@ import warnings
 warnings.filterwarnings("ignore")
 
 def q_finder_main(count_vector, hypothesis, p_lowerbound):
+    """
+    Returns the closest plausible distribution to the 'hypothesis' distribution. 
+    'count_vector' contains the quantity of each value in the data. 
+    'p_lowerbound' is the lower bound on plausible probabilities - any
+    distribution which produces a lower sequence probability
+    may be instantly rejected.
+    """
     p = np.array(hypothesis)
     log_n_fac = math.log(math.factorial(sum(count_vector)))
     log_prod_x_fac = math.log(math.prod([math.factorial(x) for x in count_vector]))
@@ -33,6 +40,11 @@ def q_finder_main(count_vector, hypothesis, p_lowerbound):
     return res.x
 
 def binary_q_finder_main(binary_count_vector, hypothesis, alpha):
+    """
+    Acts similarly to 'q_finder_main', but is strictly for binary situations.
+    'hypothesis' is the originally proposed distribution, 
+    and 'alpha' is the given alpha-level. 
+    """
     p = np.array(hypothesis)
     n = sum(binary_count_vector)
     k = binary_count_vector[0]
