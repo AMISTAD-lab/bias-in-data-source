@@ -50,15 +50,18 @@ def mg_calculator_uniform_hyp(observed_bin, mean):
     num_bins = len(observed_bin)
     mg = 0
     for i in range(min_distance, max_distance + 1, 2):
-        half_distance = i // 2
-        min_neg_bins = math.ceil(half_distance/mean)
-        max_neg_bins = num_bins - 1
-        for num_neg_bins in range(min_neg_bins, max_neg_bins + 1):
-            neg_bin_choices = math.comb(num_bins, num_neg_bins)
-            neg_placement_choices = num_sized_integer_compositions_uniform_limit(num_neg_bins, half_distance, mean)
-            num_pos_bins = num_bins - num_neg_bins
-            pos_placement_choices = num_weak_compositions(num_pos_bins, half_distance)
-            mg += neg_bin_choices * neg_placement_choices * pos_placement_choices
+        if i == 0:
+            mg += 1
+        else:
+            half_distance = i // 2
+            min_neg_bins = math.ceil(half_distance/mean)
+            max_neg_bins = num_bins - 1
+            for num_neg_bins in range(min_neg_bins, max_neg_bins + 1):
+                neg_bin_choices = math.comb(num_bins, num_neg_bins)
+                neg_placement_choices = num_sized_integer_compositions_uniform_limit(num_neg_bins, half_distance, mean)
+                num_pos_bins = num_bins - num_neg_bins
+                pos_placement_choices = num_weak_compositions(num_pos_bins, half_distance)
+                mg += neg_bin_choices * neg_placement_choices * pos_placement_choices
     return mg
 
 def num_weak_compositions(length, total):
@@ -111,5 +114,5 @@ def powerset_with_sums(orig_set):
     powerset = []
     for i in range(len(orig_set)+1):
         powerset += list(combinations(orig_set, i))
-    powerset_with_sums = [(i, len(i), sum(i)) for i in powerset]
+    powerset_with_sums = [[i, len(i), sum(i)] for i in powerset]
     return powerset_with_sums
