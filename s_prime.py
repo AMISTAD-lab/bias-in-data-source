@@ -47,7 +47,7 @@ def s_prime_finder_main(count_vector, value_list, selected_value_list, alpha, bi
         else:
             return 1, flipped
     cur_pow10 = 0
-    cur_val = 1/p_b
+    cur_val = round(1/p_b, sigfigs-1)
 
     def buddy(s):
         """
@@ -64,6 +64,6 @@ def s_prime_finder_main(count_vector, value_list, selected_value_list, alpha, bi
         cur_val = buddy(cur_val)
         cur_pow10 -= 1
 
-    return (round(cur_val,abs(int(cur_pow10+1))),flipped)
+    return (round(cur_val,sigfigs-1),flipped)
 
 
