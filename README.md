@@ -20,7 +20,7 @@ Performs a binomial SC test with tighter bounds than hypothesis_test.
 
 #### exact_binomial_test(data, value_list, selected_value_list, alpha = 0.05, binary_hypothesis = [0.5,0.5], sigfigs = 4)
 Performs an exact binomial test. Has the tightest bounds of all the functions listed, but is significantly slower. Like the above binary test, the provided data should still be non-binary. 
-  - sigfigs: the number of significant figures the returned coefficient will have. The default is 4. 
+  - sigfigs: the number of significant figures the returned distribution will have. The default is 4. 
   
 #### Use examples
 Suppose you have a six-sided die which you believed to be fair. You rolled it sixty times and observed 45 ones, 5 twos, 4 threes, 3 fours, 2 fives, and 1 six. If you were to pick an alpha of 0.05, the parameters representing this scenario would be 
@@ -53,10 +53,10 @@ If you instead wanted to use our other tests, assuming that the die was biased t
 ```
 binary_hypothesis_test(45*[1]+5*[2]+4*[3]+3*[4]+2*[5]+[6], [1,2,3,4,5,6], [1], 0.05, [1/6,5/6])
 ```
-Returns a closest possible distribution of ```[0.553, 0.447]```, which means a 55.3% chance of rolling a 1 is required. 
+Returns a closest plausible distribution of ```[0.553, 0.447]```, which means a 55.3% chance of rolling a 1 is required. 
 ```
 exact_binomial_test(45*[1]+5*[2]+4*[3]+3*[4]+2*[5]+[6], [1,2,3,4,5,6], [1], 0.05, [1/6,5/6])
 ```
-Returns the coefficient ```3.848```, which when multiplied to our original probability of 1/6, yields a required 64.1% chance of rolling a 1. 
+Returns a closest plausible distribution ```[0.641, 0.359]```, which means a 64.1% chance of rolling a 1 is required.
 This illustrates the slightly different bounds on each test. 
 
