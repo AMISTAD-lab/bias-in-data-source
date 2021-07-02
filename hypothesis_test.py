@@ -8,11 +8,11 @@ def hypothesis_test(data, value_list, alpha = 0.05, hypothesis = []):
     """
     Performs a multinomial SC test upon the dataset 'data'. 
     'value_list' is the list of values that may be observed within 'data', 
-    'alpha' is the selected alpha level, and 'hypothesis' is a list of probability values
-    in the range (0,1] where hypothesis[i] corresponds to the probability of observing
-    the value in value_list[i]. Returns the SC kardis, a boolean value for rejection, 
-    as well as the lower plausibility bounds on s and p and the closest plausible distribution q
-    if the given hypothesis is rejected.
+    'alpha' is the selected alpha level, and 'hypothesis' is a list representing 
+    a probability distribution for each of the values in 'value_list'. 
+    Returns the SC kardis, a boolean value for rejection, 
+    as well as the lower plausibility bounds on s and p 
+    and the closest plausible distribution if the given hypothesis is rejected.
     """
     if hypothesis == []:
         hyp = len(value_list)*[1/len(value_list)]
