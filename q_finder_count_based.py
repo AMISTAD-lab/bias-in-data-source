@@ -43,7 +43,7 @@ def binary_q_finder_main(binary_count_vector, hypothesis, alpha):
     """
     Acts similarly to 'q_finder_main', but is strictly for binary situations.
     'hypothesis' is the originally proposed distribution, 
-    and 'alpha' is the given alpha-level. 
+    and 'alpha' is the given alpha level. 
     """
     p = np.array(hypothesis)
     n = sum(binary_count_vector)
