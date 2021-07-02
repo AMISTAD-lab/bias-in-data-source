@@ -43,4 +43,20 @@ If the hypothesis was rejected, then the function will additionally return the p
 ```
 which indicates the die would need to have at least a 46.6% chance of rolling a 1. 
 
+If you instead wanted to use our other tests, assuming that the die was biased towards 1, the parameters would be 
+  - data: 45*[1] + 5*[2] + 4*[3] + 3*[4] + 2*[5] + [6]
+  - value_list: [1, 2, 3, 4, 5, 6]
+  - selected_value_list: [1]
+  - alpha: 0.05
+  - binary_hypothesis[1/6, 5/6]
+
+```
+binary_hypothesis_test(45*[1]+5*[2]+4*[3]+3*[4]+2*[5]+[6], [1,2,3,4,5,6], [1], 0.05, [1/6,5/6])
+```
+Returns a closest possible distribution of ```[0.553, 0.447]```, which means a 55.3% chance of rolling a 1 is required. 
+```
+exact_binomial_test(45*[1]+5*[2]+4*[3]+3*[4]+2*[5]+[6], [1,2,3,4,5,6], [1], 0.05, [1/6,5/6])
+```
+Returns the coefficient ```3.848```, which when multiplied to our original probability of 1/6, yields a required 64.1% chance of rolling a 1. 
+This illustrates the slightly different bounds on each test. 
 
