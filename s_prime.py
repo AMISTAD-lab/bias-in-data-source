@@ -10,7 +10,7 @@ def s_prime_finder_main(count_vector, value_list, selected_value_list, alpha, bi
     'count_vector' is the original non-binary count representation of the data,
     'value_list' contains all the values a data point may take, 
     'selected_value_list' is the collection of values the user believes
-    the data is biased towards. 'alpha' is the requested alpha-level, 
+    the data is biased towards. 'alpha' is the requested alpha level, 
     'binary_hypothesis' contains the probability of producing a
     selected value or a not-selected value,
     and 'sigfigs' is the requested number of significant figures.
