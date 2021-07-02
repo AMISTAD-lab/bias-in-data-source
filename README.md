@@ -28,6 +28,19 @@ Suppose you have a six-sided die which you believed to be fair. You rolled it si
   - value_list: [1, 2, 3, 4, 5, 6]
   - alpha: 0.05
   - hypothesis: 6*[1/6] 
-Running the hypothesis_test function would look like hypothesis_test(45*[1]+5*[2]+4*[3]+3*[4]+2*[5]+[6], [1,2,3,4,5,6], 0.05, 6*[1/6]), or more simply hypothesis_test(45*[1]+5*[2]+4*[3]+3*[4]+2*[5]+[6], [1,2,3,4,5,6]), as the chosen alpha and hypothesis values are the default. This function will return the kardis value and a boolean representing whether the hypothesis was rejected or not.
-If the hypothesis was rejected, then the function will additionally return the probability coefficient needed to produce a plausible explanation, the lower plausibility bound that results from that coefficient, and the closest plausible distribution. 
+Running the hypothesis_test function would look like 
+```
+hypothesis_test(45*[1]+5*[2]+4*[3]+3*[4]+2*[5]+[6], [1,2,3,4,5,6], 0.05, 6*[1/6])
+```
+or, more simply, 
+```
+hypothesis_test(45*[1]+5*[2]+4*[3]+3*[4]+2*[5]+[6], [1,2,3,4,5,6])
+```
+as the chosen alpha and hypothesis values are the default. This function will return the kardis value and a boolean representing whether the hypothesis was rejected or not.
+If the hypothesis was rejected, then the function will additionally return the probability coefficient needed to produce a plausible explanation, the lower plausibility bound that results from that coefficient, and the closest plausible distribution. For the die example above, the SC test would determine that the uniform hypothesis was not a reasonable explanation, and the printed distribution would be (here rounded to three significant figures) 
+```
+[0.466, 0.133, 0.121, 0.108, 0.094, 0.078]
+```
+which indicates the die would need to have at least a 46.6% chance of rolling a 1. 
+
 
