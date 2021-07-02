@@ -5,7 +5,7 @@ from mpmath import *
 def kardis_test_main(counts, alpha, hypothesis):
     """
     Performs a multinomial kardis test upon the provided count vector 'counts'.
-    'alpha' is the chosen alpha-level, and 'hypothesis' is a list of 
+    'alpha' is the chosen alpha level, and 'hypothesis' is a list of 
     proposed probabilities for each value, 
     where counts[i] corresponds to hypothesis[i].
     Returns the kardis, a boolean corresponding to rejection, 
@@ -48,7 +48,7 @@ def uniform_dist_kardis_test(observation, value_list, alpha):
     """
     Performs a multinomial kardis test using the uniform distribution.
     'observation' is the list of data points, 'value_list' is a list of the values
-    a data point may take, and 'alpha' is the chosen alpha-level. 
+    a data point may take, and 'alpha' is the chosen alpha level. 
     Returns the kardis value and a boolean representing rejection.
     This function is largely deprecated.
     """
@@ -76,7 +76,7 @@ def univariate_kardis_test(observation, value_list, alpha, hypothesis=[]):
     Performs a multinomial kardis test using a proposed distribution 'hypothesis'.
     If hypothesis is not entered, it will default to the uniform distribution. 
     'observation' is the list of data points, 'value_list' is a list of the values
-    a data point may take, and 'alpha' is the chosen alpha-level. 
+    a data point may take, and 'alpha' is the chosen alpha level. 
     Returns the kardis value and a boolean representing rejection.
     This function is largely deprecated.
     """
