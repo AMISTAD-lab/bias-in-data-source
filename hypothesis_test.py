@@ -72,17 +72,15 @@ def exact_binomial_test(data, value_list, selected_value_list, alpha = 0.05, bin
     """
     count_vector = [data.count(x) for x in value_list]
     s_prime, flipped = s_prime_finder_main(count_vector, value_list, selected_value_list, alpha, binary_hypothesis, sigfigs)
-    reject = True
     #the below print statements may need to be reworked
     if s_prime == 1:
-        q = binary_hypothesis
-        reject = False
         print("Proposed distribution not rejected at alpha = " + str(alpha) + ".")
+        return (binary_hypothesis, False)
     elif flipped:
         q = [1-s_prime*binary_hypothesis[1], s_prime*binary_hypothesis[1]]
-        print("Binomial tail exceeds 1 - "+ str(alpha)+ \
-            ". The closest plausible distribution is " + str(q) + ".")
+        print("Binomial tail exceeds 1 - "+ str(alpha) + ".")
     else:
         q = [s_prime*binary_hypothesis[0], 1-s_prime*binary_hypothesis[0]]
-        print("Proposed distribution is rejected at alpha = " + str(alpha) + ". The closest plausible distribution is " + str(q) + ".")
-    return (q, reject)
+    q = [round(val, sigfigs-1) for val in q]
+    print("Proposed distribution is rejected at alpha = " + str(alpha) + ". The closest plausible distribution is " + str(q) + ".")
+    return (q, True)
