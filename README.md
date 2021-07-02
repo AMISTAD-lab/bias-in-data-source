@@ -17,6 +17,7 @@ Performs a multinomial SC test.
 #### binary_hypothesis_test(data, value_list, selected_value_list, alpha=0.05, binary_hypothesis=[0.5,0.5])
 Performs a binomial SC test with tighter bounds than hypothesis_test. 
   - selected_value_list: a list of values that is used to binarize the data, which will be partitioned into selected values and not-selected values. 
+  - binary_hypothesis: a list representing a binary probability distribution for selected values and not-selected values.
 ##### How to use:
 
 #### exact_binomial_test(data, value_list, selected_value_list, alpha = 0.05, binary_hypothesis = [0.5,0.5], sigfigs = 4)
