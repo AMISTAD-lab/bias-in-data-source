@@ -65,5 +65,3 @@ def s_prime_finder_main(count_vector, value_list, selected_value_list, alpha, bi
         cur_pow10 -= 1
 
     return (round(cur_val,sigfigs-1),flipped)
-
-
