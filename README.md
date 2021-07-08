@@ -60,3 +60,16 @@ exact_binomial_test(45*[1]+5*[2]+4*[3]+3*[4]+2*[5]+[6], [1,2,3,4,5,6], [1], 0.05
 Returns a closest plausible distribution ```[0.641, 0.359]```, which means a 64.1% chance of rolling a 1 is required.
 This illustrates the slightly different bounds on each test. 
 
+## Other Files
+The other files in the main folder can be split into two categories:
+#### Support for hypothesis_test.py
+  - counts_kardis_test.py
+  - data_binarizer.py
+  - mg_calculator_count_based.py
+  - q_finder_count_based.py
+  - s_prime.py
+#### Data processing and visualization
+  - csv_to_lists.py
+  - data_bin_slicer_multival.py
+  - excel_to_list.py
+
