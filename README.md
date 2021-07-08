@@ -72,4 +72,5 @@ The other files in the main folder can be split into two categories:
   - csv_to_lists.py
   - data_bin_slicer_multival.py
   - excel_to_list.py
+  - graph_distributions.py
 
