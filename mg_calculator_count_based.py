@@ -13,7 +13,7 @@ def mg_calculator(observed_freq, hypothesis):
     That is, the each element of hypothesis multiplied by the observation
     length must be a whole number.
     """
-    mean_freq = [int(sum(observed_freq)*i) for i in hypothesis]
+    mean_freq = [int(round(sum(observed_freq)*i, 0)) for i in hypothesis]
     min_distance = sum(list(map(lambda x,y: abs(x-y), observed_freq, mean_freq)))
     max_distance_freq = [0 if i != mean_freq.index(min(mean_freq)) else sum(observed_freq) for i in range(len(observed_freq))]
     max_distance = sum(list(map(lambda x,y: abs(x-y), max_distance_freq, mean_freq)))
