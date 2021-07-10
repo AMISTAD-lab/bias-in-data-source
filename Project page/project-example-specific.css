@@ -1,0 +1,65 @@
+/*
+ * This is where you add CSS styling specific for your project page.
+ */
+
+
+    .text-link {
+      text-decoration: none;
+      color: black;
+    }
+
+    .logo-row {
+      background-color: purple;
+      margin-top: 5%;
+      display: flex;
+      align-items: center;
+    }
+
+    .amistad-logo {
+      width: 300px;
+      float: left;
+      padding: 5px;
+      background-color: red;
+    }
+
+    .amistad-logo-a {
+      width: 125px;
+      float: left;
+      padding: 5px;
+      background-color: red;
+    }
+
+    .header-logo {
+        width: 30em;
+        margin-bottom: 4em;
+        max-width: 80%;
+    }
+
+    .nsf-logo {
+      max-height: 125px;
+      max-width: 125px;
+      padding: 5px;
+      background-color: blue;
+    }
+
+    .hmc-logo {
+      max-height: 125px;
+      max-width: 125px;
+      float: right;
+      padding: 5px;
+      background-color: green;
+    }
+
+    .target-divergence-diagram {
+      width: 20em;
+      padding-left: 1em;
+      padding-right: 1em;
+      max-width: 80%;
+    }
+
+    .main-page-box {
+        width: 85%;
+        max-width: 933.5px;
+        padding-top: 4em;
+    }
+
