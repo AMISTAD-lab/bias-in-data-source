@@ -116,4 +116,4 @@ def graph_distributions(q,value_list, hypothesis=[],selected_value=[],filename="
     ax.set_ylabel("Proportion",fontsize = 11,fontname="Sans-serif")
     ax.set_title("Proposed Distribution vs. Closest Plausible Distribution",fontname="Sans-serif")
     ax.legend(handles=legend_elements,fontsize=6,loc='upper right')
-    plt.savefig(filename) #saves the image as a pdf. you can change the file name to any name of format you want. this is the default I came up with.
+    plt.savefig(filename,,bbox_inches="tight") #saves the image as a pdf. you can change the file name to any name of format you want. this is the default I came up with.
