@@ -1,16 +1,3 @@
-value_list = [['Male','Caucasian'],['Female','Caucasian'],['Male','African-American'],['Female','African-American'],
-              ['Male','Hispanic'],['Female','Hispanic'],['Male','Asian'],['Female','Asian'],
-              ['Male','Other'],['Female','Other']]
-
-hypothesis = 10*[1/10] #uniform hypothesis
-
-alpha = 0.05 
-data = observation
-bins = 1
-num_bins = []
-avg_run_times = []
-int_avg_run_times = []
-
 while bins < 10:
     selectedvalue = []
     for idx in range(bins):
@@ -30,4 +17,3 @@ bin_count = list(range(2, 11))
 #print(avg_run_times)
 run_time_frame = pd.DataFrame([bin_count, avg_run_times])
 run_time_frame.to_excel(r"Time scaling experiment results.xlsx")
-#graph_times(bin_count,int_avg_run_times)

@@ -591,3 +591,16 @@ def graph_times(num_bins, avg_run_times):
     plt.savefig("Time scaling experiment results graph.pdf",bbox_inches="tight")
     
 #----------------------------------------------------------------------------------------------
+
+value_list = [['Male','Caucasian'],['Female','Caucasian'],['Male','African-American'],['Female','African-American'],
+              ['Male','Hispanic'],['Female','Hispanic'],['Male','Asian'],['Female','Asian'],
+              ['Male','Other'],['Female','Other']]
+
+hypothesis = 10*[1/10] #uniform hypothesis
+
+alpha = 0.05 
+data = observation
+bins = 1
+num_bins = []
+avg_run_times = []
+int_avg_run_times = []
