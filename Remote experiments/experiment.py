@@ -1,16 +1,3 @@
-import pandas as pd
-import math
-from itertools import *
-import timeit
-from mpmath import *
-import numpy as np
-from scipy.optimize import minimize, LinearConstraint, NonlinearConstraint, Bounds
-from scipy.special import rel_entr
-import warnings
-import matplotlib.pyplot as plt
-import numpy as np
-import matplotlib.font_manager as font_manager
-
 value_list = [['Male','Caucasian'],['Female','Caucasian'],['Male','African-American'],['Female','African-American'],
               ['Male','Hispanic'],['Female','Hispanic'],['Male','Asian'],['Female','Asian'],
               ['Male','Other'],['Female','Other']]
@@ -24,7 +11,7 @@ num_bins = []
 avg_run_times = []
 int_avg_run_times = []
 
-while bins < 4:
+while bins < 10:
     selectedvalue = []
     for idx in range(bins):
         selectedvalue += [value_list[idx]]
@@ -37,7 +24,7 @@ while bins < 4:
     avg_run_times.append(str(my_time))
     int_avg_run_times.append(my_time.average)
 
-bin_count = list(range(2, 5))
+bin_count = list(range(2, 11))
 
 #print(bin_count)
 #print(avg_run_times)
