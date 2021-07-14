@@ -26,7 +26,7 @@ def hypothesis_test(data, value_list, alpha = 0.05, hypothesis = []):
         p_lowerbound = s_lowerbound*h
         print("Any plausible distribution must boost probability over the given distribution by " \
             + str(s_lowerbound) + ", and will therefore have a minimum probability of " + str(p_lowerbound) + ".")
-        q = list(q_finder_main(count_vector, hyp, p_lowerbound))
+        q = list(q_finder_main_slsqp(count_vector, hyp, p_lowerbound))
         print("Closest plausible distribution: " + str(q))
         return (kardis, reject, s_lowerbound, p_lowerbound, q)
     else:
