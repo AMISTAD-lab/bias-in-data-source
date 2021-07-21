@@ -1,14 +1,12 @@
+import matplotlib.pyplot as plt
+import matplotlib
+from matplotlib.patches import Patch
+from matplotlib.lines import Line2D
+from matplotlib import cm
+import numpy as np
+import math
 
 def graph_distributions(q,value_list, hypothesis=[],selected_value=[],filename="distributions.pdf"):
-
-    import matplotlib.pyplot as plt
-    import matplotlib
-    from matplotlib.patches import Patch
-    from matplotlib.lines import Line2D
-    from matplotlib import cm
-    import numpy as np
-    import math
-    
     if hypothesis == []:
         hyp = len(value_list)*[1/len(value_list)]
     else:
@@ -29,7 +27,6 @@ def graph_distributions(q,value_list, hypothesis=[],selected_value=[],filename="
         nvalue_list = value_list
 
     N = len(nvalue_list)
-    #print(N)
 
     if (N > 11):
         text_size = 3
@@ -43,8 +40,6 @@ def graph_distributions(q,value_list, hypothesis=[],selected_value=[],filename="
         text_size = 5
         h_line_factor = .2
         xy_factor = 11
-    
-    #print(text_size,h_line_factor,xy_factor)
 
     xl = []
     for x in nvalue_list:
@@ -61,7 +56,6 @@ def graph_distributions(q,value_list, hypothesis=[],selected_value=[],filename="
             else:
                 header = str(header) + str(str(n[:1]))
         xl.append(header)
-    #print(xl)
 
     xmin, xmax = xlim = 0, N+1
     ymin, ymax = ylim = 0, 1.1
@@ -69,13 +63,10 @@ def graph_distributions(q,value_list, hypothesis=[],selected_value=[],filename="
     fig, ax = plt.subplots(dpi=300)
     ax.set(xlim=xlim, ylim=ylim, autoscale_on=False)
 
-
-    #xl = ['MW','FW','MOA','FOA','MAA','FAA','MOH','FOH','MA','FA']
     x = np.arange(1,N+1) + .15
-    yh = np.array(hyp)#np.random.rand(N)
+    yh = np.array(hyp)
     bar_width = 0.1
-    y = np.array(q)#np.random.rand(N)
-
+    y = np.array(q)
 
     color_scheme = matplotlib.cm.get_cmap('inferno')
     norm = plt.Normalize(-1,1)
@@ -84,28 +75,17 @@ def graph_distributions(q,value_list, hypothesis=[],selected_value=[],filename="
     plt.colorbar(sm)
 
     for idx in range(N):
-
         diff = 0.5 + (y[idx]-yh[idx])
-        
-        
-        plt.hlines(y=yh[idx],xmin=(x[idx]-h_line_factor),xmax=(x[idx]+h_line_factor), colors='black',alpha=0.3,
-                       linestyle='solid',linewidth = 1, zorder=3)
-       
+        plt.hlines(y=yh[idx],xmin=(x[idx]-h_line_factor),xmax=(x[idx]+h_line_factor), colors='black',alpha=0.3,\
+                   linestyle='solid',linewidth = 1, zorder=3)
         plt.vlines(x[idx], ymin=0, ymax=y[idx], colors=color_scheme(diff), linestyles='solid',linewidth=3)
         plt.plot(x[idx],y[idx],"o",color=color_scheme(diff))
-       
         plt.annotate(format(y[idx], '.2f'), 
-                                (x[idx], y[idx]), 
-                                ha = 'center', va = 'center',
-                                xytext = (0, 5.5), 
-                                textcoords = 'offset points', weight='bold',fontsize=text_size)
-       
+                     (x[idx], y[idx]), 
+                     ha = 'center', va = 'center',
+                     xytext = (0, 5.5), 
+                     textcoords = 'offset points', weight='bold',fontsize=text_size)  
         
-             
-           
-       
-
-
     legend_elements = [Line2D([0], [0], color='black',alpha=0.3, linestyle='solid',lw=1, label='Proposed'),
                        Line2D([0], [0], color='w', marker='o',markerfacecolor='black',markersize=6,
                               lw=4, label='Plausible')]
