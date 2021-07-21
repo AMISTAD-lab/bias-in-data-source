@@ -25,7 +25,6 @@ def q_finder_main_slsqp(count_vector, hypothesis, p_lowerbound):
     constraint_constant = math.log(p_lowerbound) - log_n_fac + log_prod_x_fac
     # Defines loss function to be the KL divergence of Q from P
     def objective(q):
-        #print(q)
         return sum(rel_entr(q, p))
     # The sum of all probabilities in Q must be 1
     def lin_cons(q):
