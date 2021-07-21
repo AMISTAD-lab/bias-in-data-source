@@ -4,7 +4,6 @@ from matplotlib.patches import Patch
 from matplotlib.lines import Line2D
 from matplotlib import cm
 import numpy as np
-import math
 
 def graph_distributions(q,value_list, hypothesis=[],selected_value=[],filename="distributions.pdf"):
     if hypothesis == []:
@@ -16,12 +15,9 @@ def graph_distributions(q,value_list, hypothesis=[],selected_value=[],filename="
 
     if len(selected_value) != 0:
         for x in range(len(selected_value)):
-            #flat = [val for sublist in x for val in sublist]
             nvalue_list.append(selected_value[x])
-            #print(string)
             not_val = ['NOT']*1 + selected_value[x]
             nvalue_list.append(not_val)
-            #nvalue_list = [[x in selected_value], ['NOT MALE WHITE']]
         print(nvalue_list)
     else:
         nvalue_list = value_list
