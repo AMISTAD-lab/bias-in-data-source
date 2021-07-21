@@ -1,5 +1,5 @@
 import math
-from mg_calculator_count_based import *
+from mg_calculator import *
 from mpmath import *
 
 def kardis_test_main(counts, alpha, hypothesis):

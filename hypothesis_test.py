@@ -1,5 +1,5 @@
-from q_finder_count_based import *
-from counts_kardis_test import *
+from q_finder import *
+from kardis_test import *
 from data_binarizer import *
 from s_prime import *
 from mpmath import *
