@@ -85,16 +85,13 @@ def univariate_kardis_test(observation, value_list, alpha, hypothesis=[]):
     else:
         hyp = hypothesis
     obs_counts = [observation.count(x) for x in value_list]
-    num_bins = len(value_list) #should == len(hyp) == len(obs_counts)
-    #now |x| == num of counts 
+    num_bins = len(value_list)
     norm_scriptx = math.comb(len(observation)+num_bins-1, num_bins-1)
-    #don't forget the whole-number limitations on this calculator
     mg = mg_calculator(obs_counts, hyp)
     nu = norm_scriptx/mg
     r = norm_scriptx*(1+math.log(norm_scriptx))
     p = mpf(math.factorial(len(observation))) / math.prod([mpf(math.factorial(x)) for x in obs_counts])\
     * math.prod([mpf(hyp[x])**mpf(obs_counts[x]) for x in range(num_bins)])
-    #print(p)
     kardis = r*p/nu
     if kardis < alpha:
         reject = True
