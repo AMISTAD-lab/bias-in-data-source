@@ -7,11 +7,7 @@ def mg_calculator(observed_freq, hypothesis):
     that are more surprising than the observed event for
     any hypothesis. 'observed_freq' is the count vector 
     for the observation, and 'hypothesis' is the user-provided
-    list of probabilities for each value. 
-    
-    Notes: The mean frequency of each value must be a whole number.
-    That is, the each element of hypothesis multiplied by the observation
-    length must be a whole number.
+    list of probabilities for each value.
     """
     mean_freq = [int(round(sum(observed_freq)*i, 0)) for i in hypothesis]
     min_distance = sum(list(map(lambda x,y: abs(x-y), observed_freq, mean_freq)))
