@@ -10,7 +10,8 @@ warnings.filterwarnings("ignore")
 
 def q_finder_main_slsqp(count_vector, hypothesis, p_lowerbound):
     """
-    Returns the closest plausible distribution to the 'hypothesis' distribution. 
+    Returns the closest plausible distribution to the 'hypothesis' distribution
+    using sequential quadratic programing. 
     'count_vector' contains the quantity of each value in the data. 
     'p_lowerbound' is the lower bound on plausible probabilities - any
     distribution which produces a lower sequence probability
@@ -46,7 +47,8 @@ def q_finder_main_slsqp(count_vector, hypothesis, p_lowerbound):
 
 def q_finder_main_trust_constr(count_vector, hypothesis, p_lowerbound):
     """
-    Returns the closest plausible distribution to the 'hypothesis' distribution. 
+    Returns the closest plausible distribution to the 'hypothesis' distribution
+    using trust constraint gradient descent. 
     'count_vector' contains the quantity of each value in the data. 
     'p_lowerbound' is the lower bound on plausible probabilities - any
     distribution which produces a lower sequence probability
