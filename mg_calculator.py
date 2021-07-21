@@ -14,7 +14,10 @@ def mg_calculator(observed_freq, hypothesis):
     max_distance_freq = [0 if i != mean_freq.index(min(mean_freq)) else sum(observed_freq) for i in range(len(observed_freq))]
     max_distance = sum(list(map(lambda x,y: abs(x-y), max_distance_freq, mean_freq)))
     num_bins = len(mean_freq)
+    # List of tuples where each tuple contains a bin combination, the number of bins in that combination,
+    # as well as the total capacity of those bins
     bin_list = bin_information(mean_freq)
+    # Precomputes the powerset of each bin combination and stores those in a dictionary to speed up computational time
     powerset_dict = {}
     for i in bin_list:
         powerset_dict[i[0]] = powerset_with_sums(i[0])
@@ -66,6 +69,8 @@ def num_weak_compositions(length, total):
     balls into k bins (allowing for empty bins)
     
     See: https://en.wikipedia.org/wiki/Stars_and_bars_(combinatorics)
+
+    This is a Lemma in the paper.
     """
     k, N = length, total
     return math.comb(N+k-1, k-1)
@@ -76,7 +81,7 @@ def num_sized_integer_compositions_uniform_limit(length, total, limit):
     balls into n bins (not allowing for empty bins)
     where each bin can hold at maximum r balls
     
-    See: https://math.stackexchange.com/questions/553960/extended-stars-and-bars-problemwhere-the-upper-limit-of-the-variable-is-bounded
+    This is a simplified version of the function below.
     """
     n, N, r = length, total, limit
     end = min(length, total//(limit+1))
