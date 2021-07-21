@@ -9,6 +9,13 @@ import warnings
 warnings.filterwarnings("ignore")
 
 def q_finder_main_slsqp(count_vector, hypothesis, p_lowerbound):
+    """
+    Returns the closest plausible distribution to the 'hypothesis' distribution. 
+    'count_vector' contains the quantity of each value in the data. 
+    'p_lowerbound' is the lower bound on plausible probabilities - any
+    distribution which produces a lower sequence probability
+    may be instantly rejected.
+    """
     # Proposed distribution, p
     p = np.array(hypothesis)
     # These are for calculating the multinomial PMF
