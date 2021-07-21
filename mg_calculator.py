@@ -87,5 +87,5 @@ def powerset_with_sums(orig_set):
     powerset = []
     for i in range(len(orig_set)+1):
         powerset += list(combinations(orig_set, i))
-    powerset_with_sums = [[i, len(i), sum(i)] for i in powerset]
+    powerset_with_sums = [(i, len(i), sum(i)) for i in powerset]
     return powerset_with_sums
