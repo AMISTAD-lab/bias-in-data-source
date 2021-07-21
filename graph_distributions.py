@@ -5,7 +5,11 @@ from matplotlib.lines import Line2D
 from matplotlib import cm
 import numpy as np
 
-def graph_distributions(q,value_list, hypothesis=[],selected_value=[],filename="distributions.pdf"):
+def graph_distributions(q, value_list, hypothesis=[], selected_value=[], filename="distributions.pdf"):
+    """
+    This function is used to generate the distribution comparison graphs seen
+    in the Results section of the paper.
+    """
     if hypothesis == []:
         hyp = len(value_list)*[1/len(value_list)]
     else:
