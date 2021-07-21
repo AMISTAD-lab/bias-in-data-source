@@ -8,6 +8,9 @@ def mg_calculator(observed_freq, hypothesis):
     any hypothesis. 'observed_freq' is the count vector 
     for the observation, and 'hypothesis' is the user-provided
     list of probabilities for each value.
+
+    `min_distance` and `max_distance` correspond to the minimum and 
+    maximum values of the function g, which is defined in the paper
     """
     mean_freq = [int(round(sum(observed_freq)*i, 0)) for i in hypothesis]
     min_distance = sum(list(map(lambda x,y: abs(x-y), observed_freq, mean_freq)))
