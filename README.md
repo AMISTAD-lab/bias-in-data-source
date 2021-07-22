@@ -69,6 +69,8 @@ The other files in the main folder can be split into two categories:
   - q_finder_count_based.py
   - s_prime.py
 #### Data processing and visualization
+  - compas_experiments.ipynb
+  - uci_adult_experiments.ipynb
   - csv_to_lists.py
   - data_bin_slicer_multival.py
   - excel_to_list.py
