@@ -1,6 +1,6 @@
 import pandas as pd
 
-def excel_to_list(filepath):
+def excel_to_list_1(filepath):
     """
     Acquires all of the columns/classes from the excel spreadsheet found at 'filepath'.
     'filepath' must be in the format r"(filepath)", ex. filepath = r"C:\Users\Tim\Downloads\HR_Dataset.xlsx"
@@ -11,7 +11,7 @@ def excel_to_list(filepath):
     data_list = array.tolist()
     return data_list
 
-def excel_to_list(filepath,columns):
+def excel_to_list_2(filepath,columns):
     """
     Acquires only the requested columns/classes from the excel spreadsheet found at 'filepath'.
     'filepath' must be in the format described above. 'columns' is the list of requested columns.
