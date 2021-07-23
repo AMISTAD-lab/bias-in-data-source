@@ -73,5 +73,6 @@ The other files in the main folder can be split into two categories:
   - compas_experiments_charge_type.ipynb
   - compas_experiments_prior_charges.ipynb
   - uci_adult_experiments.ipynb
+  - runtime_experiments.ipynb
   - graph_distributions.py
 
