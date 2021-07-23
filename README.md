@@ -1,7 +1,7 @@
 # bias-in-data-source
 Repo for the ```Identifying Bias in Data using Two-Distribution Hypothesis Tests``` article.
 
-What's here so far:
+What's here:
 
 ## hypothesis_test.py
 This file contains several functions to help you run a two-distribution specified complexity (s.c.) hypothesis test for a discrete univariate distribution. This is the user-facing file, and we recommend using it instead of the other files in this directory. These functions share many of the same inputs, which will only be described once. 
