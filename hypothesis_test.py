@@ -33,6 +33,24 @@ def hypothesis_test(data, value_list, alpha = 0.05, hypothesis = []):
         print("Proposed distribution not rejected at alpha = " + str(alpha)  + ". Kardis = " + str(kardis) + ".")
         return (kardis, reject)
 
+def hypothesis_test_silent(data, value_list, alpha = 0.05, hypothesis = []):
+    """
+    Same as `hypothesis_test`, but without print statements
+    """
+    if hypothesis == []:
+        hyp = len(value_list)*[1/len(value_list)]
+    else:
+        hyp = hypothesis
+    count_vector = [data.count(x) for x in value_list]
+    kardis, reject, r, nu, h = kardis_test_main(count_vector, alpha, hyp)
+    if reject:
+        s_lowerbound = (alpha*nu)/(r*h)
+        p_lowerbound = s_lowerbound*h
+        q = list(q_finder_main_slsqp(count_vector, hyp, p_lowerbound))
+        return (kardis, reject, s_lowerbound, p_lowerbound, q)
+    else:
+        return (kardis, reject)
+
 def binary_hypothesis_test(data, value_list, selected_value_list, alpha=0.05, binary_hypothesis=[0.5,0.5]):
     """
     Performs a binomial SC test upon the non-binary dataset 'data'. 
