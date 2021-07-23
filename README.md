@@ -69,6 +69,7 @@ The other files in the main folder can be split into two categories:
   - q_finder_count_based.py
   - s_prime.py
 #### Experiments and data visualization
+These ipynb files can be run to recreate the tests we performed. 
   - compas_experiments_recid_score.ipynb
   - compas_experiments_charge_type.ipynb
   - compas_experiments_prior_charges.ipynb
