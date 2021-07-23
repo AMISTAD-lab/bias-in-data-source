@@ -1,5 +1,5 @@
 # bias-in-data-source
-Repo for the *Identifying Bias in Data using Two-Distribution Hypothesis Tests* article.
+Repo for the __Identifying Bias in Data using Two-Distribution Hypothesis Tests__ article.
 
 What's here so far:
 
