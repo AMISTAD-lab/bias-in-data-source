@@ -68,11 +68,10 @@ The other files in the main folder can be split into two categories:
   - mg_calculator_count_based.py
   - q_finder_count_based.py
   - s_prime.py
-#### Data processing and visualization
-  - compas_experiments.ipynb
+#### Experiments and data visualization
+  - compas_experiments_recid_score.ipynb
+  - compas_experiments_charge_type.ipynb
+  - compas_experiments_prior_charges.ipynb
   - uci_adult_experiments.ipynb
-  - csv_to_lists.py
-  - data_bin_slicer_multival.py
-  - excel_to_list.py
   - graph_distributions.py
 
