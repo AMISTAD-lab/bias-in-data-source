@@ -63,10 +63,10 @@ This illustrates the slightly different bounds on each test.
 ## Other Files
 The other files in the main folder can be split into two categories:
 #### Support for hypothesis_test.py
-  - counts_kardis_test.py
+  - kardis_test.py
   - data_binarizer.py
-  - mg_calculator_count_based.py
-  - q_finder_count_based.py
+  - mg_calculator.py
+  - q_finder.py
   - s_prime.py
 #### Experiments and data visualization
 These ipynb files can be run to recreate the tests we performed. 
@@ -74,6 +74,5 @@ These ipynb files can be run to recreate the tests we performed.
   - compas_experiments_charge_type.ipynb
   - compas_experiments_prior_charges.ipynb
   - uci_adult_experiments.ipynb
-  - runtime_experiments.ipynb
+  - hypothesis_test_runtime_experiments.ipynb
   - graph_distributions.py
-
