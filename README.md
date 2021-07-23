@@ -27,7 +27,8 @@ Suppose you have a six-sided die which you believed to be fair. You rolled it si
   - data: 45*[1] + 5*[2] + 4*[3] + 3*[4] + 2*[5] + [6]
   - value_list: [1, 2, 3, 4, 5, 6]
   - alpha: 0.05
-  - hypothesis: 6*[1/6] 
+  - hypothesis: 6*[1/6]
+ 
 Running the hypothesis_test function would look like 
 ```
 hypothesis_test(45*[1]+5*[2]+4*[3]+3*[4]+2*[5]+[6], [1,2,3,4,5,6], 0.05, 6*[1/6])
