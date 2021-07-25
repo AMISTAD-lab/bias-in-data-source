@@ -4,7 +4,7 @@
     in the Results section of the paper.
     
     ***The function is only setup to graph up to 10 values in a value list. However, bar 
-    spacing, text, and hlines can be editedto accomodate larger value list***
+    spacing, text, and hlines can be edited to accomodate larger value list***
     """
 
 import matplotlib.pyplot as plt
