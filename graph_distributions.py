@@ -1,12 +1,3 @@
-
-"""
-    This function is used to generate the distribution comparison graphs seen
-    in the Results section of the paper.
-    
-    ***The function is only setup to graph up to 10 values in a value list. However, bar 
-    spacing, text, and hlines can be edited to accomodate larger value list***
-    """
-
 import matplotlib.pyplot as plt
 import matplotlib
 import math
@@ -16,6 +7,13 @@ from matplotlib import cm
 import numpy as np
 
 def graph_distributions(q, value_list, hypothesis=[], selected_value=[], filename="distributions.pdf"):
+    """
+    This function is used to generate the distribution comparison graphs seen
+    in the Results section of the paper.
+    
+    ***The function is only setup to graph up to 10 values in a value list. However, bar 
+    spacing, text, and hlines can be edited to accomodate larger value list***
+    """
     
     """Sets hypothesis to uniform hypothesis if one is not given"""
     if hypothesis == []:
