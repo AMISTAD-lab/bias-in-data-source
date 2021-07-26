@@ -15,7 +15,7 @@ def graph_distributions(q, value_list, hypothesis=[], selected_value=[], filenam
     spacing, text, and hlines can be edited to accomodate larger value list***
     """
     
-    """Sets hypothesis to uniform hypothesis if one is not given"""
+    # Sets hypothesis to uniform hypothesis if one is not given
     if hypothesis == []:
         hyp = len(value_list)*[1/len(value_list)]
     else:
@@ -23,8 +23,8 @@ def graph_distributions(q, value_list, hypothesis=[], selected_value=[], filenam
         
     nvalue_list = []
     
-    """Create New value list called nvalue_list which puts value_list in acceptable
-    format for graph based on given value_list"""
+    # Create New value list called nvalue_list which puts value_list in acceptable
+    # format for graph based on given value_list
     if len(selected_value) != 0:
         for x in range(len(selected_value)):
             nvalue_list.append(selected_value[x])
@@ -34,9 +34,9 @@ def graph_distributions(q, value_list, hypothesis=[], selected_value=[], filenam
     else:
         nvalue_list = value_list
 
-    N = len(nvalue_list) #N denotes the number of values being graphed
+    N = len(nvalue_list) # N denotes the number of values being graphed
     
-    """Sets text size, length of horizontal line based on number of values graphed"""
+    # Sets text size, length of horizontal line based on number of values graphed
     if(N <= 5):
         text_size = 10
         h_line_factor = .1
@@ -49,13 +49,12 @@ def graph_distributions(q, value_list, hypothesis=[], selected_value=[], filenam
             text_size = 6
         h_line_factor = .2
         
-    
-    """Create Xtick labels based on given nvalue_list
-    If value is hyphenated or has multiple words with spaces (i.e. 'African-American' or 'White Male'), 
-    the first letter of each word is used to create abrev. for value
-    If the nvalue_list value is a list or tuple then he first letter of each word in the list
-    is used to create abrev. for value """
-    xl = []
+    # Create Xtick labels based on given nvalue_list
+    # If value is hyphenated or has multiple words with spaces (i.e. 'African-American' or 'White Male'), 
+    # the first letter of each word is used to create abrev. for value
+    # If the nvalue_list value is a list or tuple then he first letter of each word in the list
+    # is used to create abrev. for value
+    # xl = []
     for x in nvalue_list:
         header = ''
         if type(x) is list or type(x) is tuple:
@@ -83,7 +82,7 @@ def graph_distributions(q, value_list, hypothesis=[], selected_value=[], filenam
                 header = x
             xl.append(header)
     
-    """Create Ymax for graph"""
+    # Create Ymax for graph
     if max(q) > max(hyp):
         factor = 10.0 ** 1
         yrange = math.trunc((max(q)+.2) * factor) / factor
@@ -91,7 +90,7 @@ def graph_distributions(q, value_list, hypothesis=[], selected_value=[], filenam
         factor = 10.0 ** 1
         yrange = math.trunc((max(hyp)+.2) * factor) / factor
     
-    """Sets Yticks to even proportion values between 0 and 1"""
+    # Sets Yticks to even proportion values between 0 and 1
     yticks=[0]
     tick = 0
     while tick <= yrange:
@@ -102,28 +101,27 @@ def graph_distributions(q, value_list, hypothesis=[], selected_value=[], filenam
         else:
             yticks.append(tick)
 
-    """Set X and Y range"""
+    # Set X and Y range
     xmin, xmax = xlim = 0, N+1
     ymin, ymax = ylim = 0, yrange
 
     fig, ax = plt.subplots(dpi=300)
     ax.set(xlim=xlim,ylim=ylim, autoscale_on=False)
 
-    """Set xtick, y values, lollipop width, and q list"""
+    # Set xtick, y values, lollipop width, and q list
     x = np.arange(1,N+1) + .15
     yh = np.array(hyp)
     bar_width = 0.1
     y = np.array(q)
 
-    """Create Color scheme and Colorbar"""
+    # Create Color scheme and Colorbar
     color_scheme = matplotlib.cm.get_cmap('inferno')
     norm = plt.Normalize(-1,1)
     sm = cm.ScalarMappable(cmap=color_scheme,norm=norm)  # norm sets the maximum and minimum values
     sm.set_array([])
     plt.colorbar(sm)
-    
 
-    """Create Lollipop graph with q distribution threshold line for each lollipop"""
+    # Create Lollipop graph with q distribution threshold line for each lollipop
     for idx in range(N):
         diff = 0.5 + (y[idx]-yh[idx])
         plt.hlines(y=yh[idx],xmin=(x[idx]-h_line_factor),xmax=(x[idx]+h_line_factor), colors='black',alpha=0.3,\
