@@ -54,7 +54,6 @@ def graph_distributions(q, value_list, hypothesis=[], selected_value=[], filenam
     # the first letter of each word is used to create abrev. for value
     # If the nvalue_list value is a list or tuple then he first letter of each word in the list
     # is used to create abrev. for value
-    
     xl = []
     for x in nvalue_list:
         header = ''
