@@ -75,5 +75,6 @@ These ipynb files can be run to recreate the tests we performed.
   - compas_experiments_charge_type.ipynb
   - compas_experiments_prior_charges.ipynb
   - uci_adult_experiments.ipynb
-  - hypothesis_test_runtime_experiments.ipynb
+  - run_time_experiments_decile_score.ipynb
+  - run_time_experiments_score_text.ipynb
   - graph_distributions.py
