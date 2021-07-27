@@ -81,6 +81,8 @@ def graph_distributions(q, value_list, hypothesis=[], selected_value=[], xl=[], 
                 else:
                     header = x
                 xl.append(header)
+    else:
+        xl = xl
     
     # Create Ymax for graph
     if max(q) > max(hyp):
