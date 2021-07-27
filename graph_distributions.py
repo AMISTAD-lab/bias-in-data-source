@@ -6,7 +6,7 @@ from matplotlib.lines import Line2D
 from matplotlib import cm
 import numpy as np
 
-def graph_distributions(q, value_list, hypothesis=[], selected_value=[], filename="distributions.pdf"):
+def graph_distributions(q, value_list, hypothesis=[], selected_value=[], xl=[], filename="distributions.pdf"):
     """
     This function is used to generate the distribution comparison graphs seen
     in the Results section of the paper.
@@ -54,33 +54,33 @@ def graph_distributions(q, value_list, hypothesis=[], selected_value=[], filenam
     # the first letter of each word is used to create abrev. for value
     # If the nvalue_list value is a list or tuple then he first letter of each word in the list
     # is used to create abrev. for value
-    xl = []
-    for x in nvalue_list:
-        header = ''
-        if type(x) is list or type(x) is tuple:
-            num_classes = len(x)
-            for i in range(num_classes):
-                n = x[i]
-                if n.count('-') > 0:
-                    n = n.replace("-"," ")
-                if n.count(' ') > 0:
-                    split = [s[0] for s in n.split()]
+    if xl != []:
+        for x in nvalue_list:
+            header = ''
+            if type(x) is list or type(x) is tuple:
+                num_classes = len(x)
+                for i in range(num_classes):
+                    n = x[i]
+                    if n.count('-') > 0:
+                        n = n.replace("-"," ")
+                    if n.count(' ') > 0:
+                        split = [s[0] for s in n.split()]
+                        for ind in range(len(split)):
+                            header = str(header) + str(split[ind])
+                    else:
+                        header = str(header) + str(str(n[:1]))
+                xl.append(header)
+            else:
+                if x.count('-') > 0:
+                    x = x.replace("-"," ")
+                if x.count(' ') > 0:
+                    words = x.split()
+                    split = [word[0] for word in words]
                     for ind in range(len(split)):
                         header = str(header) + str(split[ind])
                 else:
-                    header = str(header) + str(str(n[:1]))
-            xl.append(header)
-        else:
-            if x.count('-') > 0:
-                x = x.replace("-"," ")
-            if x.count(' ') > 0:
-                words = x.split()
-                split = [word[0] for word in words]
-                for ind in range(len(split)):
-                    header = str(header) + str(split[ind])
-            else:
-                header = x
-            xl.append(header)
+                    header = x
+                xl.append(header)
     
     # Create Ymax for graph
     if max(q) > max(hyp):
