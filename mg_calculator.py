@@ -43,7 +43,7 @@ def num_weak_compositions(length, total):
     
     See: https://en.wikipedia.org/wiki/Stars_and_bars_(combinatorics)
 
-    This is a Lemma in the paper.
+    This is Lemma 1 in the paper.
     """
     k, N = length, total
     return math.comb(N+k-1, k-1)
@@ -55,7 +55,7 @@ def num_sized_integer_compositions(length, total, powerset_list):
     where each bin has a unique maximum number of balls
     it can hold
 
-    This is a Theorem in the paper. 
+    This is Theorem 2 in the paper. 
     """
     n, N = length, total
     composition_count = 0
