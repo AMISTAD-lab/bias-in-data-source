@@ -4,8 +4,6 @@ from scipy.optimize import minimize, LinearConstraint, NonlinearConstraint, Boun
 from scipy.special import rel_entr
 import warnings
 
-# Used to suppress useless Scipy warnings
-# Disable this if you're rigorously testing
 warnings.filterwarnings("ignore")
 
 def q_finder_main_slsqp(count_vector, hypothesis, p_lowerbound):
