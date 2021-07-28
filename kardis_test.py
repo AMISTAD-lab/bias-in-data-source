@@ -26,24 +26,6 @@ def kardis_test_main(counts, alpha, hypothesis):
         reject = False
     return (kardis, reject, r, nu, h)
 
-def binary_kardis_test_main(counts, alpha, hypothesis):
-    """
-    Performs a binomial kardis test with tighter bounds than 'kardis_test_main'.
-    All inputs are identical as in 'kardis_test_main', though 
-    'counts' and 'hypothesis' may only have a length of 2.
-    """
-    n = sum(counts)
-    k = counts[0]
-    r = n+1
-    p = mpf(hypothesis[0])**counts[0] * mpf(hypothesis[1])**counts[1]
-    nu = mpf(math.comb(n, k))**(-1)
-    kardis = r*p/nu
-    if kardis < alpha:
-        reject = True
-    else:
-        reject = False
-    return (kardis, reject, r, nu, p)
-
 def uniform_dist_kardis_test(observation, value_list, alpha):
     """
     Performs a multinomial kardis test using the uniform distribution.
@@ -53,8 +35,7 @@ def uniform_dist_kardis_test(observation, value_list, alpha):
     This function is largely deprecated.
     """
     obs_counts = [observation.count(x) for x in value_list]
-    num_bins = len(value_list) #should == len(hyp) == len(obs_counts)
-    #now |x| == num of counts 
+    num_bins = len(value_list)
     norm_scriptx = math.comb(len(observation)+num_bins-1, num_bins-1)
     u_hyp = [1/num_bins]*num_bins
     u = mpf(math.factorial(len(observation))) / math.prod([mpf(math.factorial(x)) for x in obs_counts])\
