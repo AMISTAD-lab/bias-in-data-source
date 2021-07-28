@@ -1,6 +1,6 @@
 import math
 import numpy as np
-from scipy.optimize import minimize, LinearConstraint, NonlinearConstraint, Bounds
+from scipy.optimize import minimize, Bounds
 from scipy.special import rel_entr
 import warnings
 
