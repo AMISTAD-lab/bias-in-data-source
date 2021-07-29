@@ -2,7 +2,7 @@ import math
 from mg_calculator import *
 from mpmath import *
 
-def kardis_test_main(counts, alpha, hypothesis):
+def kardis_test(counts, alpha, hypothesis):
     """
     Performs a multinomial kardis test upon the provided count vector 'counts'.
     'alpha' is the chosen alpha level, and 'hypothesis' is a list of 

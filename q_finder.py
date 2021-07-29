@@ -6,7 +6,7 @@ import warnings
 
 warnings.filterwarnings("ignore")
 
-def q_finder_main_slsqp(count_vector, hypothesis, p_lowerbound):
+def q_finder(count_vector, hypothesis, p_lowerbound):
     """
     Returns the closest plausible distribution to the 'hypothesis' distribution
     using sequential quadratic programing. 
